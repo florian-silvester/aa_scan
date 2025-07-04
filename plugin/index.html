@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sanity Art Aurea - AI Art Jewelry Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Sanity Art Aurea</h1>
+            <p>AI-powered art jewelry documentation → Intelligent analysis → Sanity CMS</p>
+            <button id="resetBtn" class="reset-btn">🔄 Reset</button>
+        </header>
+
+        <!-- Step 1: Credentials (Configure via Environment Variables) -->
+        <section id="credentials-section" class="step-section">
+            <h2>⚙️ Step 1: Configure Credentials</h2>
+            <div class="credentials-notice">
+                <div class="info-message">
+                    <strong>🔐 Set up your credentials via environment variables:</strong>
+                    <ul>
+                        <li>📝 SANITY_PROJECT_ID: Your Sanity project ID</li>
+                        <li>📝 SANITY_DATASET: Your Sanity dataset (usually 'production')</li>
+                        <li>📝 SANITY_API_TOKEN: Your Sanity API token</li>
+                        <li>📝 OPENAI_API_KEY: Your OpenAI API key</li>
+                        <li>🟡 DROPBOX_TOKEN: Optional Dropbox access token</li>
+                    </ul>
+                    <p><em>Create a .env file in the project root with these variables, or set them in your environment.</em></p>
+                    <p><em>See .env.example for the template.</em></p>
+                </div>
+            </div>
+            <!-- Hidden inputs for JavaScript compatibility -->
+            <div style="display: none;">
+                <input type="text" id="sanityProjectId" value="">
+                <input type="text" id="sanityDataset" value="">
+                <input type="password" id="sanityToken" value="">
+                <input type="password" id="openaiKey" value="">
+                <input type="password" id="dropboxToken" value="">
+            </div>
+        </section>
+
+        <!-- Step 2: Upload Word Document -->
+        <section id="upload-section" class="step-section">
+            <h2>📄 Step 2: Upload Art Jewelry Documentation</h2>
+            <div class="upload-area">
+                <input type="file" id="wordFile" accept=".doc,.docx" style="display: none;">
+                <div id="uploadZone" class="upload-zone">
+                    <div class="upload-icon">📄</div>
+                    <p>Choose exhibition catalogs, artist profiles, or artwork documentation</p>
+                    <button type="button" class="btn btn-secondary">Select Word Document</button>
+                </div>
+                <div id="fileInfo" class="file-info" style="display: none;"></div>
+            </div>
+            <button id="processBtn" class="btn btn-primary" disabled>Process with AI</button>
+            <div id="processStatus" class="status"></div>
+        </section>
+
+        <!-- Step 3: Review Analysis -->
+        <section id="analysis-section" class="step-section" style="display: none;">
+            <h2>🤖 Step 3: Review AI Analysis</h2>
+            <div id="analysisResults"></div>
+            <button id="syncBtn" class="btn btn-success" style="display: none;">Sync to Sanity CMS</button>
+            <div id="syncStatus" class="status"></div>
+        </section>
+
+        <!-- Debug/Raw Content -->
+        <section id="debug-section" class="step-section" style="display: none;">
+            <h2>🔍 Debug: Raw Extracted Content</h2>
+            <div id="debugContent"></div>
+        </section>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
+
