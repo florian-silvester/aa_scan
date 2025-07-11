@@ -1,0 +1,38 @@
+{
+  "name": "sanity-art-aurea",
+  "version": "1.0.1",
+  "description": "Sanity Art Aurea - AI-powered Word document processor for art jewelry documentation that syncs to Sanity CMS.",
+  "type": "module",
+  "main": "mcp-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node mcp-server.js",
+    "scrape": "node scrape-artaurea-content.js",
+    "test-scrape": "node test-scraper.js",
+    "import-places": "node wordpress-places-import.js"
+  },
+  "author": "Florian Ludwig",
+  "license": "MIT",
+  "dependencies": {
+    "@sanity/client": "^7.6.0",
+    "addressit": "^1.8.2",
+    "canvas": "^3.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "dropbox": "^10.34.0",
+    "express": "^4.19.2",
+    "jsdom": "^26.1.0",
+    "mammoth": "^1.9.1",
+    "multer": "^2.0.1",
+    "mysql2": "^3.14.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^5.8.2",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^5.3.31",
+    "puppeteer": "^24.12.1",
+    "sanity-plugin-media": "^3.0.3",
+    "styled-components": "^6.1.19",
+    "uuid": "^11.1.0",
+    "xml2js": "^0.6.2"
+  }
+}

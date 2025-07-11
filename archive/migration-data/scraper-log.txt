@@ -1,0 +1,1524 @@
+🎨 COMPREHENSIVE ART AUREA PROFILE SCRAPER
+
+🔍 STEP 1: Finding ALL profile URLs...
+🌐 Loading https://artaurea.com/profiles/...
+   Found 205 profile URLs for en
+🌐 Loading https://artaurea.de/profiles/...
+   Found 206 profile URLs for de
+✅ Found 205 English profile URLs
+✅ Found 206 German profile URLs
+🎯 Total unique profiles to scrape: 230
+
+📸 STEP 2: Scraping ALL profile pages...
+
+👤 [1/230] Scraping Cookie Policy...
+   🌐 Loading en: https://artaurea.com/cookie-policy-eu/
+     → 0 images from en
+   ✅ Found 0 images
+
+👤 [2/230] Scraping Privacy Policy...
+   🌐 Loading en: https://artaurea.com/privacy-policy/
+     → 0 images from en
+   ✅ Found 0 images
+
+👤 [3/230] Scraping #page footer...
+   🌐 Loading en: https://artaurea.com/profiles/#page-footer
+     → 17 images from en
+   🌐 Loading de: https://artaurea.de/profiles/#page-footer
+     → 18 images from de
+   ✅ Found 33 images
+
+👤 [4/230] Scraping Blog...
+   🌐 Loading en: https://artaurea.com/blog/
+     → 20 images from en
+   🌐 Loading de: https://artaurea.de/blog/
+     → 20 images from de
+   ✅ Found 20 images
+
+👤 [5/230] Scraping Profiles...
+   🌐 Loading en: https://artaurea.com/profiles/
+     → 23 images from en
+   ✅ Found 21 images
+
+👤 [6/230] Scraping Diverse Design Objects...
+   🌐 Loading en: https://artaurea.com/types/diverse-design-objects/
+     → 12 images from en
+   ✅ Found 12 images
+
+👤 [7/230] Scraping Furniture | Objects...
+   🌐 Loading en: https://artaurea.com/types/furniture-en/
+     → 25 images from en
+   ✅ Found 25 images
+
+👤 [8/230] Scraping Lighting...
+   🌐 Loading en: https://artaurea.com/types/lighting/
+     → 8 images from en
+   ✅ Found 8 images
+
+👤 [9/230] Scraping Rugs | Interior Textiles...
+   🌐 Loading en: https://artaurea.com/types/textile/
+     → 17 images from en
+   ✅ Found 17 images
+
+👤 [10/230] Scraping Ceramic Art...
+   🌐 Loading en: https://artaurea.com/types/ceramics/
+     → 23 images from en
+   ✅ Found 23 images
+
+👤 [11/230] Scraping Metal Art...
+   🌐 Loading en: https://artaurea.com/types/metal/
+     → 23 images from en
+   ✅ Found 23 images
+
+👤 [12/230] Scraping Studio Glass...
+   🌐 Loading en: https://artaurea.com/types/glass-vessels-tabletop/
+     → 13 images from en
+   ✅ Found 13 images
+
+👤 [13/230] Scraping Woodwork | Paper...
+   🌐 Loading en: https://artaurea.com/types/wood-paper/
+     → 27 images from en
+   ✅ Found 27 images
+
+👤 [14/230] Scraping Art Jewelry...
+   🌐 Loading en: https://artaurea.com/types/art-jewelry/
+     → 23 images from en
+   ✅ Found 23 images
+
+👤 [15/230] Scraping Design Jewelry...
+   🌐 Loading en: https://artaurea.com/types/jewelry-design/
+     → 23 images from en
+   ✅ Found 23 images
+
+👤 [16/230] Scraping Textile | Accessories...
+   🌐 Loading en: https://artaurea.com/types/clothing/
+     → 17 images from en
+   ✅ Found 17 images
+
+👤 [17/230] Scraping Calendar...
+   🌐 Loading en: https://artaurea.com/cal/
+     → 1 images from en
+   ✅ Found 1 images
+
+👤 [18/230] Scraping Subscribe...
+   🌐 Loading en: https://artaurea.com/subscribe/
+     → 295 images from en
+   ✅ Found 59 images
+
+👤 [19/230] Scraping ATARA design / Heike Stuckstedde...
+   🌐 Loading en: https://artaurea.com/profiles/atara-design-heike-stuckstedde/
+     → 61 images from en
+   🌐 Loading de: https://artaurea.de/profiles/atara-design-stuckstedde-heike/
+     → 61 images from de
+   ✅ Found 11 images
+
+👤 [20/230] Scraping Ute Kathrin Beck...
+   🌐 Loading en: https://artaurea.com/profiles/beck-ute-kathrin/
+     → 86 images from en
+   🌐 Loading de: https://artaurea.de/profiles/beck-ute-kathrin-2/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [21/230] Scraping Friedrich Becker...
+   🌐 Loading en: https://artaurea.com/profiles/becker-friedrich/
+     → 25 images from en
+   🌐 Loading de: https://artaurea.de/profiles/becker-friedrich/
+     → 25 images from de
+   ✅ Found 5 images
+
+👤 [22/230] Scraping Sofia Beilharz...
+   🌐 Loading en: https://artaurea.com/profiles/beilharz-sofia-2/
+     → 128 images from en
+   🌐 Loading de: https://artaurea.de/profiles/beilharz-sofia/
+     → 128 images from de
+   ✅ Found 33 images
+
+👤 [23/230] Scraping Benjamin Bigot...
+   🌐 Loading en: https://artaurea.com/profiles/bigot-benjamin/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/bigot-benjamin/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [24/230] Scraping Uli Biskup...
+   🌐 Loading en: https://artaurea.com/profiles/biskup-uli/
+     → 115 images from en
+   🌐 Loading de: https://artaurea.de/profiles/biskup-uli/
+     → 115 images from de
+   ✅ Found 35 images
+
+👤 [25/230] Scraping Bodyfurnitures...
+   🌐 Loading en: https://artaurea.com/profiles/bodyfurnitures/
+     → 96 images from en
+   🌐 Loading de: https://artaurea.de/profiles/bodyfurnitures/
+     → 96 images from de
+   ✅ Found 21 images
+
+👤 [26/230] Scraping Thomas Bohle...
+   🌐 Loading en: https://artaurea.com/profiles/bohle-thomas/
+     → 28 images from en
+   🌐 Loading de: https://artaurea.de/profiles/bohle-thomas/
+     → 28 images from de
+   ✅ Found 8 images
+
+👤 [27/230] Scraping Patrizia Bonati...
+   🌐 Loading en: https://artaurea.com/profiles/bonati-patrizia-2/
+     → 80 images from en
+   🌐 Loading de: https://artaurea.de/profiles/bonati-patrizia/
+     → 80 images from de
+   ✅ Found 15 images
+
+👤 [28/230] Scraping Bosna Quilt Werkstatt...
+   🌐 Loading en: https://artaurea.com/profiles/bosna-quilt-werkstatt/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/bosna-quilt-werkstatt/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [29/230] Scraping Dorothea Brill...
+   🌐 Loading en: https://artaurea.com/profiles/brill-dorothea/
+     → 103 images from en
+   🌐 Loading de: https://artaurea.de/profiles/brill-dorothea/
+     → 103 images from de
+   ✅ Found 39 images
+
+👤 [30/230] Scraping Beate Brinkmann...
+   🌐 Loading en: https://artaurea.com/profiles/brinkmann-beate/
+     → 41 images from en
+   🌐 Loading de: https://artaurea.de/profiles/brinkmann-beate/
+     → 41 images from de
+   ✅ Found 11 images
+
+👤 [31/230] Scraping Friedemann Buehler...
+   🌐 Loading en: https://artaurea.com/profiles/buehler-friedemann/
+     → 93 images from en
+   ✅ Found 18 images
+
+👤 [32/230] Scraping burggrafburggraf...
+   🌐 Loading en: https://artaurea.com/profiles/burggrafburggraf/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/burggrafburggraf/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [33/230] Scraping ‘Comme il faut’ floorcloth(e)s...
+   🌐 Loading en: https://artaurea.com/profiles/comme-il-faut/
+     → 79 images from en
+   🌐 Loading de: https://artaurea.de/profiles/comme-il-faut-2/
+     → 79 images from de
+   ✅ Found 14 images
+
+👤 [34/230] Scraping Robert Comploj...
+   🌐 Loading en: https://artaurea.com/profiles/comploj-robert/
+     → 38 images from en
+   🌐 Loading de: https://artaurea.de/profiles/comploj-robert/
+     → 38 images from de
+   ✅ Found 8 images
+
+👤 [35/230] Scraping Hans Coper...
+   🌐 Loading en: https://artaurea.com/profiles/coper-hans/
+     → 20 images from en
+   🌐 Loading de: https://artaurea.de/profiles/coper-hans/
+     → 20 images from de
+   ✅ Found 5 images
+
+👤 [36/230] Scraping Sarah Cossham...
+   🌐 Loading en: https://artaurea.com/profiles/cossham-sarah-art/
+     → 97 images from en
+   🌐 Loading de: https://artaurea.de/profiles/cossham-sarah-schmuckkunst/
+     → 97 images from de
+   ✅ Found 22 images
+
+👤 [37/230] Scraping Carl Dau...
+   🌐 Loading en: https://artaurea.com/profiles/dau-carl/
+     → 115 images from en
+   🌐 Loading de: https://artaurea.de/profiles/dau-carl/
+     → 115 images from de
+   ✅ Found 40 images
+
+👤 [38/230] Scraping Martina Dempf...
+   🌐 Loading en: https://artaurea.com/profiles/dempf-martina/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/dempf-martina/
+     → 91 images from de
+   ✅ Found 17 images
+
+👤 [39/230] Scraping Georg Dobler...
+   🌐 Loading en: https://artaurea.com/profiles/dobler-georg/
+     → 31 images from en
+   🌐 Loading de: https://artaurea.de/profiles/dobler-georg/
+     → 31 images from de
+   ✅ Found 6 images
+
+👤 [40/230] Scraping Babette von Dohnanyi...
+   🌐 Loading en: https://artaurea.com/profiles/dohnanyi-babette-von/
+     → 32 images from en
+   🌐 Loading de: https://artaurea.de/profiles/dohnanyi-babette-von/
+     → 32 images from de
+   ✅ Found 12 images
+
+👤 [41/230] Scraping Pippin Drysdale...
+   🌐 Loading en: https://artaurea.com/profiles/drysdale-pippin/
+     → 33 images from en
+   🌐 Loading de: https://artaurea.de/profiles/drysdale-pippin/
+     → 33 images from de
+   ✅ Found 8 images
+
+👤 [42/230] Scraping Martina Ege...
+   🌐 Loading en: https://artaurea.com/profiles/ege-martina/
+     → 64 images from en
+   🌐 Loading de: https://artaurea.de/profiles/ege-martina/
+     → 64 images from de
+   ✅ Found 14 images
+
+👤 [43/230] Scraping Eiden – Porzellan...
+   🌐 Loading en: https://artaurea.com/profiles/eiden-dagmar/
+     → 104 images from en
+   🌐 Loading de: https://artaurea.de/profiles/eiden-dagmar/
+     → 104 images from de
+   ✅ Found 19 images
+
+👤 [44/230] Scraping Beate Eismann...
+   🌐 Loading en: https://artaurea.com/profiles/eismann-beate/
+     → 68 images from en
+   🌐 Loading de: https://artaurea.de/profiles/eismann-beate/
+     → 68 images from de
+   ✅ Found 17 images
+
+👤 [45/230] Scraping Susanne Elstner...
+   🌐 Loading en: https://artaurea.com/profiles/elstner-susanne/
+     → 76 images from en
+   🌐 Loading de: https://artaurea.de/profiles/elstner-susanne/
+     → 108 images from de
+   ✅ Found 28 images
+
+👤 [46/230] Scraping Emquies-Holstein...
+   🌐 Loading en: https://artaurea.com/profiles/emquies-holstein/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/emquies-holstein/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [47/230] Scraping Sophia Epp...
+   🌐 Loading en: https://artaurea.com/profiles/epp-sophia/
+     → 56 images from en
+   🌐 Loading de: https://artaurea.de/profiles/epp-sophia/
+     → 56 images from de
+   ✅ Found 21 images
+
+👤 [48/230] Scraping Felicia Mülbaier...
+   🌐 Loading en: https://artaurea.com/profiles/felicia-muelbaier/
+     → 68 images from en
+   🌐 Loading de: https://artaurea.de/profiles/muelbaier-felicia/
+     → 68 images from de
+   ✅ Found 13 images
+
+👤 [49/230] Scraping Pura Ferreiro...
+   🌐 Loading en: https://artaurea.com/profiles/ferreiro-pura/
+     → 99 images from en
+   🌐 Loading de: https://artaurea.de/profiles/ferreiro-pura/
+     → 99 images from de
+   ✅ Found 24 images
+
+👤 [50/230] Scraping Fine Light...
+   🌐 Loading en: https://artaurea.com/profiles/fine-light/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/fine-light/
+     → 92 images from de
+   ✅ Found 19 images
+
+👤 [51/230] Scraping Fingerglück...
+   🌐 Loading en: https://artaurea.com/profiles/fingerglueck/
+     → 50 images from en
+   🌐 Loading de: https://artaurea.de/profiles/fingerglueck/
+     → 50 images from de
+   ✅ Found 10 images
+
+👤 [52/230] Scraping Anne Fischer...
+   🌐 Loading en: https://artaurea.com/profiles/fischer-anne/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/fischer-anne/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [53/230] Scraping Formfeld...
+   🌐 Loading en: https://artaurea.com/profiles/formfeld/
+     → 72 images from en
+   🌐 Loading de: https://artaurea.de/profiles/formfeld/
+     → 72 images from de
+   ✅ Found 17 images
+
+👤 [54/230] Scraping Simon Freund...
+   🌐 Loading en: https://artaurea.com/profiles/freund-simon/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/freund-simon/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [55/230] Scraping Tanja Friedrichs...
+   🌐 Loading en: https://artaurea.com/profiles/friedrichs-tanja/
+     → 105 images from en
+   🌐 Loading de: https://artaurea.de/profiles/friedrichs-tanja/
+     → 105 images from de
+   ✅ Found 30 images
+
+👤 [56/230] Scraping Stefanie Frye...
+   🌐 Loading en: https://artaurea.com/profiles/frye-stefanie/
+     → 104 images from en
+   🌐 Loading de: https://artaurea.de/profiles/frye-stefanie/
+     → 104 images from de
+   ✅ Found 20 images
+
+👤 [57/230] Scraping Bettina Geistlich...
+   🌐 Loading en: https://artaurea.com/profiles/geistlich-bettina/
+     → 35 images from en
+   🌐 Loading de: https://artaurea.de/profiles/geistlich-bettina/
+     → 35 images from de
+   ✅ Found 10 images
+
+👤 [58/230] Scraping Achim Gersmann...
+   🌐 Loading en: https://artaurea.com/profiles/gersmann-achim/
+     → 57 images from en
+   🌐 Loading de: https://artaurea.de/profiles/gersmann-achim/
+     → 57 images from de
+   ✅ Found 14 images
+
+👤 [59/230] Scraping Goldmiss Design...
+   🌐 Loading en: https://artaurea.com/profiles/goldmiss-design-2/
+     → 28 images from en
+   🌐 Loading de: https://artaurea.de/profiles/goldmiss-design/
+     → 28 images from de
+   ✅ Found 8 images
+
+👤 [60/230] Scraping Batho Gündra...
+   🌐 Loading en: https://artaurea.com/profiles/guendra-batho/
+     → 41 images from en
+   🌐 Loading de: https://artaurea.de/profiles/guendra-batho/
+     → 41 images from de
+   ✅ Found 12 images
+
+👤 [61/230] Scraping Bernard Heesen...
+   🌐 Loading en: https://artaurea.com/profiles/heesen-bernard/
+     → 85 images from en
+   🌐 Loading de: https://artaurea.de/profiles/heesen-bernard-2/
+     → 86 images from de
+   ✅ Found 16 images
+
+👤 [62/230] Scraping Emil Heger...
+   🌐 Loading en: https://artaurea.com/profiles/heger-emil/
+     → 37 images from en
+   🌐 Loading de: https://artaurea.de/profiles/heger-emil/
+     → 37 images from de
+   ✅ Found 7 images
+
+👤 [63/230] Scraping Corinna Heller...
+   🌐 Loading en: https://artaurea.com/profiles/heller-corinna/
+     → 83 images from en
+   🌐 Loading de: https://artaurea.de/profiles/heller-corinna/
+     → 83 images from de
+   ✅ Found 18 images
+
+👤 [64/230] Scraping Kerstin Henke...
+   🌐 Loading en: https://artaurea.com/profiles/henke-kerstin/
+     → 41 images from en
+   🌐 Loading de: https://artaurea.de/profiles/henke-kerstin/
+     → 41 images from de
+   ✅ Found 11 images
+
+👤 [65/230] Scraping Anke Hennig...
+   🌐 Loading en: https://artaurea.com/profiles/hennig-anke/
+     → 73 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hennig-anke/
+     → 73 images from de
+   ✅ Found 18 images
+
+👤 [66/230] Scraping Henrich & Denzel...
+   🌐 Loading en: https://artaurea.com/profiles/henrich-denzel/
+     → 99 images from en
+   🌐 Loading de: https://artaurea.de/profiles/henrich-denzel/
+     → 99 images from de
+   ✅ Found 30 images
+
+👤 [67/230] Scraping Leen Heyne...
+   🌐 Loading en: https://artaurea.com/profiles/heyne-leen/
+     → 73 images from en
+   🌐 Loading de: https://artaurea.de/profiles/heyne-leen/
+     → 73 images from de
+   ✅ Found 23 images
+
+👤 [68/230] Scraping Mirjam Hiller...
+   🌐 Loading en: https://artaurea.com/profiles/hiller-mirjam/
+     → 61 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hiller-mirjam/
+     → 61 images from de
+   ✅ Found 16 images
+
+👤 [69/230] Scraping Hirsch – Woodenheart...
+   🌐 Loading en: https://artaurea.com/profiles/hirsch-woodenheart/
+     → 79 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hirsch-woodenheart/
+     → 79 images from de
+   ✅ Found 14 images
+
+👤 [70/230] Scraping Tomáš Hlavička...
+   🌐 Loading en: https://artaurea.com/profiles/hlavicka-tomas/
+     → 31 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hlavicka-tomas/
+     → 31 images from de
+   ✅ Found 6 images
+
+👤 [71/230] Scraping Claudia Hoppe...
+   🌐 Loading en: https://artaurea.com/profiles/hoppe-claudia/
+     → 88 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hoppe-claudia/
+     → 88 images from de
+   ✅ Found 43 images
+
+👤 [72/230] Scraping Angela Huebel...
+   🌐 Loading en: https://artaurea.com/profiles/huebel-angela/
+     → 130 images from en
+   ✅ Found 50 images
+
+👤 [73/230] Scraping Kap Sun Hwang...
+   🌐 Loading en: https://artaurea.com/profiles/hwang-kap-sun/
+     → 20 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hwang-kap-sun/
+     → 20 images from de
+   ✅ Found 5 images
+
+👤 [74/230] Scraping Koichi Io...
+   🌐 Loading en: https://artaurea.com/profiles/io-koichi/
+     → 49 images from en
+   🌐 Loading de: https://artaurea.de/profiles/io-koichi/
+     → 49 images from de
+   ✅ Found 9 images
+
+👤 [75/230] Scraping Ulrike Isensee...
+   🌐 Loading en: https://artaurea.com/profiles/isensee-ulrike-2/
+     → 96 images from en
+   🌐 Loading de: https://artaurea.de/profiles/isensee-ulrike/
+     → 96 images from de
+   ✅ Found 21 images
+
+👤 [76/230] Scraping JaKyung Shin...
+   🌐 Loading en: https://artaurea.com/profiles/jakyung-shin/
+     → 68 images from en
+   🌐 Loading de: https://artaurea.de/profiles/jakyung-shin/
+     → 68 images from de
+   ✅ Found 24 images
+
+👤 [77/230] Scraping Angelika Jansen...
+   🌐 Loading en: https://artaurea.com/profiles/jansen-angelika/
+     → 109 images from en
+   🌐 Loading de: https://artaurea.de/profiles/jansen-angelika/
+     → 109 images from de
+   ✅ Found 19 images
+
+👤 [78/230] Scraping Silke Janssen...
+   🌐 Loading en: https://artaurea.com/profiles/janssen-silke/
+     → 33 images from en
+   🌐 Loading de: https://artaurea.de/profiles/janssen-silke/
+     → 33 images from de
+   ✅ Found 8 images
+
+👤 [79/230] Scraping Isezaki Jun...
+   🌐 Loading en: https://artaurea.com/profiles/jun-isezaki/
+     → 50 images from en
+   🌐 Loading de: https://artaurea.de/profiles/jun-isezaki/
+     → 50 images from de
+   ✅ Found 10 images
+
+👤 [80/230] Scraping Anne Ute Kaden...
+   🌐 Loading en: https://artaurea.com/profiles/kaden-anne-ute/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kaden-anne-ute/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [81/230] Scraping Si-Sook Kang...
+   🌐 Loading en: https://artaurea.com/profiles/kang-si-sook/
+     → 7 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kang-si-sook/
+     → 7 images from de
+   ✅ Found 2 images
+
+👤 [82/230] Scraping Kristiina Karinen...
+   🌐 Loading en: https://artaurea.com/profiles/karinen-kristiina/
+     → 83 images from en
+   🌐 Loading de: https://artaurea.de/profiles/karinen-kristiina/
+     → 83 images from de
+   ✅ Found 18 images
+
+👤 [83/230] Scraping Ulla & Martin Kaufmann...
+   🌐 Loading en: https://artaurea.com/profiles/kaufmann-ulla-martin/
+     → 107 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kaufmann-ulla-martin/
+     → 107 images from de
+   ✅ Found 34 images
+
+👤 [84/230] Scraping Deok Ho Kim...
+   🌐 Loading en: https://artaurea.com/profiles/kim-deok-ho/
+     → 45 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kim-deok-ho-2/
+     → 45 images from de
+   ✅ Found 10 images
+
+👤 [85/230] Scraping Dong-Hyun Kim...
+   🌐 Loading en: https://artaurea.com/profiles/kim-dong-hyun/
+     → 73 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kim-dong-hyun/
+     → 73 images from de
+   ✅ Found 16 images
+
+👤 [86/230] Scraping Sung Chul Kim...
+   🌐 Loading en: https://artaurea.com/profiles/kim-sung-chul-2/
+     → 50 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kim-sung-chul/
+     → 50 images from de
+   ✅ Found 10 images
+
+👤 [87/230] Scraping Robert Korsikowski...
+   🌐 Loading en: https://artaurea.com/profiles/korsikowski-robert/
+     → 86 images from en
+   🌐 Loading de: https://artaurea.de/profiles/korsikowski-robert/
+     → 86 images from de
+   ✅ Found 16 images
+
+👤 [88/230] Scraping Susanna Kuschek...
+   🌐 Loading en: https://artaurea.com/profiles/kuschek-susanna/
+     → 87 images from en
+   🌐 Loading de: https://artaurea.de/profiles/kuschek-susanna/
+     → 87 images from de
+   ✅ Found 27 images
+
+👤 [89/230] Scraping Dominique Labordery...
+   🌐 Loading en: https://artaurea.com/profiles/labordery-dominique/
+     → 56 images from en
+   🌐 Loading de: https://artaurea.de/profiles/labordery-dominique-2/
+     → 56 images from de
+   ✅ Found 12 images
+
+👤 [90/230] Scraping Lut Laleman...
+   🌐 Loading en: https://artaurea.com/profiles/laleman-lut/
+     → 25 images from en
+   🌐 Loading de: https://artaurea.de/profiles/laleman-lut/
+     → 25 images from de
+   ✅ Found 5 images
+
+👤 [91/230] Scraping Kristiina Lassus...
+   🌐 Loading en: https://artaurea.com/profiles/lassus-kristiina/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lassus-kristiina/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [92/230] Scraping Annette Lechler...
+   🌐 Loading en: https://artaurea.com/profiles/lechler-annette/
+     → 97 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lechler-annette/
+     → 97 images from de
+   ✅ Found 17 images
+
+👤 [93/230] Scraping In Hwa Lee...
+   🌐 Loading en: https://artaurea.com/profiles/lee-in-hwa-2/
+     → 93 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lee-in-hwa/
+     → 93 images from de
+   ✅ Found 18 images
+
+👤 [94/230] Scraping Jeong Won Lee...
+   🌐 Loading en: https://artaurea.com/profiles/lee-jeong-won-2/
+     → 86 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lee-jeong-won/
+     → 86 images from de
+   ✅ Found 17 images
+
+👤 [95/230] Scraping Minsoo Lee...
+   🌐 Loading en: https://artaurea.com/profiles/lee-min-soo/
+     → 86 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lee-min-soo/
+     → 86 images from de
+   ✅ Found 16 images
+
+👤 [96/230] Scraping Lehmann & Schmedding...
+   🌐 Loading en: https://artaurea.com/profiles/lehmann-schmedding/
+     → 40 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lehmann-schmedding/
+     → 40 images from de
+   ✅ Found 15 images
+
+👤 [97/230] Scraping Ria Lins...
+   🌐 Loading en: https://artaurea.com/profiles/lins-ria-2/
+     → 133 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lins-ria/
+     → 133 images from de
+   ✅ Found 33 images
+
+👤 [98/230] Scraping Sabine Lintzen...
+   🌐 Loading en: https://artaurea.com/profiles/lintzen-sabine/
+     → 104 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lintzen-sabine/
+     → 104 images from de
+   ✅ Found 19 images
+
+👤 [99/230] Scraping Morten Lobner Espersen...
+   🌐 Loading en: https://artaurea.com/profiles/lobner-espersen-morten-2/
+     → 82 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lobner-espersen-morten/
+     → 82 images from de
+   ✅ Found 18 images
+
+👤 [100/230] Scraping Hanne Bay Luehrssen...
+   🌐 Loading en: https://artaurea.com/profiles/luehrssen-hanne-bay/
+     → 56 images from en
+   ✅ Found 11 images
+
+👤 [101/230] Scraping Josephine Lützel...
+   🌐 Loading en: https://artaurea.com/profiles/luetzel-josephine/
+     → 56 images from en
+   🌐 Loading de: https://artaurea.de/profiles/luetzel-josephine/
+     → 56 images from de
+   ✅ Found 11 images
+
+👤 [102/230] Scraping Christof Lungwitz...
+   🌐 Loading en: https://artaurea.com/profiles/lungwitz-christof/
+     → 55 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lungwitz-christof/
+     → 55 images from de
+   ✅ Found 10 images
+
+👤 [103/230] Scraping Lyk Carpet...
+   🌐 Loading en: https://artaurea.com/profiles/lyk-carpet/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/lyk-carpet-2/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [104/230] Scraping Ulrike Maeder...
+   🌐 Loading en: https://artaurea.com/profiles/maeder-ulrike-2/
+     → 56 images from en
+   ✅ Found 11 images
+
+👤 [105/230] Scraping Manu Schmuck...
+   🌐 Loading en: https://artaurea.com/profiles/manu-schmuck/
+     → 94 images from en
+   🌐 Loading de: https://artaurea.de/profiles/manu-schmuck/
+     → 94 images from de
+   ✅ Found 24 images
+
+👤 [106/230] Scraping Sonngard Marcks...
+   🌐 Loading en: https://artaurea.com/profiles/marcks-sonngard/
+     → 80 images from en
+   🌐 Loading de: https://artaurea.de/profiles/marcks-sonngard/
+     → 80 images from de
+   ✅ Found 15 images
+
+👤 [107/230] Scraping Gigi Mariani...
+   🌐 Loading en: https://artaurea.com/profiles/mariani-gigi-2/
+     → 104 images from en
+   🌐 Loading de: https://artaurea.de/profiles/mariani-gigi/
+     → 104 images from de
+   ✅ Found 24 images
+
+👤 [108/230] Scraping Iris Merkle...
+   🌐 Loading en: https://artaurea.com/profiles/merkle-iris/
+     → 76 images from en
+   🌐 Loading de: https://artaurea.de/profiles/merkle-iris/
+     → 76 images from de
+   ✅ Found 16 images
+
+👤 [109/230] Scraping Eric Mertens...
+   🌐 Loading en: https://artaurea.com/profiles/mertens-eric/
+     → 85 images from en
+   🌐 Loading de: https://artaurea.de/profiles/mertens-eric/
+     → 85 images from de
+   ✅ Found 15 images
+
+👤 [110/230] Scraping Massimo Micheluzzi...
+   🌐 Loading en: https://artaurea.com/profiles/micheluzzi-massimo-2/
+     → 100 images from en
+   🌐 Loading de: https://artaurea.de/profiles/micheluzzi-massimo-2/
+     → 100 images from de
+   ✅ Found 21 images
+
+👤 [111/230] Scraping Claudia Milić...
+   🌐 Loading en: https://artaurea.com/profiles/milic-claudia/
+     → 113 images from en
+   🌐 Loading de: https://artaurea.de/profiles/milic-claudia/
+     → 113 images from de
+   ✅ Found 33 images
+
+👤 [112/230] Scraping Mille Fiabe...
+   🌐 Loading en: https://artaurea.com/profiles/mille-fiabe/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/mille-fiabe/
+     → 91 images from de
+   ✅ Found 17 images
+
+👤 [113/230] Scraping Ritsue Mishima...
+   🌐 Loading en: https://artaurea.com/profiles/mishima-ritsue/
+     → 74 images from en
+   🌐 Loading de: https://artaurea.de/profiles/mishima-ritsue-2/
+     → 74 images from de
+   ✅ Found 14 images
+
+👤 [114/230] Scraping Eva Moosbrugger...
+   🌐 Loading en: https://artaurea.com/profiles/moosbrugger-eva/
+     → 74 images from en
+   🌐 Loading de: https://artaurea.de/profiles/moosbrugger-eva/
+     → 74 images from de
+   ✅ Found 14 images
+
+👤 [115/230] Scraping Felix Mueller...
+   🌐 Loading en: https://artaurea.com/profiles/mueller-felix/
+     → 55 images from en
+   ✅ Found 10 images
+
+👤 [116/230] Scraping Sabine Müller...
+   🌐 Loading en: https://artaurea.com/profiles/mueller-sabine/
+     → 82 images from en
+   🌐 Loading de: https://artaurea.de/profiles/mueller-sabine/
+     → 82 images from de
+   ✅ Found 32 images
+
+👤 [117/230] Scraping Jutta Müntefering...
+   🌐 Loading en: https://artaurea.com/profiles/muentefering-jutta/
+     → 49 images from en
+   🌐 Loading de: https://artaurea.de/profiles/muentefering-jutta/
+     → 49 images from de
+   ✅ Found 9 images
+
+👤 [118/230] Scraping Julia Münzing, Schmuque...
+   🌐 Loading en: https://artaurea.com/profiles/muenzing-julia-schmuque/
+     → 94 images from en
+   🌐 Loading de: https://artaurea.de/profiles/muenzing-julia-schmuque/
+     → 94 images from de
+   ✅ Found 19 images
+
+👤 [119/230] Scraping Johannes Nagel...
+   🌐 Loading en: https://artaurea.com/profiles/nagel-johannes/
+     → 57 images from en
+   🌐 Loading de: https://artaurea.de/profiles/nagel-johannes/
+     → 57 images from de
+   ✅ Found 12 images
+
+👤 [120/230] Scraping Barbara Nanning...
+   🌐 Loading en: https://artaurea.com/profiles/nanning-barbara-2/
+     → 93 images from en
+   🌐 Loading de: https://artaurea.de/profiles/nanning-barbara-2/
+     → 100 images from de
+   ✅ Found 35 images
+
+👤 [121/230] Scraping Aino Nebel...
+   🌐 Loading en: https://artaurea.com/profiles/nebel-aino-2/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/nebel-aino/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [122/230] Scraping Neo/Craft...
+   🌐 Loading en: https://artaurea.com/profiles/neocraft-2/
+     → 50 images from en
+   🌐 Loading de: https://artaurea.de/profiles/neocraft/
+     → 50 images from de
+   ✅ Found 10 images
+
+👤 [123/230] Scraping neyuQ ceramics / Quyen Mac...
+   🌐 Loading en: https://artaurea.com/profiles/neyuq-ceramics-quyen-mac/
+     → 74 images from en
+   🌐 Loading de: https://artaurea.de/profiles/neyuq-ceramics-quyen-mac/
+     → 74 images from de
+   ✅ Found 14 images
+
+👤 [124/230] Scraping Niessing...
+   🌐 Loading en: https://artaurea.com/profiles/niessing/
+     → 83 images from en
+   🌐 Loading de: https://artaurea.de/profiles/niessing/
+     → 83 images from de
+   ✅ Found 58 images
+
+👤 [125/230] Scraping Niessing Wedding Rings...
+   🌐 Loading en: https://artaurea.com/profiles/niessing-wedding-rings/
+     → 76 images from en
+   ✅ Found 51 images
+
+👤 [126/230] Scraping Kazuko Nishibayashi...
+   🌐 Loading en: https://artaurea.com/profiles/nishibayashi-kazuko/
+     → 98 images from en
+   🌐 Loading de: https://artaurea.de/profiles/nishibayashi-kazuko/
+     → 98 images from de
+   ✅ Found 23 images
+
+👤 [127/230] Scraping Kay Eppi Nölke...
+   🌐 Loading en: https://artaurea.com/profiles/noelke-kay-eppi/
+     → 109 images from en
+   🌐 Loading de: https://artaurea.de/profiles/noelke-kay-eppi/
+     → 109 images from de
+   ✅ Found 35 images
+
+👤 [128/230] Scraping Heide Nonnenmacher...
+   🌐 Loading en: https://artaurea.com/profiles/nonnenmacher-heide-2/
+     → 85 images from en
+   🌐 Loading de: https://artaurea.de/profiles/nonnenmacher-heide/
+     → 85 images from de
+   ✅ Found 15 images
+
+👤 [129/230] Scraping Johanna Otto...
+   🌐 Loading en: https://artaurea.com/profiles/otto-johanna/
+     → 51 images from en
+   🌐 Loading de: https://artaurea.de/profiles/otto-johanna/
+     → 51 images from de
+   ✅ Found 16 images
+
+👤 [130/230] Scraping Gottfried Palatin...
+   🌐 Loading en: https://artaurea.com/profiles/palatin-gottfried/
+     → 49 images from en
+   🌐 Loading de: https://artaurea.de/profiles/palatin-gottfried/
+     → 49 images from de
+   ✅ Found 9 images
+
+👤 [131/230] Scraping Joo Hyung Park...
+   🌐 Loading en: https://artaurea.com/profiles/park-joo-hyung/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/park-joo-hyung/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [132/230] Scraping Noon Passama...
+   🌐 Loading en: https://artaurea.com/profiles/passama-noon/
+     → 21 images from en
+   🌐 Loading de: https://artaurea.de/profiles/passama-noon/
+     → 21 images from de
+   ✅ Found 6 images
+
+👤 [133/230] Scraping Christina Pauls...
+   🌐 Loading en: https://artaurea.com/profiles/pauls-christina/
+     → 78 images from en
+   🌐 Loading de: https://artaurea.de/profiles/pauls-christina/
+     → 78 images from de
+   ✅ Found 18 images
+
+👤 [134/230] Scraping Gitta Pielcke...
+   🌐 Loading en: https://artaurea.com/profiles/pielcke-gitta/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/pielcke-gitta/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [135/230] Scraping Thomas Pildner...
+   🌐 Loading en: https://artaurea.com/profiles/pildner-thomas/
+     → 74 images from en
+   🌐 Loading de: https://artaurea.de/profiles/pildner-thomas/
+     → 74 images from de
+   ✅ Found 14 images
+
+👤 [136/230] Scraping Ulrike Poelk...
+   🌐 Loading en: https://artaurea.com/profiles/poelk-ulrike/
+     → 113 images from en
+   🌐 Loading de: https://artaurea.de/profiles/poelk-ulrike/
+     → 113 images from de
+   ✅ Found 28 images
+
+👤 [137/230] Scraping Martin Potsch...
+   🌐 Loading en: https://artaurea.com/profiles/potsch-martin/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/potsch-martin/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [138/230] Scraping Stefanie Prießnitz...
+   🌐 Loading en: https://artaurea.com/profiles/priessnitz-stefanie/
+     → 103 images from en
+   🌐 Loading de: https://artaurea.de/profiles/priessnitz-stefanie/
+     → 103 images from de
+   ✅ Found 23 images
+
+👤 [139/230] Scraping Ulrike Ramin...
+   🌐 Loading en: https://artaurea.com/profiles/ramin-ulrike/
+     → 88 images from en
+   🌐 Loading de: https://artaurea.de/profiles/ramin-ulrike/
+     → 88 images from de
+   ✅ Found 18 images
+
+👤 [140/230] Scraping Cornelius Réer...
+   🌐 Loading en: https://artaurea.com/profiles/reer-cornelius/
+     → 27 images from en
+   🌐 Loading de: https://artaurea.de/profiles/reer-cornelius/
+     → 27 images from de
+   ✅ Found 12 images
+
+👤 [141/230] Scraping Lotte Reimers...
+   🌐 Loading en: https://artaurea.com/profiles/reimers-lotte-2/
+     → 97 images from en
+   🌐 Loading de: https://artaurea.de/profiles/reimers-lotte/
+     → 97 images from de
+   ✅ Found 22 images
+
+👤 [142/230] Scraping Renate Erlacher...
+   🌐 Loading en: https://artaurea.com/profiles/renate-erlacher/
+     → 91 images from en
+   🌐 Loading de: https://artaurea.de/profiles/erlacher-renate/
+     → 91 images from de
+   ✅ Found 16 images
+
+👤 [143/230] Scraping Vera Rhodius...
+   🌐 Loading en: https://artaurea.com/profiles/rhodius-vera/
+     → 77 images from en
+   🌐 Loading de: https://artaurea.de/profiles/rhodius-vera/
+     → 77 images from de
+   ✅ Found 17 images
+
+👤 [144/230] Scraping Lucie Rie...
+   🌐 Loading en: https://artaurea.com/profiles/rie-lucy-2/
+     → 74 images from en
+   🌐 Loading de: https://artaurea.de/profiles/rie-lucy/
+     → 74 images from de
+   ✅ Found 14 images
+
+👤 [145/230] Scraping Hendrike Roers...
+   🌐 Loading en: https://artaurea.com/profiles/roers-hendrike/
+     → 43 images from en
+   🌐 Loading de: https://artaurea.de/profiles/roers-hendrike/
+     → 43 images from de
+   ✅ Found 8 images
+
+👤 [146/230] Scraping Kristina Rothe...
+   🌐 Loading en: https://artaurea.com/profiles/rothe-kristina/
+     → 33 images from en
+   🌐 Loading de: https://artaurea.de/profiles/rothe-kristina/
+     → 33 images from de
+   ✅ Found 8 images
+
+👤 [147/230] Scraping Jochen Rüth...
+   🌐 Loading en: https://artaurea.com/profiles/rueth-jochen/
+     → 94 images from en
+   🌐 Loading de: https://artaurea.de/profiles/rueth-jochen/
+     → 94 images from de
+   ✅ Found 19 images
+
+👤 [148/230] Scraping Elke Sada...
+   🌐 Loading en: https://artaurea.com/profiles/sada-elke/
+     → 96 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sada-elke/
+     → 96 images from de
+   ✅ Found 26 images
+
+👤 [149/230] Scraping Kathrin Sättele...
+   🌐 Loading en: https://artaurea.com/profiles/saettele-kathrin/
+     → 43 images from en
+   🌐 Loading de: https://artaurea.de/profiles/saettele-kathrin/
+     → 43 images from de
+   ✅ Found 13 images
+
+👤 [150/230] Scraping Sarah Küffer...
+   🌐 Loading en: https://artaurea.com/profiles/sarah-kueffer/
+     → 105 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sarah-kueffer/
+     → 105 images from de
+   ✅ Found 25 images
+
+👤 [151/230] Scraping Nikolay Sardamov...
+   🌐 Loading en: https://artaurea.com/profiles/sardamov-nikolay/
+     → 67 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sardamov-nikolay/
+     → 67 images from de
+   ✅ Found 22 images
+
+👤 [152/230] Scraping Nils Schmalenbach...
+   🌐 Loading en: https://artaurea.com/profiles/schmalenbach-nils/
+     → 79 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schmalenbach-nils-2/
+     → 79 images from de
+   ✅ Found 15 images
+
+👤 [153/230] Scraping Oliver Schmidt...
+   🌐 Loading en: https://artaurea.com/profiles/schmidt-oliver-2/
+     → 129 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schmidt-oliver/
+     → 129 images from de
+   ✅ Found 49 images
+
+👤 [154/230] Scraping Claudia Schoemig...
+   🌐 Loading en: https://artaurea.com/profiles/schoemig-claudia-2/
+     → 80 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schoemig-claudia/
+     → 80 images from de
+   ✅ Found 15 images
+
+👤 [155/230] Scraping Barbara Schulte-Hengesbach...
+   🌐 Loading en: https://artaurea.com/profiles/schulte-hengesbach-barbara/
+     → 67 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schulte-hengesbach-barbara/
+     → 67 images from de
+   ✅ Found 17 images
+
+👤 [156/230] Scraping Freia Schulze...
+   🌐 Loading en: https://artaurea.com/profiles/schulze-freia/
+     → 16 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schulze-freia/
+     → 16 images from de
+   ✅ Found 6 images
+
+👤 [157/230] Scraping Nicole Schuster...
+   🌐 Loading en: https://artaurea.com/profiles/schuster-nicole/
+     → 101 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schuster-nicole/
+     → 101 images from de
+   ✅ Found 26 images
+
+👤 [158/230] Scraping Johanna Schweizer...
+   🌐 Loading en: https://artaurea.com/profiles/schweizer-johanna/
+     → 68 images from en
+   🌐 Loading de: https://artaurea.de/profiles/schweizer-johanna/
+     → 68 images from de
+   ✅ Found 13 images
+
+👤 [159/230] Scraping Scorpiodesign...
+   🌐 Loading en: https://artaurea.com/profiles/scorpiodesign/
+     → 7 images from en
+   🌐 Loading de: https://artaurea.de/profiles/scorpiodesign/
+     → 7 images from de
+   ✅ Found 2 images
+
+👤 [160/230] Scraping Ulrike Scriba...
+   🌐 Loading en: https://artaurea.com/profiles/scriba-ulrike/
+     → 105 images from en
+   🌐 Loading de: https://artaurea.de/profiles/scriba-ulrike/
+     → 105 images from de
+   ✅ Found 20 images
+
+👤 [161/230] Scraping Sebastian Hepp...
+   🌐 Loading en: https://artaurea.com/profiles/sebastian-hepp/
+     → 68 images from en
+   🌐 Loading de: https://artaurea.de/profiles/hepp-sebastian/
+     → 68 images from de
+   ✅ Found 13 images
+
+👤 [162/230] Scraping Hiawatha Seiffert...
+   🌐 Loading en: https://artaurea.com/profiles/seiffert-hiawatha/
+     → 15 images from en
+   🌐 Loading de: https://artaurea.de/profiles/seiffert-hiawatha/
+     → 15 images from de
+   ✅ Found 5 images
+
+👤 [163/230] Scraping Violetta Elisa Seliger...
+   🌐 Loading en: https://artaurea.com/profiles/seliger-violetta-elisa/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/seliger-violetta-elisa/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [164/230] Scraping Sian Design...
+   🌐 Loading en: https://artaurea.com/profiles/sian-design/
+     → 112 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sian-design/
+     → 112 images from de
+   ✅ Found 27 images
+
+👤 [165/230] Scraping Siebörger Handweberei, Anja Ritter...
+   🌐 Loading en: https://artaurea.com/profiles/sieboerger-handweberei-anja-ritter/
+     → 97 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sieboerger-handweberei-anja-ritter/
+     → 97 images from de
+   ✅ Found 17 images
+
+👤 [166/230] Scraping Simply Wear...
+   🌐 Loading en: https://artaurea.com/profiles/simply-wear/
+     → 85 images from en
+   🌐 Loading de: https://artaurea.de/profiles/simply-wear/
+     → 85 images from de
+   ✅ Found 15 images
+
+👤 [167/230] Scraping Bibi Smit...
+   🌐 Loading en: https://artaurea.com/profiles/smit-bibi/
+     → 87 images from en
+   🌐 Loading de: https://artaurea.de/profiles/smit-bibi/
+     → 87 images from de
+   ✅ Found 17 images
+
+👤 [168/230] Scraping Pia Sommerlad...
+   🌐 Loading en: https://artaurea.com/profiles/sommerlad-pia/
+     → 60 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sommerlad-pia/
+     → 60 images from de
+   ✅ Found 15 images
+
+👤 [169/230] Scraping Stefan Prattes, Juustdesign...
+   🌐 Loading en: https://artaurea.com/profiles/stefan-prattes-juustdesign/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/stefan-prattes-juustdesign/
+     → 92 images from de
+   ✅ Found 18 images
+
+👤 [170/230] Scraping Katja Stelz...
+   🌐 Loading en: https://artaurea.com/profiles/stelz-katja/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/stelz-katja/
+     → 116 images from de
+   ✅ Found 22 images
+
+👤 [171/230] Scraping Laurenz Stockner...
+   🌐 Loading en: https://artaurea.com/profiles/stockner-laurenz/
+     → 27 images from en
+   🌐 Loading de: https://artaurea.de/profiles/stockner-laurenz/
+     → 27 images from de
+   ✅ Found 7 images
+
+👤 [172/230] Scraping Eva Strepp...
+   🌐 Loading en: https://artaurea.com/profiles/strepp-eva/
+     → 86 images from en
+   🌐 Loading de: https://artaurea.de/profiles/strepp-eva/
+     → 86 images from de
+   ✅ Found 26 images
+
+👤 [173/230] Scraping Studio Drift...
+   🌐 Loading en: https://artaurea.com/profiles/studio-drift/
+     → 15 images from en
+   🌐 Loading de: https://artaurea.de/profiles/studio-drift/
+     → 15 images from de
+   ✅ Found 5 images
+
+👤 [174/230] Scraping Studio Formafantasma...
+   🌐 Loading en: https://artaurea.com/profiles/studio-formafantasma/
+     → 43 images from en
+   🌐 Loading de: https://artaurea.de/profiles/studio-formafantasma-2/
+     → 37 images from de
+   ✅ Found 8 images
+
+👤 [175/230] Scraping Dagmar Stuehler...
+   🌐 Loading en: https://artaurea.com/profiles/stuehler-dagmar/
+     → 59 images from en
+   ✅ Found 14 images
+
+👤 [176/230] Scraping Elisa Stützle-Siegsmund...
+   🌐 Loading en: https://artaurea.com/profiles/stuetzle-siegsmund-elisa/
+     → 61 images from en
+   🌐 Loading de: https://artaurea.de/profiles/stuetzle-siegsmund-elisa/
+     → 61 images from de
+   ✅ Found 11 images
+
+👤 [177/230] Scraping Anna Sykora...
+   🌐 Loading en: https://artaurea.com/profiles/sykora-anna/
+     → 107 images from en
+   🌐 Loading de: https://artaurea.de/profiles/sykora-anna/
+     → 107 images from de
+   ✅ Found 27 images
+
+👤 [178/230] Scraping Louisa Taylor...
+   🌐 Loading en: https://artaurea.com/profiles/taylor-louisa/
+     → 19 images from en
+   🌐 Loading de: https://artaurea.de/profiles/taylor-louisa/
+     → 19 images from de
+   ✅ Found 4 images
+
+👤 [179/230] Scraping Sven Temper...
+   🌐 Loading en: https://artaurea.com/profiles/temper-sven/
+     → 31 images from en
+   🌐 Loading de: https://artaurea.de/profiles/temper-sven/
+     → 31 images from de
+   ✅ Found 6 images
+
+👤 [180/230] Scraping Jutta Ulland...
+   🌐 Loading en: https://artaurea.com/profiles/ulland-jutta/
+     → 101 images from en
+   🌐 Loading de: https://artaurea.de/profiles/ulland-jutta/
+     → 101 images from de
+   ✅ Found 21 images
+
+👤 [181/230] Scraping Erik Urbschat...
+   🌐 Loading en: https://artaurea.com/profiles/urbschat-erik/
+     → 78 images from en
+   🌐 Loading de: https://artaurea.de/profiles/urbschat-erik/
+     → 78 images from de
+   ✅ Found 28 images
+
+👤 [182/230] Scraping Tora Urup...
+   🌐 Loading en: https://artaurea.com/profiles/urup-tora/
+     → 98 images from en
+   🌐 Loading de: https://artaurea.de/profiles/urup-tora/
+     → 98 images from de
+   ✅ Found 18 images
+
+👤 [183/230] Scraping Evelyn Vanderloock...
+   🌐 Loading en: https://artaurea.com/profiles/vanderloock-evelyn/
+     → 96 images from en
+   🌐 Loading de: https://artaurea.de/profiles/vanderloock-evelyn/
+     → 96 images from de
+   ✅ Found 26 images
+
+👤 [184/230] Scraping Gabi Veit...
+   🌐 Loading en: https://artaurea.com/profiles/veit-gabi-2/
+     → 94 images from en
+   🌐 Loading de: https://artaurea.de/profiles/veit-gabi/
+     → 94 images from de
+   ✅ Found 19 images
+
+👤 [185/230] Scraping Maria Verburg...
+   🌐 Loading en: https://artaurea.com/profiles/verburg-maria/
+     → 85 images from en
+   🌐 Loading de: https://artaurea.de/profiles/verburg-maria/
+     → 85 images from de
+   ✅ Found 15 images
+
+👤 [186/230] Scraping Monika Vesely...
+   🌐 Loading en: https://artaurea.com/profiles/vesely-monika/
+     → 64 images from en
+   🌐 Loading de: https://artaurea.de/profiles/vesely-monika-2/
+     → 64 images from de
+   ✅ Found 16 images
+
+👤 [187/230] Scraping Vickermann & Stoya Bespoke Shoes...
+   🌐 Loading en: https://artaurea.com/profiles/vickermann-stoya/
+     → 92 images from en
+   ✅ Found 17 images
+
+👤 [188/230] Scraping Peter Vogel...
+   🌐 Loading en: https://artaurea.com/profiles/vogel-peter/
+     → 115 images from en
+   🌐 Loading de: https://artaurea.de/profiles/vogel-peter/
+     → 115 images from de
+   ✅ Found 20 images
+
+👤 [189/230] Scraping Asta Volkensfeld...
+   🌐 Loading en: https://artaurea.com/profiles/volkensfeld-asta/
+     → 63 images from en
+   🌐 Loading de: https://artaurea.de/profiles/volkensfeld-asta/
+     → 63 images from de
+   ✅ Found 13 images
+
+👤 [190/230] Scraping Edmund de Waal...
+   🌐 Loading en: https://artaurea.com/profiles/waal-edmund-de/
+     → 56 images from en
+   🌐 Loading de: https://artaurea.de/profiles/waal-edmund-de/
+     → 56 images from de
+   ✅ Found 11 images
+
+👤 [191/230] Scraping Christine Wagner...
+   🌐 Loading en: https://artaurea.com/profiles/wagner-christine/
+     → 46 images from en
+   🌐 Loading de: https://artaurea.de/profiles/wagner-christine/
+     → 46 images from de
+   ✅ Found 11 images
+
+👤 [192/230] Scraping Nicole Walger...
+   🌐 Loading en: https://artaurea.com/profiles/walger-nicole/
+     → 101 images from en
+   🌐 Loading de: https://artaurea.de/profiles/walger-nicole/
+     → 101 images from de
+   ✅ Found 27 images
+
+👤 [193/230] Scraping Hans J. Wegner...
+   🌐 Loading en: https://artaurea.com/profiles/wegner-hans-j/
+     → 45 images from en
+   🌐 Loading de: https://artaurea.de/profiles/wegner-hans-j/
+     → 45 images from de
+   ✅ Found 10 images
+
+👤 [194/230] Scraping w e i s s über den tod hinaus...
+   🌐 Loading en: https://artaurea.com/profiles/weiss-ueber-den-tod-hinaus/
+     → 104 images from en
+   🌐 Loading de: https://artaurea.de/profiles/weiss-ueber-den-tod-hinaus/
+     → 104 images from de
+   ✅ Found 19 images
+
+👤 [195/230] Scraping Dorothee Wenz...
+   🌐 Loading en: https://artaurea.com/profiles/wenz-dorothee/
+     → 87 images from en
+   🌐 Loading de: https://artaurea.de/profiles/wenz-dorothee/
+     → 87 images from de
+   ✅ Found 17 images
+
+👤 [196/230] Scraping Babette Wiezorek...
+   🌐 Loading en: https://artaurea.com/profiles/wiezorek-babette/
+     → 92 images from en
+   🌐 Loading de: https://artaurea.de/profiles/wiezorek-babette/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [197/230] Scraping Tapio Wirkkala...
+   🌐 Loading en: https://artaurea.com/profiles/wirkkala-tapio/
+     → 31 images from en
+   🌐 Loading de: https://artaurea.de/profiles/wirkkala-tapio/
+     → 31 images from de
+   ✅ Found 6 images
+
+👤 [198/230] Scraping Birgit Wortmann...
+   🌐 Loading en: https://artaurea.com/profiles/wortmann-birgit-2/
+     → 55 images from en
+   🌐 Loading de: https://artaurea.de/profiles/wortmann-birgit/
+     → 55 images from de
+   ✅ Found 10 images
+
+👤 [199/230] Scraping Erich Zimmermann...
+   🌐 Loading en: https://artaurea.com/profiles/zimmermann-erich/
+     → 102 images from en
+   🌐 Loading de: https://artaurea.de/profiles/zimmermann-erich/
+     → 102 images from de
+   ✅ Found 42 images
+
+👤 [200/230] Scraping Team...
+   🌐 Loading en: https://artaurea.com/team/
+     → 0 images from en
+   🌐 Loading de: https://artaurea.de/team/
+     → 0 images from de
+   ✅ Found 0 images
+
+👤 [201/230] Scraping Advertising...
+   🌐 Loading en: https://artaurea.com/advertising/
+     → 0 images from en
+   ✅ Found 0 images
+
+👤 [202/230] Scraping Apply for a Profile...
+   🌐 Loading en: https://artaurea.com/apply/
+     → 1 images from en
+   ✅ Found 1 images
+
+👤 [203/230] Scraping Previous...
+   🌐 Loading en: https://artaurea.com/profiles/#full_modalcarousel
+     → 23 images from en
+   🌐 Loading de: https://artaurea.de/profiles/#full_modalcarousel
+     → 23 images from de
+   ✅ Found 37 images
+
+👤 [204/230] Scraping Datenschutz...
+   🌐 Loading de: https://artaurea.de/datenschutz/
+     → 0 images from de
+   ✅ Found 0 images
+
+👤 [205/230] Scraping Profile...
+   🌐 Loading de: https://artaurea.de/profiles/
+     → 23 images from de
+   ✅ Found 21 images
+
+👤 [206/230] Scraping Holz | Papierobjekte...
+   🌐 Loading de: https://artaurea.de/types/holz-papier/
+     → 27 images from de
+   ✅ Found 27 images
+
+👤 [207/230] Scraping Keramikkunst...
+   🌐 Loading de: https://artaurea.de/types/keramik/
+     → 23 images from de
+   ✅ Found 23 images
+
+👤 [208/230] Scraping Schmiedekunst...
+   🌐 Loading de: https://artaurea.de/types/metall/
+     → 23 images from de
+   ✅ Found 23 images
+
+👤 [209/230] Scraping Studioglas...
+   🌐 Loading de: https://artaurea.de/types/glas-gefaesse-tischkultur/
+     → 13 images from de
+   ✅ Found 13 images
+
+👤 [210/230] Scraping Diverse Designobjekte...
+   🌐 Loading de: https://artaurea.de/types/diverse-designobjekte/
+     → 12 images from de
+   ✅ Found 12 images
+
+👤 [211/230] Scraping Leuchten...
+   🌐 Loading de: https://artaurea.de/types/leuchten/
+     → 8 images from de
+   ✅ Found 8 images
+
+👤 [212/230] Scraping Möbel | Objekte...
+   🌐 Loading de: https://artaurea.de/types/moebel-de/
+     → 25 images from de
+   ✅ Found 25 images
+
+👤 [213/230] Scraping Teppiche | Raumtextilien...
+   🌐 Loading de: https://artaurea.de/types/teppiche-raumtextilien/
+     → 16 images from de
+   ✅ Found 16 images
+
+👤 [214/230] Scraping Schmuckdesign...
+   🌐 Loading de: https://artaurea.de/types/schmuckdesign/
+     → 23 images from de
+   ✅ Found 23 images
+
+👤 [215/230] Scraping Schmuckkunst...
+   🌐 Loading de: https://artaurea.de/types/schmuckkunst/
+     → 23 images from de
+   ✅ Found 23 images
+
+👤 [216/230] Scraping Textil | Accessoires...
+   🌐 Loading de: https://artaurea.de/types/textilkunst-accessoires/
+     → 17 images from de
+   ✅ Found 17 images
+
+👤 [217/230] Scraping Kalender...
+   🌐 Loading de: https://artaurea.de/cal/
+     → 1 images from de
+   ✅ Found 1 images
+
+👤 [218/230] Scraping Abonnieren...
+   🌐 Loading de: https://artaurea.de/abonnement/
+     → 300 images from de
+   ✅ Found 60 images
+
+👤 [219/230] Scraping Friedemann Bühler...
+   🌐 Loading de: https://artaurea.de/profiles/buehler-friedemann/
+     → 93 images from de
+   ✅ Found 18 images
+
+👤 [220/230] Scraping Angela Hübel...
+   🌐 Loading de: https://artaurea.de/profiles/huebel-angela/
+     → 130 images from de
+   ✅ Found 50 images
+
+👤 [221/230] Scraping Hanne Bay Lührssen...
+   🌐 Loading de: https://artaurea.de/profiles/luehrssen-hanne-bay/
+     → 56 images from de
+   ✅ Found 11 images
+
+👤 [222/230] Scraping Ulrike Mäder...
+   🌐 Loading de: https://artaurea.de/profiles/maeder-ulrike/
+     → 56 images from de
+   ✅ Found 11 images
+
+👤 [223/230] Scraping Felix Müller...
+   🌐 Loading de: https://artaurea.de/profiles/mueller-felix/
+     → 55 images from de
+   ✅ Found 10 images
+
+👤 [224/230] Scraping Niessing Trauringe...
+   🌐 Loading de: https://artaurea.de/profiles/niessing-trauringe/
+     → 76 images from de
+   ✅ Found 51 images
+
+👤 [225/230] Scraping Dagmar Stühler...
+   🌐 Loading de: https://artaurea.de/profiles/stuehler-dagmar/
+     → 59 images from de
+   ✅ Found 14 images
+
+👤 [226/230] Scraping Andrea Vaggione...
+   🌐 Loading de: https://artaurea.de/profiles/vaggione-andrea/
+     → 100 images from de
+   ✅ Found 30 images
+
+👤 [227/230] Scraping Vickermann & Stoya Maßschuhe...
+   🌐 Loading de: https://artaurea.de/profiles/vickermann-stoya/
+     → 92 images from de
+   ✅ Found 17 images
+
+👤 [228/230] Scraping Philosophie...
+   🌐 Loading de: https://artaurea.de/uber-uns/
+     → 0 images from de
+   ✅ Found 0 images
+
+👤 [229/230] Scraping Werbung...
+   🌐 Loading de: https://artaurea.de/werbung/
+     → 0 images from de
+   ✅ Found 0 images
+
+👤 [230/230] Scraping Bewerbung Profil...
+   🌐 Loading de: https://artaurea.de/profil-bewerben/
+     → 1 images from de
+   ✅ Found 1 images
+
+📊 FINAL SUMMARY:
+   Total profiles found: 230
+   Successfully scraped: 230
+   Total images extracted: 4068
+   Images with full metadata: 0
+
+💾 Saved comprehensive results to profile-artworks-comprehensive-2025-07-10.json

@@ -1,0 +1,219 @@
+{
+  "imported_at": "2025-07-08T08:23:05.494Z",
+  "total_assets": 6949,
+  "media_statistics": {
+    "images": 6818,
+    "documents": 122,
+    "videos": 0,
+    "other": 9,
+    "total": 6949
+  },
+  "file_types": {
+    "jpg": 6647,
+    "pdf": 120,
+    "jpeg": 91,
+    "png": 79,
+    "psd": 2,
+    "gif": 1,
+    "tif": 5,
+    "900-£-1024x6": 1,
+    "docx": 1,
+    "m4a": 1,
+    "doc": 1
+  },
+  "files_with_artist_names": 3272,
+  "sample_artist_files": [
+    {
+      "filename": "Eva-Maisch_Sommerausstellung_Hohl-Koerper-von-Christoph-Leuner-1.jpg",
+      "potential_artists": [
+        "Eva-Maisch",
+        "Hohl-Koerper",
+        "Christoph-Leuner"
+      ],
+      "url": "https://artaurea.com/wp-content/uploads/2025/05/Eva-Maisch_Sommerausstellung_Hohl-Koerper-von-Christoph-Leuner-1.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Antje-Stutz_Eva-Maisch-Sommerausstellung-im-Hofstall.jpg",
+      "potential_artists": [
+        "Antje-Stutz",
+        "Eva-Maisch"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Antje-Stutz_Eva-Maisch-Sommerausstellung-im-Hofstall.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Eva-Maisch_Sommerausstellung_Schmiedekunst_Antje-Dienstbir.jpg",
+      "potential_artists": [
+        "Eva-Maisch",
+        "Antje-Dienstbir"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Eva-Maisch_Sommerausstellung_Schmiedekunst_Antje-Dienstbir.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Eva-Maisch_Sommerausstellung_Ohrhaenger-Peep-trough-von-Katja-Schlegel.jpg",
+      "potential_artists": [
+        "Eva-Maisch",
+        "Ohrhaenger-Peep",
+        "Katja-Schlegel"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Eva-Maisch_Sommerausstellung_Ohrhaenger-Peep-trough-von-Katja-Schlegel.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Eva-Maisch_Sommerausstellung_Hohl-Koerper-von-Christoph-Leuner.jpg",
+      "potential_artists": [
+        "Eva-Maisch",
+        "Hohl-Koerper",
+        "Christoph-Leuner"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Eva-Maisch_Sommerausstellung_Hohl-Koerper-von-Christoph-Leuner.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Eva-Maisch_Sommerausstellung_Brosche-von-Antje-Stutz.jpg",
+      "potential_artists": [
+        "Eva-Maisch",
+        "Antje-Stutz"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Eva-Maisch_Sommerausstellung_Brosche-von-Antje-Stutz.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Vasengruppe-von-Susanne-Petzold_Keramikpreistraegerin-2024_Susanne-Petzold.jpg",
+      "potential_artists": [
+        "Susanne-Petzold",
+        "Susanne-Petzold"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Vasengruppe-von-Susanne-Petzold_Keramikpreistraegerin-2024_Susanne-Petzold.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Diessener-Toepfermarkt_noah-cohen.jpg",
+      "potential_artists": [
+        "Diessener-Toepfermarkt"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Diessener-Toepfermarkt_noah-cohen.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Diessener-Toepfermarkt_Keramikvase-von-Satoko-Kako_Teilnehmerin-in-Diessen-2025_Satoko-Kako.jpg",
+      "potential_artists": [
+        "Diessener-Toepfermarkt",
+        "Satoko-Kako",
+        "Satoko-Kako"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Diessener-Toepfermarkt_Keramikvase-von-Satoko-Kako_Teilnehmerin-in-Diessen-2025_Satoko-Kako.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Diessener-Toepfermarkt_Keramikplastiken-Various-Others_Ayaka-Terajima_Thomas-Splett.jpg",
+      "potential_artists": [
+        "Diessener-Toepfermarkt",
+        "Keramikplastiken-Various",
+        "Ayaka-Terajima",
+        "Thomas-Splett"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Diessener-Toepfermarkt_Keramikplastiken-Various-Others_Ayaka-Terajima_Thomas-Splett.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Art-Aurea_Ausgabe-60_02-2025.jpg",
+      "potential_artists": [
+        "Art-Aurea"
+      ],
+      "url": "https://artaurea.com/wp-content/uploads/2025/05/Art-Aurea_Ausgabe-60_02-2025.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Art-Aurea_Printausgabe_60_02_2025.jpg",
+      "potential_artists": [
+        "Art-Aurea"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Art-Aurea_Printausgabe_60_02_2025.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Schmucksymposium-in-Erfurt_Foto-Dirk-Urban.jpg",
+      "potential_artists": [
+        "Foto-Dirk"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Schmucksymposium-in-Erfurt_Foto-Dirk-Urban.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Curators-Choice-Dorothee-Wenz.jpg",
+      "potential_artists": [
+        "Curators-Choice",
+        "Dorothee-Wenz"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Curators-Choice-Dorothee-Wenz.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Frank-Bruggeman_Art-Aurea-02_2025.jpg",
+      "potential_artists": [
+        "Frank-Bruggeman",
+        "Art-Aurea"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Frank-Bruggeman_Art-Aurea-02_2025.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Zizipho-Poswa_Einzelausstellung-Indyebo-yakwaNtu_Southern-Guild-LA_-Elizabeth-Carababas-and-Southern-Guild.jpg",
+      "potential_artists": [
+        "Zizipho-Poswa",
+        "Einzelausstellung-Indyebo",
+        "Southern-Guild",
+        "Elizabeth-Carababas",
+        "Southern-Guild"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Zizipho-Poswa_Einzelausstellung-Indyebo-yakwaNtu_Southern-Guild-LA_-Elizabeth-Carababas-and-Southern-Guild.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Galerie-Handwerk_Fran-Allison_Werkgruppe-Assorted-Titbits_Foto-Ulrike-Myrzik.jpg",
+      "potential_artists": [
+        "Galerie-Handwerk",
+        "Fran-Allison",
+        "Werkgruppe-Assorted",
+        "Foto-Ulrike"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/05/Galerie-Handwerk_Fran-Allison_Werkgruppe-Assorted-Titbits_Foto-Ulrike-Myrzik.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Rohse-Ring-2014-farbe-sw.jpg",
+      "potential_artists": [
+        "Rohse-Ring"
+      ],
+      "url": "https://artaurea.com/wp-content/uploads/2015/05/Rohse-Ring-2014-farbe-sw.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Werkschule-Oldenburg_Holzbildhauerei-lernen_Werkkunstschule-Oldenburg-1.jpg",
+      "potential_artists": [
+        "Werkschule-Oldenburg",
+        "Werkkunstschule-Oldenburg"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/03/Werkschule-Oldenburg_Holzbildhauerei-lernen_Werkkunstschule-Oldenburg-1.jpg",
+      "type": "image"
+    },
+    {
+      "filename": "Werkschule-Oldenburg_Ute-Naue-Mueller.jpg",
+      "potential_artists": [
+        "Werkschule-Oldenburg",
+        "Ute-Naue"
+      ],
+      "url": "https://artaurea.de/wp-content/uploads/2025/03/Werkschule-Oldenburg_Ute-Naue-Mueller.jpg",
+      "type": "image"
+    }
+  ],
+  "import_instructions": {
+    "step1": "Review media-assets.json to verify data quality",
+    "step2": "Import to Sanity using: sanity dataset import media-assets.ndjson",
+    "step3": "The actual files will need to be downloaded and uploaded to Sanity's CDN",
+    "step4": "Use Sanity's asset upload API to replace URLs with Sanity CDN URLs"
+  }
+}

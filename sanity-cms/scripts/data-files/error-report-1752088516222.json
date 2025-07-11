@@ -1,0 +1,12 @@
+{
+  "error_date": "2025-07-09T19:15:16.222Z",
+  "error_message": "ENOENT: no such file or directory, open 'wordpress-original-media-2025-07-09.json'",
+  "error_stack": "Error: ENOENT: no such file or directory, open 'wordpress-original-media-2025-07-09.json'\n    at Object.readFileSync (node:fs:442:20)\n    at MediaReplacer.uploadWordPressMedia (file:///Users/florian.ludwig/Documents/traits_plugins/sanity-art-aurea/replace-sanity-media.js:157:34)\n    at MediaReplacer.run (file:///Users/florian.ludwig/Documents/traits_plugins/sanity-art-aurea/replace-sanity-media.js:53:18)",
+  "stats_at_failure": {
+    "deleted": 5113,
+    "uploaded": 0,
+    "artworks_created": 0,
+    "failed": []
+  },
+  "backup_available": "sanity-backup-2025-07-09.json"
+}
