@@ -1,9 +1,0 @@
-{
-  "timestamp": "2025-07-08T09:15:26.601Z",
-  "results": {
-    "deleted": 6949,
-    "errors": 0,
-    "total": 6949
-  },
-  "summary": "Deleted 6949 WordPress asset imports from Sanity"
-}

@@ -64,3 +64,14 @@ pids
 wordpress-all-images/
 wordpress-originals/
 wordpress-all-images/
+
+# Exclude large migration data files
+archive/migration-data/
+sanity-migration/
+*-analysis.json
+*-report.json
+*-summary.json
+*-log.json
+*.ndjson
+temp-downloads/
+.sanity/
