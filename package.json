@@ -1,0 +1,14 @@
+{
+  "name": "sanity-art-aurea",
+  "version": "1.0.0",
+  "description": "Art Aurea CMS - Root delegator",
+  "scripts": {
+    "dev": "cd sanity-cms && npm run dev",
+    "start": "cd sanity-cms && npm run dev",
+    "build": "cd sanity-cms && npm run build",
+    "deploy": "cd sanity-cms && npm run deploy"
+  },
+  "keywords": ["sanity", "cms", "art", "jewelry"],
+  "author": "Florian Ludwig",
+  "license": "MIT"
+} 
