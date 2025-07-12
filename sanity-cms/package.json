@@ -19,6 +19,7 @@
     "deploy-graphql": "sanity graphql deploy"
   },
   "dependencies": {
+    "@google-cloud/translate": "^9.2.0",
     "@sanity/dashboard": "^4.1.3",
     "@sanity/table": "^1.1.3",
     "@sanity/vision": "^3.98.0",

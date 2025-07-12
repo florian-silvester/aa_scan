@@ -102,103 +102,28 @@ export default {
       type: 'array',
       of: [{type: 'reference', to: [{type: 'medium'}]}],
       group: 'main',
-      description: 'Specific medium/type (e.g., brooches, vases, rings)'
+      description: 'Type of artwork (e.g., vase, chair, ring, brooch). Use the "+" button to create new medium types.'
     },
     {
       name: 'materials',
       title: 'Materials',
       type: 'array',
       of: [
-        // Option 1: Reference existing materials
         {
           type: 'reference',
-          to: [{type: 'material'}],
-          title: 'Existing Material'
-        },
-        // Option 2: Add inline material
-        {
-          type: 'object',
-          name: 'inlineMaterial',
-          title: 'New Material',
-          fields: [
-            {
-              name: 'name',
-              title: 'Material Name',
-              type: 'object',
-              validation: Rule => Rule.required(),
-              fields: [
-                {
-                  name: 'en',
-                  title: 'English',
-                  type: 'string',
-                  validation: Rule => Rule.required()
-                },
-                {
-                  name: 'de',
-                  title: 'German',
-                  type: 'string',
-                  validation: Rule => Rule.required()
-                }
-              ]
-            },
-            {
-              name: 'materialType',
-              title: 'Material Type',
-              type: 'string',
-              options: {
-                list: [
-                  {title: 'Metals', value: 'metals'},
-                  {title: 'Stones & Minerals', value: 'stones'},
-                  {title: 'Organic', value: 'organic'},
-                  {title: 'Ceramics & Glass', value: 'ceramics'},
-                  {title: 'Textiles', value: 'textiles'},
-                  {title: 'Synthetic', value: 'synthetic'},
-                  {title: 'Treatments', value: 'treatments'},
-                  {title: 'Other', value: 'other'}
-                ]
-              }
-            },
-            {
-              name: 'description',
-              title: 'Description',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'text'},
-                {name: 'de', title: 'German', type: 'text'}
-              ]
-            }
-          ],
-          preview: {
-            select: {
-              nameEn: 'name.en',
-              nameDe: 'name.de',
-              materialType: 'materialType'
-            },
-            prepare({nameEn, nameDe, materialType}) {
-              const title = nameEn || nameDe || 'Untitled Material'
-              const subtitle = materialType ? `Type: ${materialType}` : 'Custom material'
-              return {
-                title,
-                subtitle
-              }
-            }
-          }
+          to: [{type: 'material'}]
         }
       ],
       group: 'details',
       fieldset: 'physical',
-      description: 'Select existing materials or add new ones inline'
+      description: 'Select materials. Use the "+" button to create new materials if needed.'
     },
     {
       name: 'size',
       title: 'Size/Dimensions',
-      type: 'object',
+      type: 'string',
       group: 'details',
-      fieldset: 'physical',
-      fields: [
-        {name: 'en', title: 'English', type: 'string'},
-        {name: 'de', title: 'German', type: 'string'}
-      ]
+      fieldset: 'physical'
     },
     {
       name: 'year',
@@ -210,13 +135,9 @@ export default {
     {
       name: 'price',
       title: 'Price',
-      type: 'object',
+      type: 'string',
       group: 'details',
-      fieldset: 'physical',
-      fields: [
-        {name: 'en', title: 'English', type: 'string'},
-        {name: 'de', title: 'German', type: 'string'}
-      ]
+      fieldset: 'physical'
     },
     {
       name: 'description',

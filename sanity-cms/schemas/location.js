@@ -76,14 +76,16 @@ export default {
     {
       name: 'country',
       title: 'Country',
-      type: 'string',
+      type: 'reference',
+      to: [{type: 'country'}],
       group: 'main',
       validation: Rule => Rule.required()
     },
     {
-      name: 'location',
-      title: 'City/Location',
-      type: 'string',
+      name: 'city',
+      title: 'City',
+      type: 'reference',
+      to: [{type: 'city'}],
       group: 'main',
       validation: Rule => Rule.required()
     },
@@ -172,12 +174,14 @@ export default {
       nameEn: 'name.en',
       nameDe: 'name.de',
       type: 'type',
-      location: 'location',
-      country: 'country',
+      cityEn: 'city.name.en',
+      cityDe: 'city.name.de',
+      countryEn: 'country.name.en',
+      countryDe: 'country.name.de',
       media: 'image'
     },
     prepare(selection) {
-      const { nameEn, nameDe, type, location, country, media } = selection
+      const { nameEn, nameDe, type, cityEn, cityDe, countryEn, countryDe, media } = selection
       
       const title = nameEn || nameDe || 'Untitled Location'
       
@@ -189,7 +193,9 @@ export default {
       }[type] || type
       
       // Create subtitle with location info
-      const locationInfo = [location, country].filter(Boolean).join(', ')
+      const cityName = cityEn || cityDe
+      const countryName = countryEn || countryDe
+      const locationInfo = [cityName, countryName].filter(Boolean).join(', ')
       const subtitle = `${typeDisplay} - ${locationInfo}`
       
       return {

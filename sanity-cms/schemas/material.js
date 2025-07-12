@@ -36,19 +36,9 @@ export default {
     {
       name: 'materialType',
       title: 'Material Type',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Metals', value: 'metals'},
-          {title: 'Stones & Minerals', value: 'stones'},
-          {title: 'Organic', value: 'organic'},
-          {title: 'Ceramics & Glass', value: 'ceramics'},
-          {title: 'Textiles', value: 'textiles'},
-          {title: 'Synthetic', value: 'synthetic'},
-          {title: 'Treatments', value: 'treatments'},
-          {title: 'Other', value: 'other'}
-        ]
-      }
+      type: 'reference',
+      to: [{type: 'materialType'}],
+      description: 'Select a material type. Use the "+" button to create new material types if needed.'
     },
     {
       name: 'description',
@@ -64,11 +54,13 @@ export default {
     select: {
       nameEn: 'name.en',
       nameDe: 'name.de',
-      materialType: 'materialType'
+      materialTypeEn: 'materialType.name.en',
+      materialTypeDe: 'materialType.name.de'
     },
-    prepare({nameEn, nameDe, materialType}) {
+    prepare({nameEn, nameDe, materialTypeEn, materialTypeDe}) {
       const title = nameEn || nameDe || 'Untitled Material'
-      const subtitle = materialType ? `Type: ${materialType}` : undefined
+      const typeName = materialTypeEn || materialTypeDe
+      const subtitle = typeName ? `Type: ${typeName}` : 'No type assigned'
       return {
         title,
         subtitle

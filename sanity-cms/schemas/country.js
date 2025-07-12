@@ -1,14 +1,13 @@
 export default {
-  name: 'medium',
-  title: 'Medium',
+  name: 'country',
+  title: 'Country',
   type: 'document',
   fields: [
     {
       name: 'name',
-      title: 'Medium Name',
+      title: 'Country Name',
       type: 'object',
       validation: Rule => Rule.required(),
-      description: 'e.g., Vase, Chair, Ring, Brooch, Necklace',
       fields: [
         {
           name: 'en',
@@ -25,14 +24,11 @@ export default {
       ]
     },
     {
-      name: 'description',
-      title: 'Description',
-      type: 'object',
-      description: 'Brief description of this medium type',
-      fields: [
-        {name: 'en', title: 'English', type: 'text'},
-        {name: 'de', title: 'German', type: 'text'}
-      ]
+      name: 'code',
+      title: 'Country Code',
+      type: 'string',
+      validation: Rule => Rule.required().length(2),
+      description: 'Two-letter country code (ISO 3166-1 alpha-2)'
     },
     {
       name: 'slug',
@@ -43,25 +39,20 @@ export default {
         maxLength: 96
       },
       validation: Rule => Rule.required()
-    },
-    {
-      name: 'sortOrder',
-      title: 'Sort Order',
-      type: 'number',
-      description: 'Used for ordering in dropdowns (lower numbers appear first)',
-      initialValue: 100
     }
   ],
   preview: {
     select: {
       nameEn: 'name.en',
-      nameDe: 'name.de'
+      nameDe: 'name.de',
+      code: 'code'
     },
-    prepare({nameEn, nameDe}) {
-      const title = nameEn || nameDe || 'Untitled Medium'
+    prepare({nameEn, nameDe, code}) {
+      const title = nameEn || nameDe || 'Untitled Country'
+      const subtitle = code ? `(${code})` : undefined
       return {
         title,
-        subtitle: `Medium: ${title}`
+        subtitle
       }
     }
   }
