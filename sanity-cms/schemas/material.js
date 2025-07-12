@@ -34,8 +34,8 @@ export default {
       validation: Rule => Rule.required()
     },
     {
-      name: 'category',
-      title: 'Material Category',
+      name: 'materialType',
+      title: 'Material Type',
       type: 'string',
       options: {
         list: [
@@ -64,11 +64,11 @@ export default {
     select: {
       nameEn: 'name.en',
       nameDe: 'name.de',
-      category: 'category'
+      materialType: 'materialType'
     },
-    prepare({nameEn, nameDe, category}) {
+    prepare({nameEn, nameDe, materialType}) {
       const title = nameEn || nameDe || 'Untitled Material'
-      const subtitle = category ? `Category: ${category}` : undefined
+      const subtitle = materialType ? `Type: ${materialType}` : undefined
       return {
         title,
         subtitle

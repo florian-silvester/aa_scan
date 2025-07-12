@@ -75,7 +75,7 @@ async function populateMaterials() {
                 slug: {
                     current: slug
                 },
-                category: material.category
+                materialType: material.category
             });
             
             created++;
@@ -101,7 +101,7 @@ async function populateMaterials() {
     const categories = ['metals', 'ceramics', 'stones', 'textiles', 'organic', 'treatments', 'synthetic'];
     
     for (const category of categories) {
-        const categoryMaterials = await sanityClient.fetch(`*[_type == "material" && category == "${category}"][0...3]{name}`);
+        const categoryMaterials = await sanityClient.fetch(`*[_type == "material" && materialType == "${category}"][0...3]{name}`);
         const names = categoryMaterials.map(m => m.name.en).join(', ');
         console.log(`  ${category}: ${names}${categoryMaterials.length > 3 ? '...' : ''}`);
     }

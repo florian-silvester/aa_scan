@@ -39,12 +39,13 @@ export default defineConfig({
                         const client = S.context.getClient({ apiVersion: '2023-01-01' })
 
                         try {
-                          // Fetch all materials with proper name structure
+                          // Fetch all materials with proper name structure and material types
                           const materials = await client.fetch(`
-                            *[_type == "material" && defined(name.en)] | order(name.en asc) {
+                            *[_type == "material" && defined(name.en)] | order(materialType asc, name.en asc) {
                               _id,
                               "nameEn": name.en,
                               "nameDe": name.de,
+                              materialType,
                               slug
                             }
                           `)
@@ -59,43 +60,74 @@ export default defineConfig({
                               ])
                           }
 
-                          // Create material filter items
-                          const materialItems = materials.map(material => 
-                            S.listItem()
-                              .title(material.nameEn || material.nameDe || 'Unnamed Material')
+                          // Group materials by type
+                          const materialTypeMap = new Map()
+                          materials.forEach(material => {
+                            const type = material.materialType || 'other'
+                            if (!materialTypeMap.has(type)) {
+                              materialTypeMap.set(type, [])
+                            }
+                            materialTypeMap.get(type).push(material)
+                          })
+
+                          // Create material type filter items
+                          const materialTypeItems = Array.from(materialTypeMap.entries()).map(([materialType, typeMaterials]) => {
+                            const typeTitle = materialType.charAt(0).toUpperCase() + materialType.slice(1)
+                            
+                            return S.listItem()
+                              .title(`${typeTitle} (${typeMaterials.length})`)
                               .child(
-                                S.documentList()
-                                  .title(`Artworks: ${material.nameEn}`)
-                                  .filter(`
-                                    _type == "artwork" && (
-                                      $materialId in materials[]._ref ||
-                                      $materialNameEn in materials[].name.en ||
-                                      $materialNameDe in materials[].name.de
+                                S.list()
+                                  .title(typeTitle)
+                                  .items([
+                                    S.listItem()
+                                      .title(`All ${typeTitle}`)
+                                      .child(
+                                        S.documentTypeList('material')
+                                          .title(`All ${typeTitle} Materials`)
+                                          .filter('_type == "material" && materialType == $materialType')
+                                          .params({ materialType })
+                                      ),
+                                    S.divider(),
+                                    ...typeMaterials.map(material =>
+                                      S.listItem()
+                                        .title(material.nameEn || material.nameDe || 'Unnamed Material')
+                                        .child(
+                                          S.documentList()
+                                            .title(`Artworks: ${material.nameEn}`)
+                                            .filter(`
+                                              _type == "artwork" && (
+                                                $materialId in materials[]._ref ||
+                                                $materialNameEn in materials[].name.en ||
+                                                $materialNameDe in materials[].name.de
+                                              )
+                                            `)
+                                            .params({ 
+                                              materialId: material._id,
+                                              materialNameEn: material.nameEn,
+                                              materialNameDe: material.nameDe
+                                            })
+                                        )
                                     )
-                                  `)
-                                  .params({ 
-                                    materialId: material._id,
-                                    materialNameEn: material.nameEn,
-                                    materialNameDe: material.nameDe
-                                  })
+                                  ])
                               )
-                          )
+                          })
 
                           return S.list()
                             .title('By Material')
                             .items([
                               S.listItem()
-                                .title('📊 All Materials Overview')
+                                .title('All Materials Overview')
                                 .child(S.documentTypeList('material').title('All Materials')),
                               S.listItem()
-                                .title('🆕 Artworks with Custom Materials')
+                                .title('Artworks with Custom Materials')
                                 .child(
                                   S.documentList()
                                     .title('Custom Materials')
                                     .filter('_type == "artwork" && count(materials[_type == "inlineMaterial"]) > 0')
                                 ),
                               S.divider(),
-                              ...materialItems
+                              ...materialTypeItems
                             ])
 
                         } catch (error) {
@@ -174,7 +206,7 @@ export default defineConfig({
                     
                     // Type filters  
                     S.listItem()
-                      .title('📍 By Type')
+                      .title('By Type')
                       .child(
                         S.list()
                           .title('By Type')
@@ -205,7 +237,7 @@ export default defineConfig({
                     
                     // Dynamic hierarchical country/city filtering 
                     S.listItem()
-                      .title('🌍 By Country')
+                      .title('By Country')
                       .child(async () => {
                         const client = S.context.getClient({ apiVersion: '2023-01-01' })
                         
@@ -242,54 +274,41 @@ export default defineConfig({
                             .replace(/-+/g, '-')          // Remove duplicate hyphens
                         }
                         
-                        // Create country items with city sub-navigation
+                        // Create country items with consistent city sub-navigation
                         const countryItems = Array.from(countriesMap.entries()).map(([country, cities]) => {
                           const cityArray = Array.from(cities).sort()
                           
-                          if (cityArray.length === 1) {
-                            // Single city - direct link
-                            return S.listItem()
-                              .id(`country-${createSafeId(country)}`)
-                              .title(country)
-                              .child(
-                                S.documentTypeList('location')
-                                  .title(country)
-                                  .filter('_type == "location" && country == $country')
-                                  .params({ country })
-                              )
-                          } else {
-                            // Multiple cities - create sub-navigation
-                            return S.listItem()
-                              .id(`country-${createSafeId(country)}`)
-                              .title(country)
-                              .child(
-                                S.list()
-                                  .title(country)
-                                  .items([
+                          // Always show city sub-navigation for consistency
+                          return S.listItem()
+                            .id(`country-${createSafeId(country)}`)
+                            .title(`${country} (${cityArray.length})`)
+                            .child(
+                              S.list()
+                                .title(country)
+                                .items([
+                                  S.listItem()
+                                    .id(`all-${createSafeId(country)}`)
+                                    .title(`All ${country}`)
+                                    .child(
+                                      S.documentTypeList('location')
+                                        .title(`All ${country}`)
+                                        .filter('_type == "location" && country == $country')
+                                        .params({ country })
+                                    ),
+                                  S.divider(),
+                                  ...cityArray.map((city, index) =>
                                     S.listItem()
-                                      .id(`all-${createSafeId(country)}`)
-                                      .title(`All ${country}`)
+                                      .id(`city-${createSafeId(country)}-${createSafeId(city)}-${index}`)
+                                      .title(city)
                                       .child(
                                         S.documentTypeList('location')
-                                          .title(`All ${country}`)
-                                          .filter('_type == "location" && country == $country')
-                                          .params({ country })
-                                      ),
-                                    S.divider(),
-                                    ...cityArray.map((city, index) =>
-                                      S.listItem()
-                                        .id(`city-${createSafeId(country)}-${createSafeId(city)}-${index}`)
-                                        .title(city)
-                                        .child(
-                                          S.documentTypeList('location')
-                                            .title(`${city}, ${country}`)
-                                            .filter('_type == "location" && country == $country && location == $city')
-                                            .params({ country, city })
-                                        )
-                                    )
-                                  ])
-                              )
-                          }
+                                          .title(`${city}, ${country}`)
+                                          .filter('_type == "location" && country == $country && location == $city')
+                                          .params({ country, city })
+                                      )
+                                  )
+                                ])
+                            )
                         })
                         
                         return S.list()

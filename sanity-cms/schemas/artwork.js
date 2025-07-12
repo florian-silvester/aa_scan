@@ -142,8 +142,8 @@ export default {
               ]
             },
             {
-              name: 'category',
-              title: 'Material Category',
+              name: 'materialType',
+              title: 'Material Type',
               type: 'string',
               options: {
                 list: [
@@ -172,11 +172,11 @@ export default {
             select: {
               nameEn: 'name.en',
               nameDe: 'name.de',
-              category: 'category'
+              materialType: 'materialType'
             },
-            prepare({nameEn, nameDe, category}) {
+            prepare({nameEn, nameDe, materialType}) {
               const title = nameEn || nameDe || 'Untitled Material'
-              const subtitle = category ? `Category: ${category}` : 'Custom material'
+              const subtitle = materialType ? `Type: ${materialType}` : 'Custom material'
               return {
                 title,
                 subtitle

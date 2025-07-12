@@ -14,10 +14,10 @@ async function checkMaterials() {
         
         const byCategory = {};
         materials.forEach(material => {
-            if (!byCategory[material.category]) {
-                byCategory[material.category] = [];
-            }
-            byCategory[material.category].push(`${material.name.en} (${material.slug.current})`);
+              if (!byCategory[material.materialType]) {
+    byCategory[material.materialType] = [];
+  }
+  byCategory[material.materialType].push(`${material.name.en} (${material.slug.current})`);
         });
         
         Object.entries(byCategory).forEach(([category, materials]) => {
