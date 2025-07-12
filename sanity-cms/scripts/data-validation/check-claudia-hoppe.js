@@ -1,7 +1,7 @@
 import { sanityClient } from './sanity-client.js';
 
-// Set the token 
-process.env.SANITY_API_TOKEN = 'skPdAnlsUzWniWKV4KK7aywMO3Tb45ZKU1aEEZ4NV7ikUevF5XXbycp8zOQtohAhvwU9MC9OEFlrsB5g2iOxLOseNNFgtPPaUhw41ElWcQ2GU5ZepRsF1K8VPnWApwcO1qExQ8KZTeSzSLJVp4GvcjoWSNxFwtUYtbJK9ksxv7KWwxsb1PJY';
+// SECURITY: Use environment variable for API token
+// Make sure SANITY_API_TOKEN is set in your .env file
 
 async function checkClaudiaHoppe() {
   console.log('🔍 Checking Claudia Hoppe specifically...');

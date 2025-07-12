@@ -1,4 +1,8 @@
 import {createClient} from '@sanity/client'
+import dotenv from 'dotenv'
+
+// Load environment variables
+dotenv.config()
 
 // Sanity client configuration
 export const sanityClient = createClient({

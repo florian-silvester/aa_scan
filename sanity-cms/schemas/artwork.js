@@ -7,7 +7,22 @@ export default {
     {name: 'details', title: 'Details'},
     {name: 'meta', title: 'Metadata'}
   ],
+  fieldsets: [
+    {
+      name: 'physical',
+      title: 'Physical Properties',
+      options: {collapsible: true, collapsed: false}
+    }
+  ],
   fields: [
+    {
+      name: 'name',
+      title: 'Main Title',
+      type: 'string',
+      group: 'main',
+      validation: Rule => Rule.required(),
+      description: 'Main display title in format: Creator_work title'
+    },
     {
       name: 'images',
       title: 'Artwork Images',
@@ -90,20 +105,96 @@ export default {
       description: 'Specific medium/type (e.g., brooches, vases, rings)'
     },
     {
-      name: 'material',
-      title: 'Material',
-      type: 'object',
+      name: 'materials',
+      title: 'Materials',
+      type: 'array',
+      of: [
+        // Option 1: Reference existing materials
+        {
+          type: 'reference',
+          to: [{type: 'material'}],
+          title: 'Existing Material'
+        },
+        // Option 2: Add inline material
+        {
+          type: 'object',
+          name: 'inlineMaterial',
+          title: 'New Material',
+          fields: [
+            {
+              name: 'name',
+              title: 'Material Name',
+              type: 'object',
+              validation: Rule => Rule.required(),
+              fields: [
+                {
+                  name: 'en',
+                  title: 'English',
+                  type: 'string',
+                  validation: Rule => Rule.required()
+                },
+                {
+                  name: 'de',
+                  title: 'German',
+                  type: 'string',
+                  validation: Rule => Rule.required()
+                }
+              ]
+            },
+            {
+              name: 'category',
+              title: 'Material Category',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Metals', value: 'metals'},
+                  {title: 'Stones & Minerals', value: 'stones'},
+                  {title: 'Organic', value: 'organic'},
+                  {title: 'Ceramics & Glass', value: 'ceramics'},
+                  {title: 'Textiles', value: 'textiles'},
+                  {title: 'Synthetic', value: 'synthetic'},
+                  {title: 'Treatments', value: 'treatments'},
+                  {title: 'Other', value: 'other'}
+                ]
+              }
+            },
+            {
+              name: 'description',
+              title: 'Description',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'text'},
+                {name: 'de', title: 'German', type: 'text'}
+              ]
+            }
+          ],
+          preview: {
+            select: {
+              nameEn: 'name.en',
+              nameDe: 'name.de',
+              category: 'category'
+            },
+            prepare({nameEn, nameDe, category}) {
+              const title = nameEn || nameDe || 'Untitled Material'
+              const subtitle = category ? `Category: ${category}` : 'Custom material'
+              return {
+                title,
+                subtitle
+              }
+            }
+          }
+        }
+      ],
       group: 'details',
-      fields: [
-        {name: 'en', title: 'English', type: 'string'},
-        {name: 'de', title: 'German', type: 'string'}
-      ]
+      fieldset: 'physical',
+      description: 'Select existing materials or add new ones inline'
     },
     {
       name: 'size',
       title: 'Size/Dimensions',
       type: 'object',
       group: 'details',
+      fieldset: 'physical',
       fields: [
         {name: 'en', title: 'English', type: 'string'},
         {name: 'de', title: 'German', type: 'string'}
@@ -113,13 +204,15 @@ export default {
       name: 'year',
       title: 'Year',
       type: 'string',
-      group: 'details'
+      group: 'details',
+      fieldset: 'physical'
     },
     {
       name: 'price',
       title: 'Price',
       type: 'object',
       group: 'details',
+      fieldset: 'physical',
       fields: [
         {name: 'en', title: 'English', type: 'string'},
         {name: 'de', title: 'German', type: 'string'}
@@ -135,28 +228,7 @@ export default {
         {name: 'de', title: 'German', type: 'text'}
       ]
     },
-    {
-      name: 'rawCaption',
-      title: 'Raw Caption',
-      type: 'object',
-      group: 'details',
-      description: 'Full original caption text from scraped data',
-      fields: [
-        {name: 'en', title: 'English', type: 'text'},
-        {name: 'de', title: 'German', type: 'text'}
-      ]
-    },
     // Source metadata for tracking scraped data
-    {
-      name: 'sourceUrls',
-      title: 'Source URLs',
-      type: 'object',
-      group: 'meta',
-      fields: [
-        {name: 'en', title: 'English URL', type: 'url'},
-        {name: 'de', title: 'German URL', type: 'url'}
-      ]
-    },
     {
       name: 'originalFilename',
       title: 'Original Filename',
@@ -198,23 +270,28 @@ export default {
   ],
   preview: {
     select: {
+      name: 'name',
       titleEn: 'workTitle.en',
       titleDe: 'workTitle.de',
       creator: 'creator.name',
-      category: 'category.title',
-      materialEn: 'material.en',
-      materialDe: 'material.de',
+      categoryEn: 'category.title.en',
+      categoryDe: 'category.title.de',
+      materials: 'materials',
       year: 'year',
       image: 'images.0.asset',
       media: 'images.0'
     },
-    prepare({titleEn, titleDe, creator, category, materialEn, materialDe, year, image, media}) {
-      const displayTitle = titleEn || titleDe || 'Untitled Artwork'
-      const categoryText = category || 'Unknown category'
-      const materialText = materialEn || materialDe || 'Unknown material'
+    prepare({name, titleEn, titleDe, creator, categoryEn, categoryDe, materials, year, image, media}) {
+      const displayTitle = name || titleEn || titleDe || 'Untitled Artwork'
+      const workTitle = titleEn || titleDe
+      const categoryText = categoryEn || categoryDe || 'Unknown category'
+      const materialText = materials && materials.length > 0 
+        ? `${materials.length} material${materials.length > 1 ? 's' : ''}` 
+        : 'No materials'
       const yearText = year ? ` (${year})` : ''
       const creatorText = creator ? ` by ${creator}` : ''
-      const subtitle = `${categoryText} - ${materialText}${yearText}${creatorText}`
+      const workTitleText = workTitle ? ` - ${workTitle}` : ''
+      const subtitle = `${categoryText} - ${materialText}${yearText}${creatorText}${workTitleText}`
       
       return {
         title: displayTitle,
