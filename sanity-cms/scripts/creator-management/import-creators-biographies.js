@@ -127,8 +127,5 @@ async function importCreators() {
   }
 }
 
-// Set the Sanity token from environment - using new Developer token with CREATE permissions
-process.env.SANITY_API_TOKEN = 'skPdAnlsUzWniWKV4KK7aywMO3Tb45ZKU1aEEZ4NV7ikUevF5XXbycp8zOQtohAhvwU9MC9OEFlrsB5g2iOxLOseNNFgtPPaUhw41ElWcQ2GU5ZepRsF1K8VPnWApwcO1qExQ8KZTeSzSLJVp4GvcjoWSNxFwtUYtbJK9ksxv7KWwxsb1PJY';
-
 // Run the import
 importCreators(); 

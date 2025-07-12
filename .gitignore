@@ -75,3 +75,9 @@ sanity-migration/
 *.ndjson
 temp-downloads/
 .sanity/
+
+# SECURITY: Exclude all credential files
+~/.cursor/
+.cursor/
+mcp.json
+*.env
