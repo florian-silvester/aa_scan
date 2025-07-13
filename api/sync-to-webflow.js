@@ -269,9 +269,9 @@ async function syncCategories() {
   console.log('🏷️ Syncing Categories...')
   
   const sanityData = await sanityClient.fetch(`
-    *[_type == "category"] | order(name.en asc) {
+    *[_type == "category"] | order(title.en asc) {
       _id,
-      name,
+      title,
       description,
       slug
     }
@@ -279,10 +279,12 @@ async function syncCategories() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      name: item.name?.en || item.name?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
-      'title-german': item.name?.de || '',
-      description: item.description?.en || item.description?.de || ''
+      'name-english': item.title?.en || '',
+      'name-german': item.title?.de || '',
+      name: item.title?.en || item.title?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.title?.en || item.title?.de),
+      'description-english': item.description?.en || '',
+      'description-german': item.description?.de || ''
     }
   }))
   
@@ -306,7 +308,7 @@ async function syncLocations() {
     *[_type == "location"] | order(name.en asc) {
       _id,
       name,
-      description,
+      type,
       address,
       city->{name},
       country->{name},
@@ -343,11 +345,11 @@ async function syncCreators() {
   console.log('👨‍🎨 Syncing Creators...')
   
   const sanityData = await sanityClient.fetch(`
-    *[_type == "creator"] | order(name.en asc) {
+    *[_type == "creator"] | order(name asc) {
       _id,
       name,
       biography,
-      description,
+      portrait,
       birthYear,
       nationality,
       category->{_id},
@@ -359,12 +361,12 @@ async function syncCreators() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      name: item.name?.en || item.name?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+      name: item.name || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name),
       'biography-english': item.biography?.en || '',
       'biography-german': item.biography?.de || '',
-      'portrait-english': item.description?.en || '',
-      'portrait-german': item.description?.de || '',
+      'portrait-english': item.portrait?.en || '',
+      'portrait-german': item.portrait?.de || '',
       'birth-year': item.birthYear || null,
       nationality: item.nationality || '',
       category: item.category?._id ? idMappings.category.get(item.category._id) : null,
@@ -390,17 +392,18 @@ async function syncArtworks() {
   console.log('🎨 Syncing Artworks...')
   
   const sanityData = await sanityClient.fetch(`
-    *[_type == "artwork"] | order(name.en asc) {
+    *[_type == "artwork"] | order(name asc) {
       _id,
       name,
+      workTitle,
       description,
       creator->{_id},
-      categories[]->{_id},
+      category->{_id},
       materials[]->{_id},
       medium[]->{_id},
       finishes[]->{_id},
-      dimensions,
-      yearCreated,
+      size,
+      year,
       price,
       slug
     }[0...100]
@@ -408,21 +411,21 @@ async function syncArtworks() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      name: item.name?.en || item.name?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
-      'work-title': item.name?.en || item.name?.de || '',
-      'work-title-english': item.name?.en || '',
-      'work-title-german': item.name?.de || '',
+      name: item.name || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name || item.workTitle?.en),
+      'work-title': item.workTitle?.en || item.workTitle?.de || '',
+      'work-title-english': item.workTitle?.en || '',
+      'work-title-german': item.workTitle?.de || '',
       'description-english': item.description?.en || '',
       'description-german': item.description?.de || '',
       creator: item.creator?._id ? idMappings.creator.get(item.creator._id) : null,
-      category: item.categories?.map(cat => idMappings.category.get(cat._id)).filter(Boolean) || [],
+      category: item.category?._id ? [idMappings.category.get(item.category._id)].filter(Boolean) : [],
       materials: item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || [],
       medium: item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || [],
       finishes: item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || [],
-      'size-dimensions': item.dimensions || '',
-      year: item.yearCreated ? String(item.yearCreated) : '',
-      price: item.price ? String(item.price) : ''
+      'size-dimensions': item.size || '',
+      year: item.year || '',
+      price: item.price || ''
     }
   }))
   
