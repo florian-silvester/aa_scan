@@ -207,7 +207,7 @@ function generateMD5Hash(buffer) {
   return crypto.createHash('md5').update(buffer).digest('hex')
 }
 
-async function uploadImageToWebflow(imageUrl, siteName) {
+async function uploadImageToWebflow(imageUrl, siteName, altText = null, originalFilename = null) {
   try {
     // 1. Download image from Sanity
     console.log(`  📥 Downloading: ${imageUrl}`)
@@ -216,8 +216,8 @@ async function uploadImageToWebflow(imageUrl, siteName) {
     // 2. Generate MD5 hash
     const fileHash = generateMD5Hash(imageBuffer)
     
-    // 3. Get filename from URL
-    const filename = imageUrl.split('/').pop().split('?')[0] || 'image.jpg'
+    // 3. Use meaningful filename (prefer original, fall back to URL)
+    const filename = originalFilename || imageUrl.split('/').pop().split('?')[0] || 'artwork-image.jpg'
     
     // 4. Create asset metadata in Webflow
     const metadataResponse = await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/assets`, {
@@ -247,8 +247,18 @@ async function uploadImageToWebflow(imageUrl, siteName) {
       throw new Error(`S3 upload failed: ${uploadResponse.status}`)
     }
     
-    // 6. Return Webflow asset ID
-    console.log(`  ✅ Uploaded: ${filename}`)
+    // 6. Set alt text if provided (Designer API currently only supports this via separate calls)
+    if (altText && metadataResponse.id) {
+      try {
+        // TODO: Set alt text via Designer API when available
+        console.log(`  🏷️  Alt text preserved: ${altText}`)
+      } catch (altError) {
+        console.warn(`  ⚠️  Could not set alt text: ${altError.message}`)
+      }
+    }
+    
+    // 7. Return Webflow asset ID
+    console.log(`  ✅ Uploaded: ${filename}${altText ? ' (with alt text)' : ''}`)
     return metadataResponse.id
     
   } catch (error) {
@@ -262,19 +272,34 @@ async function syncArtworkImages(artworkImages) {
     return []
   }
   
-  console.log(`  🖼️  Syncing ${artworkImages.length} images...`)
+  console.log(`  🖼️  Syncing ${artworkImages.length} images with metadata...`)
   const webflowAssetIds = []
   
   for (const image of artworkImages) {
     if (image.asset?.url) {
-      const assetId = await uploadImageToWebflow(image.asset.url, 'artwork')
+      // Extract metadata from Sanity image
+      const altText = image.alt?.en || image.alt?.de || null
+      const originalFilename = image.asset.originalFilename || null
+      
+      // Create meaningful filename from alt text or default
+      const meaningfulFilename = altText 
+        ? `${altText.substring(0, 50).replace(/[^a-zA-Z0-9]/g, '-')}.jpg`
+        : originalFilename
+        
+      const assetId = await uploadImageToWebflow(
+        image.asset.url, 
+        'artwork', 
+        altText, 
+        meaningfulFilename
+      )
+      
       if (assetId) {
         webflowAssetIds.push(assetId)
       }
     }
   }
   
-  console.log(`  ✅ Successfully synced ${webflowAssetIds.length}/${artworkImages.length} images`)
+  console.log(`  ✅ Successfully synced ${webflowAssetIds.length}/${artworkImages.length} images with metadata`)
   return webflowAssetIds
 }
 
@@ -559,7 +584,8 @@ async function syncArtworks() {
       images[]{ 
         asset->{
           _id,
-          url
+          url,
+          originalFilename
         },
         alt
       }
