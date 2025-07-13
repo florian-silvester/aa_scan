@@ -307,7 +307,12 @@ async function syncCategories() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapCategoryFields(item)
+      name: item.title?.en || item.title?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.title?.en || item.title?.de),
+      'name-english': item.title?.en || '',
+      'name-german': item.title?.de || '',
+      'description-english': item.description?.en || '',
+      'description-german': item.description?.de || ''
     }
   }))
   
@@ -330,13 +335,36 @@ async function syncLocations() {
     *[_type == "location"] | order(name.en asc) {
       _id,
       name,
+      type,
+      address,
+      city->{name.en, name.de},
+      country->{name.en, name.de},
+      website,
+      times,
+      phone,
+      email,
+      description,
       slug
     }
   `)
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapLocationFields(item)
+      name: item.name?.en || item.name?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+      'name-english': item.name?.en || '',
+      'name-german': item.name?.de || '',
+      'description-english': item.description?.en || '',
+      'description-german': item.description?.de || '',
+      'location-type': item.type || '',
+      address: item.address || '',
+      'city-location': item.city?.name?.en || item.city?.name?.de || '',
+      country: item.country?.name?.en || item.country?.name?.de || '',
+      website: item.website || '',
+      'opening-times-english': item.times?.en || '',
+      'opening-times-german': item.times?.de || '',
+      phone: item.phone || '',
+      email: item.email || ''
     }
   }))
   
@@ -361,119 +389,9 @@ async function syncCreators() {
       name,
       biography,
       portrait,
-      slug
-    }
-  `)
-  
-  const webflowItems = sanityData.map(item => ({
-    fieldData: {
-      ...mapCreatorFields(item)
-    }
-  }))
-  
-  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.creator, webflowItems)
-  
-  // Store mappings
-  results.forEach((webflowItem, index) => {
-    const sanityItem = sanityData[index]
-    idMappings.creator.set(sanityItem._id, webflowItem.id)
-  })
-  
-  console.log(`✅ Creators: ${results.length} created`)
-  return results.length
-}
-
-// PHASE 5: Sync Categories
-async function syncCategories() {
-  console.log('🏷️ Syncing Categories...')
-  
-  const sanityData = await sanityClient.fetch(`
-    *[_type == "category"] | order(title.en asc) {
-      _id,
-      title,
-      description,
-      slug
-    }
-  `)
-  
-  const webflowItems = sanityData.map(item => ({
-    fieldData: {
-      'name-english': item.title?.en || '',
-      'name-german': item.title?.de || '',
-      name: item.title?.en || item.title?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.title?.en || item.title?.de),
-      'description-english': item.description?.en || '',
-      'description-german': item.description?.de || ''
-    }
-  }))
-  
-  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.category, webflowItems)
-  
-  // Store mappings
-  results.forEach((webflowItem, index) => {
-    const sanityItem = sanityData[index]
-    idMappings.category.set(sanityItem._id, webflowItem.id)
-  })
-  
-  console.log(`✅ Categories: ${results.length} created`)
-  return results.length
-}
-
-// PHASE 6: Sync Locations
-async function syncLocations() {
-  console.log('📍 Syncing Locations...')
-  
-  const sanityData = await sanityClient.fetch(`
-    *[_type == "location"] | order(name.en asc) {
-      _id,
-      name,
-      type,
-      address,
-      city->{name},
-      country->{name},
-      website,
-      slug
-    }
-  `)
-  
-  const webflowItems = sanityData.map(item => ({
-    fieldData: {
-      name: item.name?.en || item.name?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
-      address: item.address || '',
-      'city-location': item.city?.name?.en || item.city?.name?.de || '',
-      country: item.country?.name?.en || item.country?.name?.de || '',
-      website: item.website || ''
-    }
-  }))
-  
-  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.location, webflowItems)
-  
-  // Store mappings
-  results.forEach((webflowItem, index) => {
-    const sanityItem = sanityData[index]
-    idMappings.location.set(sanityItem._id, webflowItem.id)
-  })
-  
-  console.log(`✅ Locations: ${results.length} created`)
-  return results.length
-}
-
-// PHASE 7: Sync Creators
-async function syncCreators() {
-  console.log('👨‍🎨 Syncing Creators...')
-  
-  const sanityData = await sanityClient.fetch(`
-    *[_type == "creator"] | order(name asc) {
-      _id,
-      name,
-      biography,
-      portrait,
-      birthYear,
       nationality,
-      category->{_id},
-      website,
-      email,
+      specialties,
+      galleryImages,
       slug
     }
   `)
@@ -486,11 +404,10 @@ async function syncCreators() {
       'biography-german': item.biography?.de || '',
       'portrait-english': item.portrait?.en || '',
       'portrait-german': item.portrait?.de || '',
-      'birth-year': item.birthYear || null,
-      nationality: item.nationality || '',
-      category: item.category?._id ? idMappings.category.get(item.category._id) : null,
-      website: item.website || '',
-      email: item.email || ''
+      'nationality-english': item.nationality?.en || '',
+      'nationality-german': item.nationality?.de || '',
+      'specialties-english': item.specialties?.en || '',
+      'specialties-german': item.specialties?.de || ''
     }
   }))
   
