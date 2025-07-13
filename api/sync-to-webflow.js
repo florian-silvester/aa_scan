@@ -32,20 +32,53 @@ const idMappings = {
   creator: new Map()
 }
 
-// Helper functions
-function mapBilingualName(sanityItem) {
+// Collection-specific mapping functions
+function mapMaterialTypeFields(sanityItem) {
   return {
     'name-english': sanityItem.name?.en || '',
     'name-german': sanityItem.name?.de || '',
+    'description-english': sanityItem.description?.en || '',
+    'description-german': sanityItem.description?.de || '',
     name: sanityItem.name?.en || sanityItem.name?.de || 'Untitled',
     slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
   }
 }
 
-function mapBilingualDescription(sanityItem) {
+function mapCategoryFields(sanityItem) {
   return {
+    'title-german': sanityItem.title?.de || '',
+    description: sanityItem.description?.en || sanityItem.description?.de || '',
+    name: sanityItem.title?.en || sanityItem.title?.de || 'Untitled',
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.title?.en || sanityItem.title?.de)
+  }
+}
+
+function mapCreatorFields(sanityItem) {
+  return {
+    'biography-english': sanityItem.biography?.en || '',
+    'biography-german': sanityItem.biography?.de || '',
+    'portrait-english': sanityItem.portrait?.en || '',
+    'portrait-german': sanityItem.portrait?.de || '',
+    name: sanityItem.name || 'Untitled',
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.name)
+  }
+}
+
+function mapLocationFields(sanityItem) {
+  return {
+    name: sanityItem.name?.en || sanityItem.name?.de || 'Untitled',
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
+  }
+}
+
+function mapMediumFinishFields(sanityItem) {
+  return {
+    'name-english': sanityItem.name?.en || '',
+    'name-german': sanityItem.name?.de || '',
     'description-english': sanityItem.description?.en || '',
-    'description-german': sanityItem.description?.de || ''
+    'description-german': sanityItem.description?.de || '',
+    name: sanityItem.name?.en || sanityItem.name?.de || 'Untitled',
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
   }
 }
 
@@ -147,8 +180,7 @@ async function syncMaterialTypes() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item),
+      ...mapMaterialTypeFields(item),
       'sort-order': item.sortOrder || 0
     }
   }))
@@ -181,8 +213,7 @@ async function syncFinishes() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item)
+      ...mapMediumFinishFields(item)
     }
   }))
   
@@ -214,8 +245,7 @@ async function syncMaterials() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item),
+      ...mapMediumFinishFields(item),
       'material-type': item.materialType?._id ? idMappings.materialType.get(item.materialType._id) : null
     }
   }))
@@ -247,8 +277,7 @@ async function syncMediums() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item)
+      ...mapMediumFinishFields(item)
     }
   }))
   
@@ -261,6 +290,96 @@ async function syncMediums() {
   })
   
   console.log(`✅ Mediums: ${results.length} created`)
+  return results.length
+}
+
+async function syncCategories() {
+  console.log('📂 Syncing Categories...')
+  
+  const sanityData = await sanityClient.fetch(`
+    *[_type == "category"] | order(title.en asc) {
+      _id,
+      title,
+      description,
+      slug
+    }
+  `)
+  
+  const webflowItems = sanityData.map(item => ({
+    fieldData: {
+      ...mapCategoryFields(item)
+    }
+  }))
+  
+  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.category, webflowItems)
+  
+  // Store mappings
+  results.forEach((webflowItem, index) => {
+    const sanityItem = sanityData[index]
+    idMappings.category.set(sanityItem._id, webflowItem.id)
+  })
+  
+  console.log(`✅ Categories: ${results.length} created`)
+  return results.length
+}
+
+async function syncLocations() {
+  console.log('📍 Syncing Locations...')
+  
+  const sanityData = await sanityClient.fetch(`
+    *[_type == "location"] | order(name.en asc) {
+      _id,
+      name,
+      slug
+    }
+  `)
+  
+  const webflowItems = sanityData.map(item => ({
+    fieldData: {
+      ...mapLocationFields(item)
+    }
+  }))
+  
+  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.location, webflowItems)
+  
+  // Store mappings
+  results.forEach((webflowItem, index) => {
+    const sanityItem = sanityData[index]
+    idMappings.location.set(sanityItem._id, webflowItem.id)
+  })
+  
+  console.log(`✅ Locations: ${results.length} created`)
+  return results.length
+}
+
+async function syncCreators() {
+  console.log('👤 Syncing Creators...')
+  
+  const sanityData = await sanityClient.fetch(`
+    *[_type == "creator"] | order(name asc) {
+      _id,
+      name,
+      biography,
+      portrait,
+      slug
+    }
+  `)
+  
+  const webflowItems = sanityData.map(item => ({
+    fieldData: {
+      ...mapCreatorFields(item)
+    }
+  }))
+  
+  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.creator, webflowItems)
+  
+  // Store mappings
+  results.forEach((webflowItem, index) => {
+    const sanityItem = sanityData[index]
+    idMappings.creator.set(sanityItem._id, webflowItem.id)
+  })
+  
+  console.log(`✅ Creators: ${results.length} created`)
   return results.length
 }
 
