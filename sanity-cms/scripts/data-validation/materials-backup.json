@@ -1,0 +1,516 @@
+{
+  "timestamp": "2025-07-12T13:05:04.156Z",
+  "count": 34,
+  "materials": [
+    {
+      "_createdAt": "2025-07-12T06:50:06Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkrEB",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:06Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Acryl",
+        "en": "Acrylic"
+      },
+      "slug": {
+        "current": "acrylic"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:40Z",
+      "_id": "MnHq3gipaho0Iv07wqTB5C",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:40Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Messing",
+        "en": "Brass"
+      },
+      "slug": {
+        "current": "brass"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:38Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkp7X",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:38Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Bronze",
+        "en": "Bronze"
+      },
+      "slug": {
+        "current": "bronze"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:43Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFueo",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:43Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Keramik",
+        "en": "Ceramic"
+      },
+      "slug": {
+        "current": "ceramic"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:44Z",
+      "_id": "MnHq3gipaho0Iv07wqTBKR",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:44Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Ton",
+        "en": "Clay"
+      },
+      "slug": {
+        "current": "clay"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:37Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFuCw",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:37Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Kupfer",
+        "en": "Copper"
+      },
+      "slug": {
+        "current": "copper"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:49Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkpkj",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:49Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Koralle",
+        "en": "Coral"
+      },
+      "slug": {
+        "current": "coral"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:58Z",
+      "_id": "MnHq3gipaho0Iv07wqTCJP",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:58Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Cordovan-Leder",
+        "en": "Cordovan Leather"
+      },
+      "slug": {
+        "current": "cordovan-leather"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:53Z",
+      "_id": "MnHq3gipaho0Iv07wqTC4A",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:53Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Baumwolle",
+        "en": "Cotton"
+      },
+      "slug": {
+        "current": "cotton"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:45Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkpXf",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:45Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Kristall",
+        "en": "Crystal"
+      },
+      "slug": {
+        "current": "crystal"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:46Z",
+      "_id": "MnHq3gipaho0Iv07wqTBZg",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:46Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Diamant",
+        "en": "Diamond"
+      },
+      "slug": {
+        "current": "diamond"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:04Z",
+      "_id": "MnHq3gipaho0Iv07wqTDIN",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:04Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Email",
+        "en": "Enamel"
+      },
+      "slug": {
+        "current": "enamel"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:42Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFuQs",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:42Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Glas",
+        "en": "Glass"
+      },
+      "slug": {
+        "current": "glass"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:35Z",
+      "_id": "MnHq3gipaho0Iv07wqTAai",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:35Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Gold",
+        "en": "Gold"
+      },
+      "slug": {
+        "current": "gold"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:50Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFv6g",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:50Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Labradorith",
+        "en": "Labradorite"
+      },
+      "slug": {
+        "current": "labradorite"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:03Z",
+      "_id": "MnHq3gipaho0Iv07wqTD38",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:03Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Lack",
+        "en": "Lacquer"
+      },
+      "slug": {
+        "current": "lacquer"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:57Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkqNv",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:57Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Leder",
+        "en": "Leather"
+      },
+      "slug": {
+        "current": "leather"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:59Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkqaz",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:59Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Eiche",
+        "en": "Oak"
+      },
+      "slug": {
+        "current": "oak"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:01Z",
+      "_id": "MnHq3gipaho0Iv07wqTCYe",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:01Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Oxidiert",
+        "en": "Oxidized"
+      },
+      "slug": {
+        "current": "oxidized"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:00Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkqo3",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:00Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Papier",
+        "en": "Paper"
+      },
+      "slug": {
+        "current": "paper"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:47Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFusk",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:47Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Perle",
+        "en": "Pearl"
+      },
+      "slug": {
+        "current": "pearl"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:05Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkr17",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:05Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Kunststoff",
+        "en": "Plastic"
+      },
+      "slug": {
+        "current": "plastic"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:36Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkouT",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:36Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Platin",
+        "en": "Platinum"
+      },
+      "slug": {
+        "current": "platinum"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:41Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkpKb",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:41Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Porzellan",
+        "en": "Porcelain"
+      },
+      "slug": {
+        "current": "porcelain"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:07Z",
+      "_id": "MnHq3gipaho0Iv07wqTDXc",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:07Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Harz",
+        "en": "Resin"
+      },
+      "slug": {
+        "current": "resin"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:50:02Z",
+      "_id": "MnHq3gipaho0Iv07wqTCnt",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:50:02Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Rhodiniert",
+        "en": "Rhodium-plated"
+      },
+      "slug": {
+        "current": "rhodium-plated"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:52Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkpxn",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:52Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Seide",
+        "en": "Silk"
+      },
+      "slug": {
+        "current": "silk"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:34Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkohP",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:34Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Silber",
+        "en": "Silver"
+      },
+      "slug": {
+        "current": "silver"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:39Z",
+      "_id": "MnHq3gipaho0Iv07wqTApx",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:39Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Stahl",
+        "en": "Steel"
+      },
+      "slug": {
+        "current": "steel"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:48Z",
+      "_id": "MnHq3gipaho0Iv07wqTBov",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:48Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Stein",
+        "en": "Stone"
+      },
+      "slug": {
+        "current": "stone"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:56Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFvmU",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:56Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Holz",
+        "en": "Wood"
+      },
+      "slug": {
+        "current": "wood"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:54Z",
+      "_id": "hEWOpVV05Nk2Wkv6vNkqAr",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:54Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Wolle",
+        "en": "Wool"
+      },
+      "slug": {
+        "current": "wool"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:55Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFvYY",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:55Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Garn",
+        "en": "Yarn"
+      },
+      "slug": {
+        "current": "yarn"
+      }
+    },
+    {
+      "_createdAt": "2025-07-12T06:49:51Z",
+      "_id": "5Nnn2PqcEKG4dqRP9mFvKc",
+      "_type": "material",
+      "_updatedAt": "2025-07-12T06:49:51Z",
+      "description": null,
+      "materialType": null,
+      "name": {
+        "de": "Zirkonia",
+        "en": "Zirconia"
+      },
+      "slug": {
+        "current": "zirconia"
+      }
+    }
+  ]
+}

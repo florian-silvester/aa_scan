@@ -1,0 +1,57 @@
+{"_type":"material","name":{"en":"Gold","de":"Gold"},"slug":{"_type":"slug","current":"gold"}}
+{"_type":"material","name":{"en":"Silver","de":"Silber"},"slug":{"_type":"slug","current":"silver"}}
+{"_type":"material","name":{"en":"Silver","de":"Silber"},"slug":{"_type":"slug","current":"silber"}}
+{"_type":"material","name":{"en":"Glass","de":"Glas"},"slug":{"_type":"slug","current":"glass"}}
+{"_type":"material","name":{"en":"Glass","de":"Glas"},"slug":{"_type":"slug","current":"glas"}}
+{"_type":"material","name":{"en":"Ceramic","de":"Keramik"},"slug":{"_type":"slug","current":"ceramic"}}
+{"_type":"material","name":{"en":"Ceramic","de":"Keramik"},"slug":{"_type":"slug","current":"keramik"}}
+{"_type":"material","name":{"en":"Porcelain","de":"Porzellan"},"slug":{"_type":"slug","current":"porcelain"}}
+{"_type":"material","name":{"en":"Porcelain","de":"Porzellan"},"slug":{"_type":"slug","current":"porzellan"}}
+{"_type":"material","name":{"en":"Steel","de":"Stahl"},"slug":{"_type":"slug","current":"steel"}}
+{"_type":"material","name":{"en":"Stainless Steel","de":"Edelstahl"},"slug":{"_type":"slug","current":"edelstahl"}}
+{"_type":"material","name":{"en":"Stainless Steel","de":"Edelstahl"},"slug":{"_type":"slug","current":"stainless-steel"}}
+{"_type":"material","name":{"en":"Copper","de":"Kupfer"},"slug":{"_type":"slug","current":"copper"}}
+{"_type":"material","name":{"en":"Copper","de":"Kupfer"},"slug":{"_type":"slug","current":"kupfer"}}
+{"_type":"material","name":{"en":"Textile","de":"Textil"},"slug":{"_type":"slug","current":"textile"}}
+{"_type":"material","name":{"en":"Textile","de":"Textil"},"slug":{"_type":"slug","current":"textil"}}
+{"_type":"material","name":{"en":"Silk","de":"Seide"},"slug":{"_type":"slug","current":"silk"}}
+{"_type":"material","name":{"en":"Silk","de":"Seide"},"slug":{"_type":"slug","current":"seide"}}
+{"_type":"material","name":{"en":"Paper","de":"Papier"},"slug":{"_type":"slug","current":"paper"}}
+{"_type":"material","name":{"en":"Paper","de":"Papier"},"slug":{"_type":"slug","current":"papier"}}
+{"_type":"material","name":{"en":"Metal","de":"Metal"},"slug":{"_type":"slug","current":"metal"}}
+{"_type":"material","name":{"en":"Bronze","de":"Bronze"},"slug":{"_type":"slug","current":"bronze"}}
+{"_type":"material","name":{"en":"Clay","de":"Ton"},"slug":{"_type":"slug","current":"clay"}}
+{"_type":"material","name":{"en":"Clay","de":"Ton"},"slug":{"_type":"slug","current":"ton"}}
+{"_type":"material","name":{"en":"Wool","de":"Wolle"},"slug":{"_type":"slug","current":"wool"}}
+{"_type":"material","name":{"en":"Platinum","de":"Platin"},"slug":{"_type":"slug","current":"platinum"}}
+{"_type":"material","name":{"en":"Cotton","de":"Baumwolle"},"slug":{"_type":"slug","current":"cotton"}}
+{"_type":"material","name":{"en":"Terra","de":"Terra"},"slug":{"_type":"slug","current":"terra"}}
+{"_type":"material","name":{"en":"Glaze","de":"Glaze"},"slug":{"_type":"slug","current":"glaze"}}
+{"_type":"material","name":{"en":"Engobe","de":"Engobe"},"slug":{"_type":"slug","current":"engobe"}}
+{"_type":"material","name":{"en":"Pearls","de":"Perlen"},"slug":{"_type":"slug","current":"pearls"}}
+{"_type":"material","name":{"en":"Diamonds","de":"Diamanten"},"slug":{"_type":"slug","current":"diamonds"}}
+{"_type":"material","name":{"en":"Stoneware","de":"Steinzeug"},"slug":{"_type":"slug","current":"stoneware"}}
+{"_type":"material","name":{"en":"Studio Glass","de":"Studioglas"},"slug":{"_type":"slug","current":"studioglas"}}
+{"_type":"material","name":{"en":"Yellow","de":"Yellow"},"slug":{"_type":"slug","current":"yellow"}}
+{"_type":"material","name":{"en":"White","de":"White"},"slug":{"_type":"slug","current":"white"}}
+{"_type":"material","name":{"en":"Black","de":"Black"},"slug":{"_type":"slug","current":"black"}}
+{"_type":"material","name":{"en":"Rose","de":"Rose"},"slug":{"_type":"slug","current":"rose"}}
+{"_type":"material","name":{"en":"Fine","de":"Fine"},"slug":{"_type":"slug","current":"fine"}}
+{"_type":"material","name":{"en":"Geschwärzt","de":"Geschwärzt"},"slug":{"_type":"slug","current":"geschwärzt"}}
+{"_type":"material","name":{"en":"Blackened","de":"Blackened"},"slug":{"_type":"slug","current":"blackened"}}
+{"_type":"material","name":{"en":"Plattiert","de":"Plattiert"},"slug":{"_type":"slug","current":"plattiert"}}
+{"_type":"material","name":{"en":"Plated","de":"Plated"},"slug":{"_type":"slug","current":"plated"}}
+{"_type":"material","name":{"en":"Gold 750","de":"Gold 750"},"slug":{"_type":"slug","current":"gold-750"}}
+{"_type":"material","name":{"en":"Silber 925","de":"Silber 925"},"slug":{"_type":"slug","current":"silber-925"}}
+{"_type":"material","name":{"en":"925 silver","de":"925 silver"},"slug":{"_type":"slug","current":"925-silver"}}
+{"_type":"material","name":{"en":"Silver 925","de":"Silver 925"},"slug":{"_type":"slug","current":"silver-925"}}
+{"_type":"material","name":{"en":"750 gold","de":"750 gold"},"slug":{"_type":"slug","current":"750-gold"}}
+{"_type":"material","name":{"en":"Yellow gold","de":"Yellow gold"},"slug":{"_type":"slug","current":"yellow-gold"}}
+{"_type":"material","name":{"en":"Gelbgold","de":"Gelbgold"},"slug":{"_type":"slug","current":"gelbgold"}}
+{"_type":"material","name":{"en":"Fine gold","de":"Fine gold"},"slug":{"_type":"slug","current":"fine-gold"}}
+{"_type":"material","name":{"en":"Feingold","de":"Feingold"},"slug":{"_type":"slug","current":"feingold"}}
+{"_type":"material","name":{"en":"Rose gold","de":"Rose gold"},"slug":{"_type":"slug","current":"rose-gold"}}
+{"_type":"material","name":{"en":"Gold plated","de":"Gold plated"},"slug":{"_type":"slug","current":"gold-plated"}}
+{"_type":"material","name":{"en":"750 yellow gold","de":"750 yellow gold"},"slug":{"_type":"slug","current":"750-yellow-gold"}}
+{"_type":"material","name":{"en":"750 yellow","de":"750 yellow"},"slug":{"_type":"slug","current":"750-yellow"}}
+{"_type":"material","name":{"en":"Gelbgold 750","de":"Gelbgold 750"},"slug":{"_type":"slug","current":"gelbgold-750"}}

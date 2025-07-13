@@ -1,0 +1,1255 @@
+LANGUAGE MISMATCH ANALYSIS REPORT
+Generated: 2025-07-12T09:36:53.499Z
+==============================================
+
+SUMMARY:
+Total artworks analyzed: 1354
+Identical texts: 211
+Language mismatches: 64
+Suspicious similarities: 118
+
+1. [IDENTICAL] Friedemann Buehler - Friedemann Buehler_Untitled
+   ID: 5Nnn2PqcEKG4dqRP9jBhUY
+   Issue: English and German text are identical
+   EN: "Bowl. Colored ash wood, brushed and sandblasted, 61×60 cm"
+   DE: "Schale. Gefärbtes Eschenholz, gebürstet und sandgestrahlt, 61×60 cm"
+   **TRANSLATION ADDED**
+
+2. [IDENTICAL] Friedemann Buehler - Friedemann Buehler_Vessel
+   ID: 5Nnn2PqcEKG4dqRP9jBhZC
+   Issue: English and German text are identical
+   EN: "Vessel. Blackened oak wood, brushed and sandblasted, 34.5×33 cm"
+   DE: "Gefäß. Geschwärztes Eichenholz, gebürstet und sandgestrahlt, 34.5×33 cm"
+   **TRANSLATION ADDED**
+
+3. [IDENTICAL] Friedemann Buehler - Friedemann Buehler_Vessel WL/18, 2013
+   ID: 5Nnn2PqcEKG4dqRP9jBhdq
+   Issue: English and German text are identical
+   EN: "Vessel <i>WL/18</i>, 2013. Whitened ashwood, brushed and sandblasted, 61,5cm×63cm, 28cm h"
+   DE: "Gefäß <i>WL/18</i>, 2013. Gebleichtes Eschenholz, gebürstet und sandgestrahlt, 61,5cm×63cm, 28cm H"
+   **TRANSLATION ADDED**
+
+4. [IDENTICAL] Carl Dau - Carl Dau_sr-g 2
+   ID: 5Nnn2PqcEKG4dqRP9jBoJG
+   Issue: English and German text are identical
+   EN: "Ring <em>sr-g 2</em>. Gold 750"
+   DE: "Ring <em>sr-g 2</em>. Gold 750"
+   **TRANSLATION ADDED**
+
+5. [IDENTICAL] Martina Dempf - Martina Dempf_Homs
+   ID: 5Nnn2PqcEKG4dqRP9jBrgI
+   Issue: English and German text are identical
+   EN: "Pendant <em>Homs</em>, 2016.
+Antique teak, silver, steel."
+   DE: "Anhänger <em>Homs</em>, 2016.
+Antikes Teakholz, Silber, Stahl."
+   **TRANSLATION ADDED**
+
+6. [IDENTICAL] Martina Dempf - Martina Dempf_Homs
+   ID: 5Nnn2PqcEKG4dqRP9jBtYQ
+   Issue: English and German text are identical
+   EN: "Pendant <em>Homs</em>, 2016. Antique teak, silver, steel."
+   DE: "Anhänger <em>Homs</em>, 2016. Antikes Teakholz, Silber, Stahl."
+   **TRANSLATION ADDED**
+
+7. [IDENTICAL] Georg Dobler - Georg Dobler_Brooch
+   ID: 5Nnn2PqcEKG4dqRP9jBthi
+   Issue: English and German text are identical
+   EN: "Brooch"
+   DE: "Brosche"
+   **TRANSLATION ADDED**
+
+8. [IDENTICAL] Susanne Elstner - Susanne Elstner_Spätholz
+   ID: 5Nnn2PqcEKG4dqRP9jBxkY
+   Issue: English and German text are identical
+   EN: "Brooch <em>Spätholz</em>, charcoal, silver."
+   DE: "Brosche <em>Spätholz</em>, Holzkohle, Silber."
+   **TRANSLATION ADDED**
+
+9. [IDENTICAL] Susanne Elstner - Susanne Elstner_Brosche
+   ID: 5Nnn2PqcEKG4dqRP9jBxpC
+   Issue: English and German text are identical
+   EN: "Brooch. Charcoal, silver."
+   DE: "Brosche. Holzkohle, Silber."
+   **TRANSLATION ADDED**
+
+10. [IDENTICAL] Susanne Elstner - Susanne Elstner_Untitled
+   ID: 5Nnn2PqcEKG4dqRP9jBxtq
+   Issue: English and German text are identical
+   EN: "Ring. Charcoal, silver."
+   DE: "Ring. Holzkohle, Silber."
+   **TRANSLATION ADDED**
+
+11. [IDENTICAL] Susanne Elstner - Susanne Elstner_Floating Bowls
+   ID: 5Nnn2PqcEKG4dqRP9jBxyU
+   Issue: English and German text are identical
+   EN: "Brooch <em>Floating Bowls</em>, charcoal, silver."
+   DE: "Brosche <em>Floating Bowls</em>, Holzkohle, Silber."
+   **TRANSLATION ADDED**
+
+12. [IDENTICAL] Susanne Elstner - Susanne Elstner_Floating Bowls
+   ID: 5Nnn2PqcEKG4dqRP9jBy38
+   Issue: English and German text are identical
+   EN: "Brooch <em>Floating Bowls</em>, charcoal, silver."
+   DE: "Brosche <em>Floating Bowls</em>, Holzkohle, Silber."
+   **TRANSLATION ADDED**
+
+13. [IDENTICAL] Susanne Elstner - Susanne Elstner_Floating Bowls
+   ID: 5Nnn2PqcEKG4dqRP9jBy7m
+   Issue: English and German text are identical
+   EN: "Brooch <em>Floating Bowls</em>, charcoal, silver."
+   DE: "Brosche <em>Floating Bowls</em>, Holzkohle, Silber."
+   **TRANSLATION ADDED**
+
+14. [IDENTICAL] Susanne Elstner - Susanne Elstner_Crumble Kumpels
+   ID: 5Nnn2PqcEKG4dqRP9jByCQ
+   Issue: English and German text are identical
+   EN: "Rings <em>Crumble Kumpels</em>, silver, blackened silver, color."
+   DE: "Ringe <em>Crumble Kumpels</em>, Silber, Silber geschwärzt, Farbe."
+   **TRANSLATION ADDED**
+
+15. [IDENTICAL] Susanne Elstner - Susanne Elstner_Crumble Kumpels
+   ID: 5Nnn2PqcEKG4dqRP9jByH4
+   Issue: English and German text are identical
+   EN: "Rings <em>Crumble Kumpels</em>, blackened silver, color."
+   DE: "Ringe <em>Crumble Kumpels</em>, Silber geschwärzt, Farbe."
+   **TRANSLATION ADDED**
+
+
+22. [IDENTICAL] Stefanie Frye - Stefanie Frye_folded
+   ID: 5Nnn2PqcEKG4dqRP9jCBJK
+   Issue: English and German text are identical
+   EN: "<em>folded</em> earrings. Silver."
+   DE: "<em>folded</em> Ohrringe. Silber."
+   **TRANSLATION ADDED**
+
+23. [IDENTICAL] JaKyung Shin - JaKyung Shin_Golden candle drops
+   ID: 5Nnn2PqcEKG4dqRP9jCDPO
+   Issue: English and German text are identical
+   EN: "<em>Golden candle drops</em>, 2015. Bronze, fine gold 10 g, dripped, mounted, cast, fire-gilded"
+## SUGGESTED EN: "<em>Golden candle drops</em>, 2015. Bronze, fine Gold 10 g, dripped, mounted, cast, fire-gilded"
+   DE: "<em>Golden candle drops</em>, 2015. Bronze, Feingold 10 g, getropft, montiert, gegossen, feuervergoldet"
+   **TRANSLATION ADDED**
+
+24. [IDENTICAL] JaKyung Shin - JaKyung Shin_Reunion Schwarz
+   ID: 5Nnn2PqcEKG4dqRP9jCDU2
+   Issue: English and German text are identical
+   EN: "<em>Reunion Schwarz</em>, 2015. Used silver spoons, silver 800, mounted, blackened, 37 x 30 x"
+   DE: "<em>Reunion Schwarz</em>, 2015. Gebrauchte Silberlöffel, Silber 800, montiert, geschwärzt, 37 x 30 x"
+   **TRANSLATION ADDED**
+
+25. [IDENTICAL] JaKyung Shin - JaKyung Shin_Reunion Schwarz II
+   ID: 5Nnn2PqcEKG4dqRP9jCDYg
+   Issue: English and German text are identical
+   EN: "<em>Reunion Schwarz II</em>, 2016. Used silver spoons, silver 800, mounted, blackened. Photo "
+   DE: "<em>Reunion Schwarz II</em>, 2016. Gebrauchte Silberlöffel, Silber 800, montiert, geschwärzt. Photo "
+## SUGGESTED DE: "<em>Reunion Schwarz II</em>, 2016. Gebrauchte Silberlöffel, Silber 800, montiert, geschwärzt. Foto "
+   **TRANSLATION ADDED**
+
+26. [IDENTICAL] JaKyung Shin - JaKyung Shin_Standalone
+   ID: 5Nnn2PqcEKG4dqRP9jCDdK
+   Issue: English and German text are identical
+   EN: "<em>Standalone</em>, 2013. Silver 925, melted candle, cast, H approx. 38 cm. Photo Mirei Takeuch"
+   DE: "<em>Standalone</em>, 2013. Silber 925, Kerze geschmolzen, gegossen, H ca. 38 cm. Photo Mirei Takeuch"
+## SUGGESTED DE: "<em>Standalone</em>, 2013. Silber 925, Kerze geschmolzen, gegossen, H ca. 38 cm. Foto Mirei Takeuch"
+   **TRANSLATION ADDED**
+
+27. [IDENTICAL] JaKyung Shin - JaKyung Shin_Twinspoon
+   ID: 5Nnn2PqcEKG4dqRP9jCDhy
+   Issue: English and German text are identical
+   EN: "<em>Twinspoon</em>, 2015. Silver 999, silver 925, porcelain, forged, riveted, various sizes"
+   DE: "<em>Twinspoon</em>, 2015. Silber 999, Silber 925, Porzellan, geschmiedet, vernietet, verschiedene Gr"
+   **TRANSLATION ADDED**
+
+28. [IDENTICAL] Ulla & Martin Kaufmann - Ulla & Martin Kaufmann_Fast Nichts
+   ID: 5Nnn2PqcEKG4dqRP9jCKWg
+   Issue: English and German text are identical
+   EN: "Necklace <em>Fast Nichts</em>. 750 Gold, Photo M. Hoffmann"
+   DE: "Halskette <em>Fast Nichts</em>. Gold 750, Foto M. Hoffmann"
+   **TRANSLATION ADDED**
+
+29. [IDENTICAL] Ulla & Martin Kaufmann - Ulla & Martin Kaufmann_House
+   ID: 5Nnn2PqcEKG4dqRP9jCLH8
+   Issue: English and German text are identical
+   EN: "Cube <em>House</em>. Brass, Photo H.P. Hoffmann"
+   DE: "Würfel <em>House</em>. Messing, Foto H.P. Hoffmann"
+   **TRANSLATION ADDED**
+
+30. [IDENTICAL] Ulla & Martin Kaufmann - Ulla & Martin Kaufmann_Fast Nichts
+   ID: 5Nnn2PqcEKG4dqRP9jCMvK
+   Issue: English and German text are identical
+   EN: "Neck ring <em>Fast Nichts</em>. 750 gold, Photo M. Hoffmann"
+## SUGGESTED EN: "Neck Ring <em>Fast Nichts</em>. 750 Gold, Photo M. Hoffmann"
+   DE: "Halsreif <em>Fast Nichts</em>. 750 Gold, Foto M. Hoffmann"
+   **TRANSLATION ADDED**
+
+31. [IDENTICAL] Ulla & Martin Kaufmann - Ulla & Martin Kaufmann_Haus
+   ID: 5Nnn2PqcEKG4dqRP9jCMzy
+   Issue: English and German text are identical
+   EN: "Cube <em>Haus</em>. Brass, Photo H.P. Hoffmann"
+   DE: "Kube <em>Haus</em>. Messing, Foto H.P. Hoffmann"
+   **TRANSLATION ADDED**
+
+32. [IDENTICAL] Dong-Hyun Kim - Dong-Hyun Kim_Watering I
+   ID: 5Nnn2PqcEKG4dqRP9jCO7e
+   Issue: English and German text are identical
+   EN: "Jug <em>Watering I</em>. 925 Silver. 20 × 15 × 12 cm."
+## SUGGESTED EN: "Jug <em>Watering I</em>. 925 Silver. 20 x 15 x 12 cm."
+   DE: "Jug <em>Watering I</em>. 925 Silver. 20 × 15 × 12 cm."
+## SUGGESTED DE: "Kanne <em>Watering I</em>. Silber 925. 20 × 15 × 12 cm."
+   **TRANSLATION ADDED**
+
+33. [IDENTICAL] Dong-Hyun Kim - Dong-Hyun Kim_Sharing
+   ID: 5Nnn2PqcEKG4dqRP9jCOGw
+   Issue: English and German text are identical
+   EN: "Jug <em>Sharing</em>. Brass, silver plated. 14.5 ×21,5 ×11 cm."
+   DE: "Jug <em>Sharing</em>. Brass, silver plated. 14.5 ×21,5 ×11 cm."
+## SUGGESTED DE: "Kanne <em>Sharing</em>. Messing, versilbert. 14,5 × 21,5 × 11 cm."
+   **TRANSLATION ADDED**
+
+34. [IDENTICAL] Dong-Hyun Kim - Dong-Hyun Kim_Watering IV
+   ID: 5Nnn2PqcEKG4dqRP9jCOLa
+   Issue: English and German text are identical
+   EN: "Jug <em>Watering IV</em>, brass silver plated."
+   DE: "Jug <em>Watering IV</em>, brass silver plated."
+## SUGGESTED DE: "Kanne <em>Watering IV</em>, Messing versilbert."
+   **TRANSLATION ADDED**
+
+35. [IDENTICAL] Dominique Labordery - Dominique Labordery_Tsure
+   ID: 5Nnn2PqcEKG4dqRP9jCQIM
+   Issue: English and German text are identical
+   EN: "<em>Tsure</em> necklace. Silver."
+   DE: "<em>Tsure</em> necklace. Silver."
+## SUGGESTED DE: "<em>Tsure</em> Halskette. Silber."
+   **TRANSLATION ADDED**
+
+36. [IDENTICAL] Dominique Labordery - Dominique Labordery_Tsure
+   ID: 5Nnn2PqcEKG4dqRP9jCQWI
+   Issue: English and German text are identical
+   EN: "Halskette <em>Tsure</em>. Silber."
+## SUGGESTED EN: "Necklace <em>Tsure</em>. Silver."
+   DE: "Halskette <em>Tsure</em>. Silber."
+   **TRANSLATION ADDED**
+
+
+45. [IDENTICAL] Sabine Lintzen - Sabine Lintzen_Oriental Field Iris Gold
+   ID: 5Nnn2PqcEKG4dqRP9jCZMQ
+   Issue: English and German text are identical
+   EN: "Detail <em>Oriental Field Iris Gold</em>."
+   DE: "Detail <em>Oriental Field Iris Gold</em>."
+   **TRANSLATION ADDED**
+
+46. [IDENTICAL] Morten Lobner Espersen - Morten Lobner Espersen_Mushroom
+   ID: 5Nnn2PqcEKG4dqRP9jCaKo
+   Issue: English and German text are identical
+   EN: "Object <em> Mushroom</em>, 2013. Ceramic, 30x14 cm"
+   DE: "Object <em> Mushroom</em>, 2013. Ceramic, 30x14 cm"
+## SUGGESTED DE: "Objekt <em>Mushroom</em>, 2013. Keramik, 30x14 cm"
+   **TRANSLATION ADDED**
+
+47. [IDENTICAL] Massimo Micheluzzi - Massimo Micheluzzi_Mosaico
+   ID: 5Nnn2PqcEKG4dqRP9jCg1q
+   Issue: English and German text are identical
+   EN: "<em>Mosaico</em>, 2019."
+   DE: "<em>Mosaico</em>, 2019."
+   **TRANSLATION ADDED**
+
+
+49. [IDENTICAL] Massimo Micheluzzi - Massimo Micheluzzi_Vaso vetro piatto grigio
+   ID: 5Nnn2PqcEKG4dqRP9jCgB8
+   Issue: English and German text are identical
+   EN: "<em>Vaso vetro piatto grigio</em>, 2015."
+   DE: "<em>Vaso vetro piatto grigio</em> (Flache graue Glasvase), 2015."
+   **TRANSLATION ADDED**
+
+50. [IDENTICAL] Massimo Micheluzzi - Massimo Micheluzzi_Black Carved
+   ID: 5Nnn2PqcEKG4dqRP9jCgFm
+   Issue: English and German text are identical
+   EN: "<em>Black Carved</em> vessel, 2014. Glass, 38 x 21 cm."
+   DE: "<em>Black Carved</em> Gefäß, 2014. Glas, 38 x 21 cm."
+   **TRANSLATION ADDED**
+
+
+52. [IDENTICAL] Felix Mueller - Felix Mueller_Marcello
+   ID: 5Nnn2PqcEKG4dqRP9jCjco
+   Issue: English and German text are identical
+   EN: "<em>Marcello</em> espresso maker. Copper, steel"
+   DE: "<em>Marcello</em> Espressomaschine. Kupfer, Stahl"
+   **TRANSLATION ADDED**
+
+53. [IDENTICAL] Felix Mueller - Felix Mueller_Marcello
+   ID: 5Nnn2PqcEKG4dqRP9jCjhS
+   Issue: English and German text are identical
+   EN: "<em>Marcello</em> espresso maker. Copper, steel"
+   DE: "<em>Marcello</em> Espressomaschine. Kupfer, Stahl"
+   **TRANSLATION ADDED**
+
+54. [IDENTICAL] Felix Mueller - Felix Mueller_Table grill
+   ID: 5Nnn2PqcEKG4dqRP9jCjm6
+   Issue: English and German text are identical
+   EN: "Table grill"
+   DE: "Tischgrill"
+   **TRANSLATION ADDED**
+
+55. [IDENTICAL] Felix Mueller - Felix Mueller_Gas lamp
+   ID: 5Nnn2PqcEKG4dqRP9jCjqk
+   Issue: English and German text are identical
+   EN: "Gas lamp. Copper, brass, steel"
+   DE: "Gaslampe. Kupfer, Messing, Stahl"
+   **TRANSLATION ADDED**
+
+56. [IDENTICAL] Felix Mueller - Felix Mueller_Agent
+   ID: 5Nnn2PqcEKG4dqRP9jCjvO
+   Issue: English and German text are identical
+   EN: "<em>Agent</em> floor lamp. Copper, steel"
+   DE: "<em>Agent</em> Stehlampe. Kupfer, Stahl"
+   **TRANSLATION ADDED**
+
+57. [IDENTICAL] Felix Mueller - Felix Mueller_Agent
+   ID: 5Nnn2PqcEKG4dqRP9jCk02
+   Issue: English and German text are identical
+   EN: "<em>Agent</em> floor lamp. Copper, steel. Detail"
+   DE: "<em>Agent</em> Stehlampe. Kupfer, Stahl. Detail"
+   **TRANSLATION ADDED**
+
+58. [IDENTICAL] Barbara Nanning - Barbara Nanning_Galaxy
+   ID: 5Nnn2PqcEKG4dqRP9jCm66
+   Issue: English and German text are identical
+   EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer, 57 × 54 × 35 cm."
+## SUGGESTED EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer, 57 x 54 x 35 cm."
+   DE: "Objekt <em>Galaxy</em>. Steinzeug, Sand, Pigment, Lack, 57 × 54 × 35 cm."
+   **TRANSLATION ADDED**
+
+59. [IDENTICAL] Barbara Nanning - Barbara Nanning_Galaxy
+   ID: 5Nnn2PqcEKG4dqRP9jCmAk
+   Issue: English and German text are identical
+   EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer."
+   DE: "Objekt <em>Galaxy</em>. Steinzeug, Sand, Pigment, Lack."
+   **TRANSLATION ADDED**
+
+60. [IDENTICAL] Barbara Nanning - Barbara Nanning_Galaxy
+   ID: 5Nnn2PqcEKG4dqRP9jCmFO
+   Issue: English and German text are identical
+   EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer, 40 × 45 × 50 cm."
+## SUGGESTED EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer, 40 x 45 x 50 cm."
+   DE: "Objekt <em>Galaxy</em>. Steinzeug, Sand, Pigment, Lack, 40 × 45 × 50 cm."
+   **TRANSLATION ADDED**
+
+61. [IDENTICAL] Barbara Nanning - Barbara Nanning_Galaxy
+   ID: 5Nnn2PqcEKG4dqRP9jCmK2
+   Issue: English and German text are identical
+   EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer, 44 × 44 × 29 cm."
+## SUGGESTED EN: "Object <em>Galaxy</em>. Stoneware, sand, pigment, lacquer, 44 x 44 x 29 cm."
+   DE: "Objekt <em>Galaxy</em>. Steinzeug, Sand, Pigment, Lack, 44 × 44 × 29 cm."
+   **TRANSLATION ADDED**
+
+62. [IDENTICAL] Barbara Nanning - Barbara Nanning_Terra
+   ID: 5Nnn2PqcEKG4dqRP9jCmOg
+   Issue: English and German text are identical
+   EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer, 56 × 56 × 18 cm."
+## SUGGESTED EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer, 56 x 56 x 18 cm."
+   DE: "Objekt <em>Terra</em>. Steinzeug, Sand, Pigment, Lack, 56 × 56 × 18 cm."
+   **TRANSLATION ADDED**
+
+63. [IDENTICAL] Barbara Nanning - Barbara Nanning_Terra
+   ID: 5Nnn2PqcEKG4dqRP9jCmTK
+   Issue: English and German text are identical
+   EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer."
+   DE: "Objekt <em>Terra</em>. Steinzeug, Sand, Pigment, Lack."
+   **TRANSLATION ADDED**
+
+64. [IDENTICAL] Barbara Nanning - Barbara Nanning_Terra
+   ID: 5Nnn2PqcEKG4dqRP9jCmXy
+   Issue: English and German text are identical
+   EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer, 44 × 44 × 21 cm."
+## SUGGESTED EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer, 44 x 44 x 21 cm."
+   DE: "Objekt <em>Terra</em>. Steinzeug, Sand, Pigment, Lack, 44 × 44 × 21 cm."
+   **TRANSLATION ADDED**
+
+65. [IDENTICAL] Barbara Nanning - Barbara Nanning_Terra
+   ID: 5Nnn2PqcEKG4dqRP9jCmcc
+   Issue: English and German text are identical
+   EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer, 45 × 45 × 13 cm."
+## SUGGESTED EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer, 45 x 45 x 13 cm."
+   DE: "Objekt <em>Terra</em>. Steinzeug, Sand, Pigment, Lack, 45 × 45 × 13 cm."
+   **TRANSLATION ADDED**
+
+66. [IDENTICAL] Barbara Nanning - Barbara Nanning_Terra
+   ID: 5Nnn2PqcEKG4dqRP9jCmhG
+   Issue: English and German text are identical
+   EN: "Object <em>Terra</em>. Stoneware, sand, pigment, lacquer."
+   DE: "Objekt <em>Terra</em>. Steinzeug, Sand, Pigment, Lack."
+   **TRANSLATION ADDED**
+
+67. [IDENTICAL] Barbara Nanning - Barbara Nanning_Transmutation
+   ID: 5Nnn2PqcEKG4dqRP9jCmlu
+   Issue: English and German text are identical
+   EN: "Object <em>Transmutation</em>. Stoneware, <br> 33 × 18 × 23 cm."
+## SUGGESTED EN: "Object <em>Transmutation</em>. Stoneware, <br> 33 x 18 x 23 cm."
+   DE: "Objekt <em>Transmutation</em>. Steinzeug, <br> 33 × 18 × 23 cm."
+   **TRANSLATION ADDED**
+
+68. [IDENTICAL] Barbara Nanning - Barbara Nanning_Transmutation
+   ID: 5Nnn2PqcEKG4dqRP9jCmqY
+   Issue: English and German text are identical
+   EN: "Object <em>Transmutation</em>. Stoneware, <br> 55 × 45 × 40 cm."
+## SUGGESTED EN: "Object <em>Transmutation</em>. Stoneware, <br> 55 x 45 x 40 cm."
+   DE: "Objekt <em>Transmutation</em>. Steinzeug, <br> 55 × 45 × 40 cm."
+   **TRANSLATION ADDED**
+
+69. [IDENTICAL] Barbara Nanning - Barbara Nanning_Seres
+   ID: 5Nnn2PqcEKG4dqRP9jCmvC
+   Issue: English and German text are identical
+   EN: "Object <em>Seres</em>. Stoneware, polyurethane, sand, pigment, laquer."
+   DE: "Objekt <em>Seres</em>. Steinzeug, Polyurethan, Sand, Pigment, Lack."
+   **TRANSLATION ADDED**
+
+70. [IDENTICAL] Barbara Nanning - Barbara Nanning_Botanica
+   ID: 5Nnn2PqcEKG4dqRP9jCmzq
+   Issue: English and German text are identical
+   EN: "Object <em>Botanica</em>. Stoneware, sand, pigment, laquer, 80 × 79 × 42 cm."
+## SUGGESTED EN: "Object <em>Botanica</em>. Stoneware, sand, pigment, laquer, 80 x 79 x 42 cm."
+   DE: "Objekt <em>Botanica</em>. Steinzeug, Sand, Pigment, Lack, 80 × 79 × 42 cm."
+   **TRANSLATION ADDED**
+
+71. [IDENTICAL] Barbara Nanning - Barbara Nanning_Botanica
+   ID: 5Nnn2PqcEKG4dqRP9jCn4U
+   Issue: English and German text are identical
+   EN: "Object <em>Botanica</em>. Stoneware, polyurethane, sand, pigment, laquer, 165 × 160 × 45 cm."
+## SUGGESTED EN: "Object <em>Botanica</em>. Stoneware, polyurethane, sand, pigment, laquer, 165 x 160 x 45 cm."
+   DE: "Object <em>Botanica</em>. Steinzeug, Polyurethan, Sand, Pigment, Lack, 165 × 160 × 45 cm."
+## SUGGESTED EN: "Object <em>Botanica</em>. Stoneware, polyurethane, sand, pigment, lacquer, 165 × 160 × 45 cm."
+## SUGGESTED EN: "Object <em>Botanica</em>. Stoneware, polyurethane, sand, pigment, lacquer, 165 x 160 x 45 cm."
+   **TRANSLATION ADDED**
+
+72. [IDENTICAL] Barbara Nanning - Barbara Nanning_Reclining Flower
+   ID: 5Nnn2PqcEKG4dqRP9jCn98
+   Issue: English and German text are identical
+   EN: "Object <em>Reclining Flower</em>. Ceramic, glazes."
+   DE: "Object <em>Reclining Flower</em>. Ceramic, glazes."
+## SUGGESTED DE: "Objekt <em>Reclining Flower</em>. Keramik, Glasuren."
+   **TRANSLATION ADDED**
+
+73. [IDENTICAL] Barbara Nanning - Barbara Nanning_Black & White
+   ID: 5Nnn2PqcEKG4dqRP9jConK
+   Issue: English and German text are identical
+   EN: "Object <em>Black & White</em>. Glass, 47 x 23 x 19 cm"
+   DE: "Objekt <em>Black & White</em>. Glas, 47 x 23 x 19 cm"
+## SUGGESTED DE: "Objekt <em>Black & White</em>. Glas, 47 × 23 × 19 cm"
+   **TRANSLATION ADDED**
+
+74. [IDENTICAL] Barbara Nanning - Barbara Nanning_Uranium
+   ID: 5Nnn2PqcEKG4dqRP9jCory
+   Issue: English and German text are identical
+   EN: "Object <em>Uranium</em>. Glass"
+   DE: "Objekt <em>Uranium</em>. Glas"
+   **TRANSLATION ADDED**
+
+77. [IDENTICAL] Barbara Nanning - Barbara Nanning_Objekt
+   ID: 5Nnn2PqcEKG4dqRP9jCp5u
+   Issue: English and German text are identical
+   EN: "Object. Glass, 26 x 20 x 20 cm"
+   DE: "Objekt. Glas, 26 x 20 x 20 cm"
+## SUGGESTED DE: "Objekt. Glas, 26 × 20 × 20 cm"
+   **TRANSLATION ADDED**
+
+78. [IDENTICAL] Barbara Nanning - Barbara Nanning_Objekt
+   ID: 5Nnn2PqcEKG4dqRP9jCpAY
+   Issue: English and German text are identical
+   EN: "Object. Glass, 24 x 22 x 18 cm"
+   DE: "Objekt. Glas, 24 x 22 x 18 cm"
+## SUGGESTED DE: "Objekt. Glas, 24 × 22 × 18 cm"
+   **TRANSLATION ADDED**
+
+81. [IDENTICAL] Barbara Nanning - Barbara Nanning_Crystal night
+   ID: 5Nnn2PqcEKG4dqRP9jCpOU
+   Issue: English and German text are identical
+   EN: "Object <em>Crystal night</em>. Glass"
+   DE: "Objekt <em>Crystal night</em>. Glas"
+   **TRANSLATION ADDED**
+
+82. [IDENTICAL] Barbara Nanning - Barbara Nanning_Chang Chang
+   ID: 5Nnn2PqcEKG4dqRP9jCpT8
+   Issue: English and German text are identical
+   EN: "Object <em>Chang Chang</em>. Glass"
+   DE: "Objekt <em>Chang Chang</em>. Glas"
+   **TRANSLATION ADDED**
+
+83. [IDENTICAL] Barbara Nanning - Barbara Nanning_Pomegranate
+   ID: 5Nnn2PqcEKG4dqRP9jCpXm
+   Issue: English and German text are identical
+   EN: "Object <em>Pomegranate</em>. Glass, 25 x 23 x 21 cm"
+   DE: "Objekt  <em>Pomegranate</em>. Glas, 25 x 23 x 21 cm"
+## SUGGESTED DE: "Objekt  <em>Pomegranate</em>. Glas, 25 × 23 × 21 cm"
+   **TRANSLATION ADDED**
+
+84. [IDENTICAL] Barbara Nanning - Barbara Nanning_Objekt
+   ID: 5Nnn2PqcEKG4dqRP9jCpcQ
+   Issue: English and German text are identical
+   EN: "Object. Glass, 24 x 23 x 19 cm"
+   DE: "Objekt. Glas, 24 x 23 x 19 cm"
+## SUGGESTED DE: "Objekt. Glas, 24 × 23 × 19 cm"
+   **TRANSLATION ADDED**
+
+85. [IDENTICAL] Barbara Nanning - Barbara Nanning_Sea Sponges
+   ID: 5Nnn2PqcEKG4dqRP9jCph4
+   Issue: English and German text are identical
+   EN: "Objekt <em>Sea Sponges</em>. Glas"
+## SUGGESTED EN: "Object <em>Sea Sponges</em>. Glass"
+   DE: "Objekt <em>Sea Sponges</em>. Glas"
+
+86. [IDENTICAL] Barbara Nanning - Barbara Nanning_Black Berries
+   ID: 5Nnn2PqcEKG4dqRP9jCpli
+   Issue: English and German text are identical
+   EN: "Objekt <em>Black Berries</em>. Glas"
+## SUGGESTED EN: "Object <em>Black Berries</em>. Glass"
+   DE: "Objekt <em>Black Berries</em>. Glas"
+
+87. [IDENTICAL] Barbara Nanning - Barbara Nanning_Tendresse
+   ID: 5Nnn2PqcEKG4dqRP9jCpqM
+   Issue: English and German text are identical
+   EN: "Objekt <em>Tendresse</em>. Glas, 40 x 25 x 47 cm"
+## SUGGESTED EN: "Object <em>Tendresse</em>. Glass, 40 x 25 x 47 cm"
+   DE: "Objekt <em>Tendresse</em>. Glas, 40 x 25 x 47 cm"
+## SUGGESTED DE: "Objekt <em>Tendresse</em>. Glas, 40 × 25 × 47 cm"
+
+88. [IDENTICAL] Barbara Nanning - Barbara Nanning_Royal Pumpkin
+   ID: 5Nnn2PqcEKG4dqRP9jCpv0
+   Issue: English and German text are identical
+   EN: "Object <em>Royal Pumpkin</em>. Glass, 62 x 50 x 60 cm"
+   DE: "Objekt <em>Royal Pumpkin</em>. Glas, 62 x 50 x 60 cm"
+## SUGGESTED DE: "Objekt <em>Royal Pumpkin</em>. Glas, 62 × 50 × 60 cm"
+   **TRANSLATION ADDED**
+
+89. [IDENTICAL] Niessing Wedding Rings - Niessing Wedding Rings_aura®
+   ID: 5Nnn2PqcEKG4dqRP9jCrrm
+   Issue: English and German text are identical
+   EN: "Wedding rings <em>aura®</em>. 750 gold 750. Colours: yellow, yellow/grey, yellow/ platinum white, gr"
+## SUGGESTED EN: "Wedding rings <em>aura®</em>. 750 Gold 750. Colours: yellow, yellow/grey, yellow/ platinum white, gr"
+   DE: "Trauringe <em>aura®</em>. 750 Gold 750. Farben: Gelb, Gelb/Grau, Gelb/Platinweiß, Gr..."
+   **TRANSLATION ADDED**
+
+90. [IDENTICAL] Kay Eppi Nölke - Kay Eppi Nölke_DrückDich
+   ID: 5Nnn2PqcEKG4dqRP9jCvSk
+   Issue: English and German text are identical
+   EN: "Rings <em>DrückDich</em>, 2011. Poppy capsule, wax respectively 750 gold, 925 silver, stainless stee"
+## SUGGESTED EN: "Rings <em>DrückDich</em>, 2011. Poppy capsule, wax respectively 750 Gold, 925 silver, stainless stee"
+   DE: "Ringe <em>DrückDich</em>, 2011. Mohnkapsel, Wachs bzw. 750er Gold, 925er Silber, Edelstahl"
+   **TRANSLATION ADDED**
+
+91. [IDENTICAL] Kay Eppi Nölke - Kay Eppi Nölke_DrückDich
+   ID: 5Nnn2PqcEKG4dqRP9jCvlK
+   Issue: English and German text are identical
+   EN: "Rings <em>DrückDich</em>, 2011. Poppy capsule, wax or 750 gold, 925 silver and ..."
+## SUGGESTED EN: "Rings <em>DrückDich</em>, 2011. Poppy capsule, wax or 750 Gold, 925 silver and ..."
+   DE: "Ringe <em>DrückDich</em>, 2011. Mohnblumenkapsel, Wachs beziehungsweise Gelbgold 750, Silber 925 an "
+   **TRANSLATION ADDED**
+
+92. [IDENTICAL] Ute Kathrin Beck - Ute Kathrin Beck_Gittervasen
+   ID: MnHq3gipaho0Iv07wmzUpC
+   Issue: English and German text are identical
+   EN: "<em>Grid vases</em> group, 2015. 80 x 17 x 37 cm."
+   DE: "<em>Gittervasen</em> Gruppe, 2015. 80 x 17 x 37 cm."
+## SUGGESTED DE: "<em>Gittervasen</em> Gruppe, 2015. 80 × 17 × 37 cm."
+   **TRANSLATION ADDED**
+
+94. [IDENTICAL] Dorothea Brill - Dorothea Brill_Meter-wise Blume
+   ID: MnHq3gipaho0Iv07wmzYVp
+   Issue: English and German text are identical
+   EN: "Necklace, <em>Meter-wise Blume</em> [flower]. Rhodium plated silver. German Design Award Winner 2018"
+   DE: "Halskette, <em>Meter-wise Blume</em> [Blume]. Silber rhodiniert. German Design Award Winner 2018"
+   **TRANSLATION ADDED**
+
+95. [IDENTICAL] Dorothea Brill - Dorothea Brill_Meter-weise Blume
+   ID: MnHq3gipaho0Iv07wmzZPi
+   Issue: English and German text are identical
+   EN: "Neck jewelry <em>Meter-weise Blume</em>. Rhodium-plated silver. German Design Award Winner 2018"
+   DE: "Halsschmuck <em>Meter-weise Blume</em>. Silber rhodiniert. German Design Award Winner 2018"
+   **TRANSLATION ADDED**
+
+96. [IDENTICAL] Beate Eismann - Beate Eismann_Reif?
+   ID: MnHq3gipaho0Iv07wmzezC
+   Issue: English and German text are identical
+   EN: "Bracelet from the <em>Reif?</em> series"
+   DE: "Armschmuck aus der Serie <em>Reif?</em>"
+   **TRANSLATION ADDED**
+
+97. [IDENTICAL] Beate Eismann - Beate Eismann_Printed Matter
+   ID: MnHq3gipaho0Iv07wmzfYl
+   Issue: English and German text are identical
+   EN: "Neck jewelry from the <em>Printed Matter</em> series"
+   DE: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+   **TRANSLATION ADDED**
+
+98. [IDENTICAL] Beate Eismann - Beate Eismann_Printed Matter
+   ID: MnHq3gipaho0Iv07wmzfdq
+   Issue: English and German text are identical
+   EN: "Neck jewelry from the <em>Printed Matter</em> series"
+   DE: "Neck jewelry from the <em>Printed Matter</em> series"
+## SUGGESTED DE: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+
+99. [IDENTICAL] Beate Eismann - Beate Eismann_Printed Matter
+   ID: MnHq3gipaho0Iv07wmzfo0
+   Issue: English and German text are identical
+   EN: "Neck jewelry from the <em>Printed Matter</em> series"
+   DE: "Neck jewelry from the <em>Printed Matter</em> series"
+## SUGGESTED DE: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+
+100. [IDENTICAL] Beate Eismann - Beate Eismann_Printed Matter
+   ID: MnHq3gipaho0Iv07wmzft5
+   Issue: English and German text are identical
+   EN: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+## SUGGESTED EN: "Neck jewelry from the <em>Printed Matter</em> series"
+   DE: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+
+101. [IDENTICAL] Beate Eismann - Beate Eismann_Printed Matter
+   ID: MnHq3gipaho0Iv07wmzfyA
+   Issue: English and German text are identical
+   EN: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+## SUGGESTED EN: "Neck jewelry from the <em>Printed Matter</em> series"
+   DE: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+
+102. [IDENTICAL] Beate Eismann - Beate Eismann_Printed Matter
+   ID: MnHq3gipaho0Iv07wmzg3F
+   Issue: English and German text are identical
+   EN: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+## SUGGESTED EN: "Neck jewelry from the <em>Printed Matter</em> series"
+   DE: "Halsschmuck aus der Serie <em>Printed Matter</em>"
+
+103. [IDENTICAL] Beate Eismann - Beate Eismann_Reif?
+   ID: MnHq3gipaho0Iv07wmzg8K
+   Issue: English and German text are identical
+   EN: "Armschmuck aus der Serie <em>Reif? </em>"
+## SUGGESTED EN: "Bracelet from the <em>Reif?</em> series"
+   DE: "Armschmuck aus der Serie <em>Reif? </em>"
+
+104. [IDENTICAL] Fine Light - Fine Light_Hair
+   ID: MnHq3gipaho0Iv07wmzhw6
+   Issue: English and German text are identical
+   EN: "Halskette <em>Hair</em>. Laminiertes, reflektierendes Material, geknüpft, D 0,35 mm. Foto Hanna Prib"
+## SUGGESTED EN: "Necklace <em>Hair</em>. Laminated, reflective material, knotted, D 0.35 mm. Photo Hanna Pribitzer"
+   DE: "Halskette <em>Hair</em>. Laminiertes, reflektierendes Material, geknüpft, D 0,35 mm. Foto Hanna Prib"
+
+105. [IDENTICAL] Henrich & Denzel - Henrich & Denzel_Favorita
+   ID: MnHq3gipaho0Iv07wmzp47
+   Issue: English and German text are identical
+   EN: "<em>Favorita</em> ring. 950 platinum, diamonds"
+## SUGGESTED EN: "<em>Favorita</em> Ring. 950 platinum, diamonds"
+   DE: "<em>Favorita</em> ring. 950 platinum, diamonds"
+## SUGGESTED DE: "<em>Favorita</em> Ring. Platin 950, Diamanten"
+
+106. [IDENTICAL] Henrich & Denzel - Henrich & Denzel_Favorita
+   ID: MnHq3gipaho0Iv07wmzq35
+   Issue: English and German text are identical
+   EN: "Ring <em>Favorita</em>. Platin 950, Brillanten"
+## SUGGESTED EN: "Ring <em>Favorita</em>. Platinum 950, diamonds"
+   DE: "Ring <em>Favorita</em>. Platin 950, Brillanten"
+
+107. [IDENTICAL] JaKyung Shin - JaKyung Shin_Becherhand
+   ID: MnHq3gipaho0Iv07wmzvro
+   Issue: English and German text are identical
+   EN: "<em>Becherhand</em> [Mug hand], 2010–2014. 999 silver, 925 silver, galvanized, pressed, H 9,6 cm. Ph"
+   DE: "<em>Becherhand</em> [Mug hand], 2010–2014. 999 silver, 925 silver, galvanized, pressed, H 9,6 cm. Ph"
+## SUGGESTED DE: "<em>Becherhand</em>, 2010–2014. Silber 999, Silber 925, galvanisiert, gedrückt, H 9,6 cm. Ph"
+
+108. [IDENTICAL] JaKyung Shin - JaKyung Shin_Bowl n handle
+   ID: MnHq3gipaho0Iv07wmzvwt
+   Issue: English and German text are identical
+   EN: "<em>Bowl n handle</em>, 2015. Silver 925, used handles, forged, mounted, L 7-8 cm. Photo Eva Jünger"
+   DE: "<em>Bowl n handle</em>, 2015. Silver 925, used handles, forged, mounted, L 7-8 cm. Photo Eva Jünger"
+## SUGGESTED DE: "<em>Bowl n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7-8 cm. Foto Eva Jünger"
+## SUGGESTED DE: "<em>Schale n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7-8 cm. Foto Eva Jünger"
+
+109. [IDENTICAL] JaKyung Shin - JaKyung Shin_Bowl n handle
+   ID: MnHq3gipaho0Iv07wmzw1y
+   Issue: English and German text are identical
+   EN: "<em>Bowl n handle</em>, 2015. Silver 925, used handles, forged, mounted, L 7-8 cm. Photo Eva Jünger"
+   DE: "<em>Bowl n handle</em>, 2015. Silver 925, used handles, forged, mounted, L 7-8 cm. Photo Eva Jünger"
+## SUGGESTED DE: "<em>Bowl n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7-8 cm. Foto Eva Jünger"
+## SUGGESTED DE: "<em>Schale n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7-8 cm. Foto Eva Jünger"
+
+110. [IDENTICAL] JaKyung Shin - JaKyung Shin_Cup dragged
+   ID: MnHq3gipaho0Iv07wmzw73
+   Issue: English and German text are identical
+   EN: "<em>Cup dragged</em>, sketch"
+   DE: "<em>Cup dragged</em>, sketch"
+## SUGGESTED DE: "<em>Cup dragged</em>, Skizze"
+
+111. [IDENTICAL] JaKyung Shin - JaKyung Shin_Cup dragged
+   ID: MnHq3gipaho0Iv07wmzwC8
+   Issue: English and German text are identical
+   EN: "<em>Cup dragged</em>, 2010-2012. Silver 925, CAD design, forged, mounted, H 8 cm. Photo KC Studio"
+   DE: "<em>Cup dragged</em>, 2010-2012. Silver 925, CAD design, forged, mounted, H 8 cm. Photo KC Studio"
+## SUGGESTED DE: "<em>Cup dragged</em>, 2010-2012. Silber 925, CAD-Design, geschmiedet, montiert, H 8 cm. Foto KC Studio"
+
+112. [IDENTICAL] JaKyung Shin - JaKyung Shin_Finger lickin
+   ID: MnHq3gipaho0Iv07wmzwHD
+   Issue: English and German text are identical
+   EN: "Finger lickin"
+   DE: "Finger lickin"
+## SUGGESTED DE: "Finger lecken"
+
+113. [IDENTICAL] JaKyung Shin - JaKyung Shin_Golden candle drops
+   ID: MnHq3gipaho0Iv07wmzwMI
+   Issue: English and German text are identical
+   EN: "<em>Golden candle drops</em>, 2015. Bronze, fine gold 10 g, dripped, mounted, cast, fire-gilded
+23 x"
+   DE: "<em>Golden candle drops</em>, 2015. Bronze, fine gold 10 g, dripped, mounted, cast, fire-gilded
+23 x"
+## SUGGESTED DE: "<em>Golden candle drops</em>, 2015. Bronze, Feingold 10 g, getropft, montiert, gegossen, feuervergoldet
+23 x"
+
+114. [IDENTICAL] JaKyung Shin - JaKyung Shin_Reunion Black II
+   ID: MnHq3gipaho0Iv07wmzwRN
+   Issue: English and German text are identical
+   EN: "<em>Reunion Black II</em>, 2016. Used silver spoons, silver 800, mounted, blackened. Photo Eva Jünge"
+   DE: "<em>Reunion Black II</em>, 2016. Used silver spoons, silver 800, mounted, blackened. Photo Eva Jünge"
+## SUGGESTED DE: "<em>Reunion Black II</em>, 2016. Gebrauchte Silberlöffel, Silber 800, montiert, geschwärzt. Foto Eva Jünger"
+
+115. [IDENTICAL] JaKyung Shin - JaKyung Shin_Reunion Black
+   ID: MnHq3gipaho0Iv07wmzwWS
+   Issue: English and German text are identical
+   EN: "<em>Reunion Black</em>, 2015. Used silver spoon, silver 800, mounted, blackened, 37 x 30 x 12 cm. Ph"
+   DE: "<em>Reunion Black</em>, 2015. Used silver spoon, silver 800, mounted, blackened, 37 x 30 x 12 cm. Ph"
+## SUGGESTED DE: "<em>Reunion Black</em>, 2015. gebrauchte Silber spoon, Silber 800, montiert, geschwärzt, 37 × 30 × 12 cm. Ph"
+
+116. [IDENTICAL] JaKyung Shin - JaKyung Shin_Standalone
+   ID: MnHq3gipaho0Iv07wmzwbX
+   Issue: English and German text are identical
+   EN: "<em>Standalone</em>, 2013. Silver 925, candle melted, poured, H about 38 cm. Photo Mirei Takeuchi"
+   DE: "<em>Standalone</em>, 2013. Silver 925, candle melted, poured, H about 38 cm. Photo Mirei Takeuchi"
+## SUGGESTED DE: "<em>Standalone</em>, 2013. Silber 925, candle melted, poured, H about 38 cm. Foto Mirei Takeuchi"
+
+117. [IDENTICAL] JaKyung Shin - JaKyung Shin_Twinspoon, 2015
+   ID: MnHq3gipaho0Iv07wmzwgc
+   Issue: English and German text are identical
+   EN: "Twinspoon, 2015. Silver 999, silver 925, porcelain, forged, riveted, various sizes. Photo KC Studio"
+   DE: "Twinspoon, 2015. Silver 999, silver 925, porcelain, forged, riveted, various sizes. Photo KC Studio"
+## SUGGESTED DE: "Twinspoon, 2015. Silber 999, Silber 925, porcelain, geschmiedet, riveted, various sizes. Foto KC Studio"
+
+118. [IDENTICAL] JaKyung Shin - JaKyung Shin_Becherhand
+   ID: MnHq3gipaho0Iv07wmzwlh
+   Issue: English and German text are identical
+   EN: "<em>Becherhand</em>, 2010–2014. Silber 999, Silber 925, galvanisiert, gedrückt, H 9,6 cm. Photo KC S"
+## SUGGESTED EN: "<em>Becherhand</em>, 2010–2014. Silver 999, Silver 925, galvanized, pressed, H 9,6 cm. Photo KC S"
+   DE: "<em>Becherhand</em>, 2010–2014. Silber 999, Silber 925, galvanisiert, gedrückt, H 9,6 cm. Photo KC S"
+## SUGGESTED DE: "<em>Becherhand</em>, 2010–2014. Silber 999, Silber 925, galvanisiert, gedrückt, H 9,6 cm. Foto KC S"
+
+119. [IDENTICAL] JaKyung Shin - JaKyung Shin_Bowl n handle
+   ID: MnHq3gipaho0Iv07wmzwqm
+   Issue: English and German text are identical
+   EN: "<em>Bowl n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7–8 cm. Photo "
+## SUGGESTED EN: "<em>Bowl n handle</em>, 2015. Silver 925, used Griffe, forged, mounted, L 7–8 cm. Photo "
+   DE: "<em>Bowl n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7–8 cm. Photo "
+## SUGGESTED DE: "<em>Schale n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7–8 cm. Foto "
+
+120. [IDENTICAL] JaKyung Shin - JaKyung Shin_Bowl n handle
+   ID: MnHq3gipaho0Iv07wmzwvr
+   Issue: English and German text are identical
+   EN: "<em>Bowl n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7–8 cm. Photo "
+## SUGGESTED EN: "<em>Bowl n handle</em>, 2015. Silver 925, used Griffe, forged, mounted, L 7–8 cm. Photo "
+   DE: "<em>Bowl n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7–8 cm. Photo "
+## SUGGESTED DE: "<em>Schale n handle</em>, 2015. Silber 925, gebrauchte Griffe, geschmiedet, montiert, L 7–8 cm. Foto "
+
+121. [IDENTICAL] JaKyung Shin - JaKyung Shin_Cup dragged
+   ID: MnHq3gipaho0Iv07wmzx0w
+   Issue: English and German text are identical
+   EN: "<em>Cup dragged</em>, sketch."
+   DE: "<em>Cup dragged</em>, Skizze."
+   **TRANSLATION ADDED**
+
+122. [IDENTICAL] JaKyung Shin - JaKyung Shin_Cup dragged
+   ID: MnHq3gipaho0Iv07wmzx61
+   Issue: English and German text are identical
+   EN: "<em>Cup dragged</em>, 2010–2012. 925 silver, CAD design, forged, mounted, H 8 cm. Photo KC Studio"
+   DE: "<em>Cup dragged</em>, 2010–2012. Silber 925, CAD-Entwurf, geschmiedet, montiert, H 8 cm. Foto KC Stu"
+   **TRANSLATION ADDED**
+
+123. [IDENTICAL] JaKyung Shin - JaKyung Shin_Finger lickin´ spoons
+   ID: MnHq3gipaho0Iv07wmzxB6
+   Issue: English and German text are identical
+   EN: "<em>Finger lickin´ spoons</em>, 2013–2014. 999 silver, 925 silver, galvanized, mounted, L approx. 11,"
+   DE: "<em>Finger lickin´ spoons</em>, 2013–2014. Silber 999, Silber 925, galvanisiert, montiert, L ca. 11,"
+   **TRANSLATION ADDED**
+
+124. [IDENTICAL] Dong-Hyun Kim - Dong-Hyun Kim_Watering I
+   ID: MnHq3gipaho0Iv07wn02uk
+   Issue: English and German text are identical
+   EN: "Jug <em>Watering I</em>. 925 silver, 20 x 15 x 12 cm"
+   DE: "Kanne <em>Watering I</em>. Silber 925, 20 x 15 x 12 cm"
+## SUGGESTED DE: "Kanne <em>Watering I</em>. Silber 925, 20 × 15 × 12 cm"
+   **TRANSLATION ADDED**
+
+125. [IDENTICAL] Dong-Hyun Kim - Dong-Hyun Kim_Sharing
+   ID: MnHq3gipaho0Iv07wn02zp
+   Issue: English and German text are identical
+   EN: "Jug <em>Sharing</em>. Brass, silver plated, 14.5 x 21.5 x 11 cm"
+   DE: "Kanne <em>Sharing</em>. Messing, Silber plattiert, 14,5 x 21,5 x 11 cm"
+   **TRANSLATION ADDED**
+
+126. [IDENTICAL] Dong-Hyun Kim - Dong-Hyun Kim_Watering IV
+   ID: MnHq3gipaho0Iv07wn034u
+   Issue: English and German text are identical
+   EN: "Jug <em>Watering IV</em>. Brass, silver plated, 35 x 19 x 95 cm"
+   DE: "Kanne <em>Watering IV</em>. Messing, Silber plattiert, 35 x 19 x 95 cm"
+## SUGGESTED DE: "Kanne <em>Watering IV</em>. Messing, Silber plattiert, 35 × 19 × 95 cm"
+   **TRANSLATION ADDED**
+
+127. [IDENTICAL] Robert Korsikowski - Robert Korsikowski_EREMIT
+   ID: MnHq3gipaho0Iv07wn03yn
+   Issue: English and German text are identical
+   EN: "<em>EREMIT</em>, 2023. 420/110/450 mm."
+   DE: "<em>EREMIT</em>, 2023. 420/110/450 mm."
+   **TRANSLATION ADDED**
+
+128. [IDENTICAL] Robert Korsikowski - Robert Korsikowski_FLÜCHTER
+   ID: MnHq3gipaho0Iv07wn043s
+   Issue: English and German text are identical
+   EN: "<em>FLÜCHTER</em>, 2023. 360/160/480 mm."
+   DE: "<em>FLÜCHTER</em>, 2023. 360/160/480 mm."
+   **TRANSLATION ADDED**
+
+129. [IDENTICAL] Robert Korsikowski - Robert Korsikowski_INTERREGNUM
+   ID: MnHq3gipaho0Iv07wn048x
+   Issue: English and German text are identical
+   EN: "<em>INTERREGNUM</em>, 2023. 340/200/300 mm."
+   DE: "<em>INTERREGNUM</em>, 2023. 340/200/300 mm."
+   **TRANSLATION ADDED**
+
+130. [IDENTICAL] Robert Korsikowski - Robert Korsikowski_RUTSCHE
+   ID: MnHq3gipaho0Iv07wn04E2
+   Issue: English and German text are identical
+   EN: "<em>RUTSCHE</em>, 2024. 280/100/290 mm."
+   DE: "<em>RUTSCHE</em>, 2024. 280/100/290 mm."
+   **TRANSLATION ADDED**
+
+131. [IDENTICAL] Robert Korsikowski - Robert Korsikowski_WÄHLER
+   ID: MnHq3gipaho0Iv07wn04J7
+   Issue: English and German text are identical
+   EN: "<em>WÄHLER</em>, 2024. 250/140/250 mm."
+   DE: "<em>WÄHLER</em>, 2024. 250/140/250 mm."
+   **TRANSLATION ADDED**
+
+132. [IDENTICAL] Robert Korsikowski - Robert Korsikowski_KREUZ
+   ID: MnHq3gipaho0Iv07wn04OC
+   Issue: English and German text are identical
+   EN: "<em>KREUZ</em>, 2020.
+210/150/130 mm."
+   DE: "<em>KREUZ</em>, 2020.
+210/150/130 mm."
+
+133. [IDENTICAL] Sabine Lintzen - Sabine Lintzen_Bright Field Isar Green
+   ID: MnHq3gipaho0Iv07wn0BGy
+   Issue: English and German text are identical
+   EN: "Detail <em>Bright Field Isar Green</em>."
+   DE: "Detail <em>Bright Field Isar Green</em>."
+
+134. [IDENTICAL] Sabine Lintzen - Sabine Lintzen_Common Ray Olivine
+   ID: MnHq3gipaho0Iv07wn0BWD
+   Issue: English and German text are identical
+   EN: "Detail <em>Common Ray Olivine</em>."
+   DE: "Detail <em>Common Ray Olivine</em>."
+
+135. [IDENTICAL] Sabine Lintzen - Sabine Lintzen_Little Thread Montana Blue
+   ID: MnHq3gipaho0Iv07wn0BgN
+   Issue: English and German text are identical
+   EN: "Detail <em>Little Thread Montana Blue</em>."
+   DE: "Detail <em>Little Thread Montana Blue</em>."
+
+136. [IDENTICAL] Morten Lobner Espersen - Morten Lobner Espersen_Mushroom
+   ID: MnHq3gipaho0Iv07wn0DjO
+   Issue: English and German text are identical
+   EN: "Objekt <em>Mushroom</em> (Pilz), 2013. Keramik, 30x14 cm"
+## SUGGESTED EN: "Object <em>Mushroom</em> (Pilz), 2013. Ceramic, 30x14 cm"
+   DE: "Objekt <em>Mushroom</em> (Pilz), 2013. Keramik, 30x14 cm"
+
+137. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Chain1
+   ID: MnHq3gipaho0Iv07wn0DoT
+   Issue: English and German text are identical
+   EN: "<em>Chain1</em> necklace. 925 silver, plastic, lacquer. Photo Christian Klose."
+   DE: "<em>Chain1</em> necklace. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED DE: "<em>Chain1</em> Halskette. 925 Silber, plastic, Lack. Foto Christian Klose."
+
+138. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Chain2
+   ID: MnHq3gipaho0Iv07wn0DtY
+   Issue: English and German text are identical
+   EN: "<em>Chain2</em> necklace. 925 silver, plastic, lacquer. Photo Christian Klose."
+   DE: "<em>Chain2</em> necklace. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED DE: "<em>Chain2</em> Halskette. 925 Silber, plastic, Lack. Foto Christian Klose."
+
+139. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Chain3
+   ID: MnHq3gipaho0Iv07wn0Dyd
+   Issue: English and German text are identical
+   EN: "<em>Chain3</em> necklace. 925 silver, plastic, lacquer. Photo Christian Klose."
+   DE: "<em>Chain3</em> necklace. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED DE: "<em>Chain3</em> Halskette. 925 Silber, plastic, Lack. Foto Christian Klose."
+
+140. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Roll-on 1
+   ID: MnHq3gipaho0Iv07wn0E3i
+   Issue: English and German text are identical
+   EN: "<em>Roll-on 1</em> necklace. 925 silver, plastic, lacquer, stainless steel. Photo Christian Klose."
+   DE: "<em>Roll-on 1</em> necklace. 925 silver, plastic, lacquer, stainless steel. Photo Christian Klose."
+## SUGGESTED DE: "<em>Roll-on 1</em> Halskette. 925 Silber, plastic, Lack, stainless Stahl. Foto Christian Klose."
+
+141. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Roll-on Spot
+   ID: MnHq3gipaho0Iv07wn0E8n
+   Issue: English and German text are identical
+   EN: "<em>Roll-on Spot</em> necklace. 925 silver, plastic, lacquer, stainless steel. Photo Christian Klose"
+   DE: "<em>Roll-on Spot</em> necklace. 925 silver, plastic, lacquer, stainless steel. Photo Christian Klose"
+## SUGGESTED DE: "<em>Roll-on Spot</em> Halskette. 925 Silber, plastic, Lack, stainless Stahl. Foto Christian Klose"
+
+142. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Under Construction2
+   ID: MnHq3gipaho0Iv07wn0EDs
+   Issue: English and German text are identical
+   EN: "<em>Under Construction2</em> pin. 925 silver, stainless steel. Photo Christian Klose."
+   DE: "<em>Under Construction2</em> pin. 925 silver, stainless steel. Photo Christian Klose."
+## SUGGESTED DE: "<em>Under Construction2</em> pin. 925 Silber, stainless Stahl. Foto Christian Klose."
+
+143. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Under Construction2
+   ID: MnHq3gipaho0Iv07wn0EIx
+   Issue: English and German text are identical
+   EN: "<em>Under Construction2</em> pins. 925 silver, stainless steel. Photo Christian Klose."
+   DE: "<em>Under Construction2</em> pins. 925 silver, stainless steel. Photo Christian Klose."
+## SUGGESTED DE: "<em>Under Construction2</em> pins. 925 Silber, stainless Stahl. Foto Christian Klose."
+
+144. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Egg
+   ID: MnHq3gipaho0Iv07wn0EO2
+   Issue: English and German text are identical
+   EN: "<em>Egg</em> ring. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED EN: "<em>Egg</em> Ring. 925 silver, plastic, lacquer. Photo Christian Klose."
+   DE: "<em>Egg</em> ring. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED DE: "<em>Egg</em> Ring. 925 Silber, plastic, Lack. Foto Christian Klose."
+
+145. [IDENTICAL] Hanne Bay Luehrssen - Hanne Bay Luehrssen_Egg
+   ID: MnHq3gipaho0Iv07wn0ET7
+   Issue: English and German text are identical
+   EN: "<em>Egg</em> ring. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED EN: "<em>Egg</em> Ring. 925 silver, plastic, lacquer. Photo Christian Klose."
+   DE: "<em>Egg</em> ring. 925 silver, plastic, lacquer. Photo Christian Klose."
+## SUGGESTED DE: "<em>Egg</em> Ring. 925 Silber, plastic, Lack. Foto Christian Klose."
+
+146. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Papka
+   ID: MnHq3gipaho0Iv07wn0KmK
+   Issue: English and German text are identical
+   EN: "Paper object <em>Papka</em>"
+   DE: "Paper object <em>Papka</em>"
+## SUGGESTED DE: "Papierobjekt <em>Papka</em>"
+
+147. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Papka
+   ID: MnHq3gipaho0Iv07wn0KrP
+   Issue: English and German text are identical
+   EN: "Paper objects  <em>Papka</em>"
+   DE: "Paper objects  <em>Papka</em>"
+## SUGGESTED DE: "Papierobjekte <em>Papka</em>"
+
+148. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Helia
+   ID: MnHq3gipaho0Iv07wn0KwU
+   Issue: English and German text are identical
+   EN: "Light object <em>Helia</em>"
+   DE: "Light object <em>Helia</em>"
+## SUGGESTED DE: "Lichtobjekt <em>Helia</em>"
+
+149. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Coupole
+   ID: MnHq3gipaho0Iv07wn0L1Z
+   Issue: English and German text are identical
+   EN: "Pendant luminaire <em>Coupole</em>"
+   DE: "Pendant luminaire <em>Coupole</em>"
+## SUGGESTED DE: "Pendelleuchte <em>Coupole</em>"
+
+150. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Plain
+   ID: MnHq3gipaho0Iv07wn0L6e
+   Issue: English and German text are identical
+   EN: "Wall lamp <em>Plain</em>"
+   DE: "Wall lamp <em>Plain</em>"
+## SUGGESTED DE: "Wandleuchte <em>Plain</em>"
+
+151. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Paper bowls
+   ID: MnHq3gipaho0Iv07wn0LBj
+   Issue: English and German text are identical
+   EN: "Paper bowls"
+   DE: "Paper bowls"
+## SUGGESTED DE: "Papierschalen"
+
+152. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Glass sphere lamps
+   ID: MnHq3gipaho0Iv07wn0LGo
+   Issue: English and German text are identical
+   EN: "Glass sphere lamps"
+   DE: "Glaskugellampen"
+   **TRANSLATION ADDED**
+
+153. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Filament object
+   ID: MnHq3gipaho0Iv07wn0LLt
+   Issue: English and German text are identical
+   EN: "Filament object"
+   DE: "Filamentobjekt"
+   **TRANSLATION ADDED**
+
+154. [IDENTICAL] Ulrike Maeder - Ulrike Maeder_Copper circles
+   ID: MnHq3gipaho0Iv07wn0LQy
+   Issue: English and German text are identical
+   EN: "Copper circles"
+   DE: "Kupferkreise"
+   **TRANSLATION ADDED**
+
+155. [IDENTICAL] Niessing Wedding Rings - Niessing Wedding Rings_Ni Tecum
+   ID: MnHq3gipaho0Iv07wn0g0D
+   Issue: English and German text are identical
+   EN: "Wedding rings <em>Ni Tecum</em>. 750 gold, 900 gold/950 platinum, 950 platinum/900 gold."
+## SUGGESTED EN: "Wedding rings <em>Ni Tecum</em>. 750 Gold, 900 Gold/950 platinum, 950 platinum/900 Gold."
+   DE: "Trauringe <em>Ni Tecum</em>. 750 Gold, 900 Gold/950 Platin, 950 Platin/900 Gold."
+   **TRANSLATION ADDED**
+
+156. [IDENTICAL] Niessing Wedding Rings - Niessing Wedding Rings_Performance
+   ID: MnHq3gipaho0Iv07wn0g5I
+   Issue: English and German text are identical
+   EN: "Wedding rings <em>Performance</em>. 950 platinum/1000 gold. Price per piece from 3.850 Euro."
+## SUGGESTED EN: "Wedding rings <em>Performance</em>. 950 platinum/1000 Gold. Price per piece from 3.850 Euro."
+   DE: "Trauringe <em>Performance</em>. 950 Platin/1000 Gold. Preis pro Stück ab 3.850 Euro."
+   **TRANSLATION ADDED**
+
+157. [IDENTICAL] Niessing Wedding Rings - Niessing Wedding Rings_Signum
+   ID: MnHq3gipaho0Iv07wn0gAN
+   Issue: English and German text are identical
+   EN: "Wedding rings <em>Signum</em>. 750 gold, 750 gold/950 platinum. Colors: yellow, yellow/grey, yellow/"
+## SUGGESTED EN: "Wedding rings <em>Signum</em>. 750 Gold, 750 Gold/950 platinum. Colors: yellow, yellow/grey, yellow/"
+   DE: "Trauringe <em>Signum</em>. 750 Gold, 750 Gold/950 Platin. Farben: Gelb, Gelb/Grau, Gelb/..."
+   **TRANSLATION ADDED**
+
+158. [IDENTICAL] Niessing Wedding Rings - Niessing Wedding Rings_Tecum
+   ID: MnHq3gipaho0Iv07wn0gFS
+   Issue: English and German text are identical
+   EN: "Wedding rings <em>Tecum</em>. 750 gold, 900 gold/950 platinum, 950 platinum/900 gold. Colors: yellow"
+## SUGGESTED EN: "Wedding rings <em>Tecum</em>. 750 Gold, 900 Gold/950 platinum, 950 platinum/900 Gold. Colors: yellow"
+   DE: "Trauringe <em>Tecum</em>. 750 Gold, 900 Gold/950 Platin, 950 Platin/900 Gold. Farben: Gelb..."
+   **TRANSLATION ADDED**
+
+
+
+169. [IDENTICAL] Fine Light - Fine Light_Cylinder Magnet
+   ID: hEWOpVV05Nk2Wkv6vKs1O3
+   Issue: English and German text are identical
+   EN: "<em>Cylinder Magnet</em> bracelet, 0.35 mm laminated reflective material. Photo Hanna Pribitzer."
+   DE: "<em>Cylinder Magnet</em> Armreif, 0,35 mm laminiertes reflektierendes Material. Foto Hanna Pribitzer."
+   **TRANSLATION ADDED**
+
+170. [IDENTICAL] Fine Light - Fine Light_Hair
+   ID: hEWOpVV05Nk2Wkv6vKs1Wl
+   Issue: English and German text are identical
+   EN: "<em>Hair</em> Necklace, 0.35 mm laminated reflective material, knotted. Photo Hanna Pribitzer."
+   DE: "<em>Hair</em> Halskette, 0,35 mm laminiertes reflektierendes Material, geknüpft. Foto Hanna Pribitzer."
+   **TRANSLATION ADDED**
+
+171. [IDENTICAL] Fine Light - Fine Light_Cylinder Magnet
+   ID: hEWOpVV05Nk2Wkv6vKs29x
+   Issue: English and German text are identical
+   EN: "<em>Cylinder Magnet</em> bracelet. Laminated, reflective material, D 0.35 mm. Photo Hanna Pribitzer."
+   DE: "Armreif <em>Cylinder Magnet</em>. Laminiertes, reflektierendes Material, D 0,35 mm. Foto Hanna Pribi"
+   **TRANSLATION ADDED**
+
+172. [IDENTICAL] Stefanie Frye - Stefanie Frye_folded
+   ID: hEWOpVV05Nk2Wkv6vKs70R
+   Issue: English and German text are identical
+   EN: "Ohrhänger <em>folded</em>. Silber."
+## SUGGESTED EN: "Earrings <em>folded</em>. Silver."
+   DE: "Ohrhänger <em>folded</em>. Silber."
+
+173. [IDENTICAL] Achim Gersmann - Achim Gersmann_Crown QR
+   ID: hEWOpVV05Nk2Wkv6vKs7hz
+   Issue: English and German text are identical
+   EN: "Ring <em>Crown QR</em>. Gold 750, two brilliant-cut diamonds. Price on request. MJC Winner 2012."
+   DE: "Ring <em>Crown QR</em>. Gold 750, two brilliant-cut diamonds. Price on request. MJC Winner 2012."
+## SUGGESTED DE: "Ring <em>Crown QR</em>. Gold 750, two brilliant-cut Diamanten. Price on request. MJC Winner 2012."
+
+174. [IDENTICAL] Achim Gersmann - Achim Gersmann_SL
+   ID: hEWOpVV05Nk2Wkv6vKs7v3
+   Issue: English and German text are identical
+   EN: "Earring <em>SL</em>. Platinum 950, Gold 750, black diamonds. Price on request."
+   DE: "Earring <em>SL</em>. Platinum 950, Gold 750, black diamonds. Price on request."
+## SUGGESTED DE: "Ohrring <em>SL</em>. Platin 950, Gold 750, black Diamanten. Price on request."
+
+175. [IDENTICAL] Achim Gersmann - Achim Gersmann_Crown QR
+   ID: hEWOpVV05Nk2Wkv6vKs83l
+   Issue: English and German text are identical
+   EN: "Ring <em>Crown QR</em>. Gold 750, zwei Brillianten. Preis auf Anfrage. MJC Winner 2012."
+   DE: "Ring <em>Crown QR</em>. Gold 750, zwei Brillianten. Preis auf Anfrage. MJC Winner 2012."
+
+176. [IDENTICAL] Achim Gersmann - Achim Gersmann_SL
+   ID: hEWOpVV05Nk2Wkv6vKs887
+   Issue: English and German text are identical
+   EN: "Ohrring <em>SL</em>. Platin 950, Gold 750, schwarze Diamanten. Preis auf Anfrage."
+## SUGGESTED EN: "Earring <em>SL</em>. Platinum 950, Gold 750, schwarze diamonds. Preis auf Anfrage."
+   DE: "Ohrring <em>SL</em>. Platin 950, Gold 750, schwarze Diamanten. Preis auf Anfrage."
+
+177. [IDENTICAL] Batho Gündra - Batho Gündra_Little Barrels
+   ID: hEWOpVV05Nk2Wkv6vKsA63
+   Issue: English and German text are identical
+   EN: "Necklace <em>Little Barrels</em>. 750 yellow gold and coral or gemstones, as desired. MJC Winner 201"
+## SUGGESTED EN: "Necklace <em>Little Barrels</em>. 750 yellow Gold and coral or gemstones, as desired. MJC Winner 201"
+   DE: "Necklace <em>Little Barrels</em>. 750 yellow gold and coral or gemstones, as desired. MJC Winner 201"
+## SUGGESTED DE: "Halskette <em>Little Barrels</em>. 750 yellow Gold and coral or gemstones, as desired. MJC Winner 201"
+
+178. [IDENTICAL] Batho Gündra - Batho Gündra_Tönnchenkette
+   ID: hEWOpVV05Nk2Wkv6vKsANT
+   Issue: English and German text are identical
+   EN: "Halskette <em>Tönnchenkette</em>. Gelbgold 750, Korallenkonstrukt, wahlweise Edelsteine. MJC Winner "
+## SUGGESTED EN: "Necklace <em>Tönnchenkette</em>. Gelbgold 750, Korallenkonstrukt, wahlweise Edelsteine. MJC Winner "
+   DE: "Halskette <em>Tönnchenkette</em>. Gelbgold 750, Korallenkonstrukt, wahlweise Edelsteine. MJC Winner "
+
+179. [IDENTICAL] Angela Huebel - Angela Huebel_Domino
+   ID: hEWOpVV05Nk2Wkv6vKsLKp
+   Issue: English and German text are identical
+   EN: "<em>Domino</em> ring, with 4 diamond lines in 750 rose gold."
+## SUGGESTED EN: "<em>Domino</em> Ring, with 4 diamond lines in 750 rose Gold."
+   DE: "<em>Domino</em> ring, with 4 diamond lines in 750 rose gold."
+## SUGGESTED DE: "<em>Domino</em> Ring, with 4 diamond lines in 750 rose Gold."
+
+180. [IDENTICAL] Angela Huebel - Angela Huebel_Feuerwerk
+   ID: hEWOpVV05Nk2Wkv6vKsLPB
+   Issue: English and German text are identical
+   EN: "<em>Feuerwerk</em> with diamonds in 750 rose gold."
+## SUGGESTED EN: "<em>Feuerwerk</em> with diamonds in 750 rose Gold."
+   DE: "<em>Feuerwerk</em> with diamonds in 750 rose gold."
+## SUGGESTED DE: "<em>Feuerwerk</em> with Diamanten in 750 rose Gold."
+
+181. [IDENTICAL] Angela Huebel - Angela Huebel_Schlossgarten
+   ID: hEWOpVV05Nk2Wkv6vKsLTX
+   Issue: English and German text are identical
+   EN: "<em>Schlossgarten</em> ring, 750 gold."
+## SUGGESTED EN: "<em>Schlossgarten</em> Ring, 750 Gold."
+   DE: "<em>Schlossgarten</em> ring, 750 gold."
+## SUGGESTED DE: "<em>Schlossgarten</em> Ring, 750 Gold."
+
+182. [IDENTICAL] Angela Huebel - Angela Huebel_Navette
+   ID: hEWOpVV05Nk2Wkv6vKsLXt
+   Issue: English and German text are identical
+   EN: "<em>Navette</em> pendant, narrow with garnet in 750 rose gold."
+## SUGGESTED EN: "<em>Navette</em> pendant, narrow with garnet in 750 rose Gold."
+   DE: "<em>Navette</em> pendant, narrow with garnet in 750 rose gold."
+## SUGGESTED DE: "<em>Navette</em> Anhänger, narrow with garnet in 750 rose Gold."
+
+183. [IDENTICAL] Angela Huebel - Angela Huebel_Bermuda
+   ID: hEWOpVV05Nk2Wkv6vKsLcF
+   Issue: English and German text are identical
+   EN: "<em>Bermuda</em> ring. 750 gold, diamonds. Photo Matthias Hoffmann."
+## SUGGESTED EN: "<em>Bermuda</em> Ring. 750 Gold, diamonds. Photo Matthias Hoffmann."
+   DE: "<em>Bermuda</em> ring. 750 gold, diamonds. Photo Matthias Hoffmann."
+## SUGGESTED DE: "<em>Bermuda</em> Ring. 750 Gold, Diamanten. Foto Matthias Hoffmann."
+
+184. [IDENTICAL] Angela Huebel - Angela Huebel_Liaison 1
+   ID: hEWOpVV05Nk2Wkv6vKsLgb
+   Issue: English and German text are identical
+   EN: "Ring <em>Liaison 1</em> with brilliant-cut diamonds."
+   DE: "Ring <em>Liaison 1</em> with brilliant-cut diamonds."
+## SUGGESTED DE: "Ring <em>Liaison 1</em> with brilliant-cut Diamanten."
+
+185. [IDENTICAL] Angela Huebel - Angela Huebel_Mondschein
+   ID: hEWOpVV05Nk2Wkv6vKsLkx
+   Issue: English and German text are identical
+   EN: "<em>Mondschein</em> ring with green moonstone."
+## SUGGESTED EN: "<em>Mondschein</em> Ring with green moonstone."
+   DE: "<em>Mondschein</em> ring with green moonstone."
+## SUGGESTED DE: "<em>Mondschein</em> Ring with green moonstone."
+
+186. [IDENTICAL] Angela Huebel - Angela Huebel_Schatzinsel
+   ID: hEWOpVV05Nk2Wkv6vKsLpJ
+   Issue: English and German text are identical
+   EN: "<em>Schatzinsel</em> ring with peridot."
+## SUGGESTED EN: "<em>Schatzinsel</em> Ring with peridot."
+   DE: "<em>Schatzinsel</em> ring with peridot."
+## SUGGESTED DE: "<em>Schatzinsel</em> Ring with peridot."
+
+187. [IDENTICAL] Angela Huebel - Angela Huebel_Cinque
+   ID: hEWOpVV05Nk2Wkv6vKsLtf
+   Issue: English and German text are identical
+   EN: "Ring <em>Cinque</em> with brilliant-cut diamonds."
+   DE: "Ring <em>Cinque</em> with brilliant-cut diamonds."
+## SUGGESTED DE: "Ring <em>Cinque</em> with brilliant-cut Diamanten."
+
+188. [IDENTICAL] Angela Huebel - Angela Huebel_Magic Sunshine
+   ID: hEWOpVV05Nk2Wkv6vKsLy1
+   Issue: English and German text are identical
+   EN: "Ring <em>Magic Sunshine</em> with amethyst."
+   DE: "Ring <em>Magic Sunshine</em> with amethyst."
+
+189. [IDENTICAL] Angela Huebel - Angela Huebel_Perl-Insel
+   ID: hEWOpVV05Nk2Wkv6vKsM2N
+   Issue: English and German text are identical
+   EN: "Ring <em>Perl-Insel</em> with Tahiti pearl."
+   DE: "Ring <em>Perl-Insel</em> with Tahiti pearl."
+
+190. [IDENTICAL] Angela Huebel - Angela Huebel_Regatta
+   ID: hEWOpVV05Nk2Wkv6vKsM6j
+   Issue: English and German text are identical
+   EN: "Ring <em>Regatta</em> with tourmaline."
+   DE: "Ring <em>Regatta</em> with tourmaline."
+
+191. [IDENTICAL] Angela Huebel - Angela Huebel_Zebra
+   ID: hEWOpVV05Nk2Wkv6vKsMB5
+   Issue: English and German text are identical
+   EN: "Ring <em>Zebra</em> with brilliant-cut diamond."
+   DE: "Ring <em>Zebra</em> with brilliant-cut diamond."
+
+192. [IDENTICAL] Angela Huebel - Angela Huebel_Mikado
+   ID: hEWOpVV05Nk2Wkv6vKsMFR
+   Issue: English and German text are identical
+   EN: "<em>Mikado</em> ring with pearl."
+## SUGGESTED EN: "<em>Mikado</em> Ring with pearl."
+   DE: "<em>Mikado</em> ring with pearl."
+## SUGGESTED DE: "<em>Mikado</em> Ring with pearl."
+
+193. [IDENTICAL] Angela Huebel - Angela Huebel_Bond Wide
+   ID: hEWOpVV05Nk2Wkv6vKsMJn
+   Issue: English and German text are identical
+   EN: "<em>Bond Wide</em> wedding rings."
+   DE: "<em>Bond Wide</em> wedding rings."
+## SUGGESTED DE: "<em>Bond Wide</em> Trauringe."
+
+194. [IDENTICAL] Angela Huebel - Angela Huebel_Schatzinsel
+   ID: hEWOpVV05Nk2Wkv6vKsMO9
+   Issue: English and German text are identical
+   EN: "<em>Schatzinsel</em> earring with brilliant-cut diamond."
+   DE: "<em>Schatzinsel</em> earring with brilliant-cut diamond."
+## SUGGESTED DE: "<em>Schatzinsel</em> Ohrring with brilliant-cut diamond."
+
+
+
+
+
+
+
+
+207. [IDENTICAL] Kristiina Lassus - Kristiina Lassus_Untitled
+   ID: hEWOpVV05Nk2Wkv6vKsRrp
+   Issue: English and German text are identical
+   EN: "Loom LS / design J.Gullichsen"
+   DE: "Loom LS / design J.Gullichsen"
+
+208. [IDENTICAL] Felix Mueller - Felix Mueller_Sputnik
+   ID: hEWOpVV05Nk2Wkv6vKsXYZ
+   Issue: English and German text are identical
+   EN: "<em>Sputnik</em> floor lamp. Copper, steel"
+   DE: "<em>Sputnik</em> floor lamp. Copper, steel"
+## SUGGESTED DE: "<em>Sputnik</em> Stehlampe. Kupfer, Stahl"
+
+209. [IDENTICAL] Felix Mueller - Felix Mueller_Sputnik2
+   ID: hEWOpVV05Nk2Wkv6vKsXcv
+   Issue: English and German text are identical
+   EN: "<em>Sputnik2</em> floor lamp. Brass, steel. Detail"
+   DE: "<em>Sputnik2</em> floor lamp. Brass, steel. Detail"
+## SUGGESTED DE: "<em>Sputnik2</em> Stehlampe. Messing, Stahl. Detail"
+
+210. [IDENTICAL] Felix Mueller - Felix Mueller_Untitled
+   ID: hEWOpVV05Nk2Wkv6vKsXhH
+   Issue: English and German text are identical
+   EN: "Table. Steel, plywood, adjustable for height"
+   DE: "Table. Steel, plywood, adjustable for height"
+## SUGGESTED DE: "Table. Stahl, plywood, adjustable for height"
+
+211. [IDENTICAL] Joo Hyung Park - Joo Hyung Park_Untitled
+   ID: hEWOpVV05Nk2Wkv6vKsbD1
+   Issue: English and German text are identical
+   EN: "Tafelgeschirr <em>Concealed.</em> (verborgen), 2014. Holz, Metall."
+## SUGGESTED EN: "Tableware <em>Concealed</em> (hidden), 2014. Wood, metal."
+   DE: "Tafelgeschirr <em>Concealed.</em> (verborgen), 2014. Holz, Metall."
+
+
