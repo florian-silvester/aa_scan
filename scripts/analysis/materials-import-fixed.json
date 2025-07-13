@@ -1,0 +1,354 @@
+[
+  {
+    "_type": "material",
+    "name": {
+      "en": "Gold",
+      "de": "Gold"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "gold"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Silver",
+      "de": "Silber"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "silver"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Glass",
+      "de": "Glas"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "glass"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Ceramic",
+      "de": "Keramik"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "ceramic"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Porcelain",
+      "de": "Porzellan"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "porcelain"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Steel",
+      "de": "Stahl"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "steel"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Stainless Steel",
+      "de": "Edelstahl"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "stainless-steel"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Copper",
+      "de": "Kupfer"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "copper"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Textile",
+      "de": "Textil"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "textile"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Silk",
+      "de": "Seide"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "silk"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Paper",
+      "de": "Papier"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "paper"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Bronze",
+      "de": "Bronze"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bronze"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Clay",
+      "de": "Ton"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "clay"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Wool",
+      "de": "Wolle"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "wool"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Cotton",
+      "de": "Baumwolle"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "cotton"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Platinum",
+      "de": "Platin"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "platinum"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Pearls",
+      "de": "Perlen"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "pearls"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Diamonds",
+      "de": "Diamanten"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "diamonds"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Stoneware",
+      "de": "Steinzeug"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "stoneware"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Studio Glass",
+      "de": "Studioglas"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "studio-glass"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Terra Cotta",
+      "de": "Terrakotta"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "terra-cotta"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Glaze",
+      "de": "Glasur"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "glaze"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Engobe",
+      "de": "Engobe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "engobe"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Metal",
+      "de": "Metall"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "metal"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Yellow Gold",
+      "de": "Gelbgold"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "yellow-gold"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Rose Gold",
+      "de": "Rotgold"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "rose-gold"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "18k Gold",
+      "de": "750 Gold"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "18k-gold"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Sterling Silver",
+      "de": "925 Silber"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "sterling-silver"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Fine Gold",
+      "de": "Feingold"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "fine-gold"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Gold Plated",
+      "de": "Vergoldet"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "gold-plated"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Blackened",
+      "de": "Geschwärzt"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "blackened"
+    }
+  },
+  {
+    "_type": "material",
+    "name": {
+      "en": "Plated",
+      "de": "Plattiert"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "plated"
+    }
+  }
+]

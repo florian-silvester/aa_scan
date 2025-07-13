@@ -65,6 +65,7 @@ export default function ArtworkGallery() {
   const [searchText, setSearchText] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedMaker, setSelectedMaker] = useState('')
+  const [selectedFinish, setSelectedFinish] = useState('')
   
   const client = useClient()
 
@@ -82,6 +83,8 @@ export default function ArtworkGallery() {
           category->{title, titleDe},
           materialEn,
           materialDe,
+          materials[]->{title},
+          finishes[]->{title},
           imageId,
           "imageUrl": images[0].asset->url,
           "thumbnailUrl": images[0].asset->url + "?w=400&h=300&fit=crop&fm=webp",
@@ -111,6 +114,10 @@ export default function ArtworkGallery() {
     artwork.maker?.name).filter(Boolean)
   )].sort()
 
+  const uniqueFinishes = [...new Set(artworks.flatMap(artwork => 
+    artwork.finishes ? artwork.finishes.map(finish => finish.title).filter(Boolean) : []
+  ))].sort()
+
   // Filter artworks
   useEffect(() => {
     let filtered = artworks
@@ -136,8 +143,14 @@ export default function ArtworkGallery() {
       filtered = filtered.filter(artwork => artwork.maker?.name === selectedMaker)
     }
 
+    if (selectedFinish) {
+      filtered = filtered.filter(artwork => 
+        artwork.finishes && artwork.finishes.some(finish => finish.title === selectedFinish)
+      )
+    }
+
     setFilteredArtworks(filtered)
-  }, [artworks, searchText, selectedCategory, selectedMaker])
+  }, [artworks, searchText, selectedCategory, selectedMaker, selectedFinish])
 
   const openArtwork = (artwork) => {
     // Use Sanity's intent system for navigation

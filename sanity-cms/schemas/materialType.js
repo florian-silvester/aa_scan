@@ -1,3 +1,5 @@
+import {TitleCaseInput} from '../components/TitleCaseInput'
+
 export default {
   name: 'materialType',
   title: 'Material Type',
@@ -14,13 +16,19 @@ export default {
           name: 'en',
           title: 'English',
           type: 'string',
-          validation: Rule => Rule.required()
+          validation: Rule => Rule.required(),
+          components: {
+            input: TitleCaseInput
+          }
         },
         {
           name: 'de',
           title: 'German',
           type: 'string',
-          validation: Rule => Rule.required()
+          validation: Rule => Rule.required(),
+          components: {
+            input: TitleCaseInput
+          }
         }
       ]
     },
@@ -73,15 +81,11 @@ export default {
     select: {
       nameEn: 'name.en',
       nameDe: 'name.de',
-      sortOrder: 'sortOrder',
-      descriptionEn: 'description.en',
-      descriptionDe: 'description.de'
+      sortOrder: 'sortOrder'
     },
-    prepare(selection) {
-      const { nameEn, nameDe, sortOrder, descriptionEn, descriptionDe } = selection
-      const title = nameEn || nameDe || 'Untitled Type'
-      const description = descriptionEn || descriptionDe
-      const subtitle = description ? `${description} (Order: ${sortOrder})` : `Order: ${sortOrder}`
+    prepare({nameEn, nameDe, sortOrder}) {
+      const title = nameEn || nameDe || 'Untitled Material Type'
+      const subtitle = sortOrder ? `Sort: ${sortOrder}` : 'No sort order'
       return {
         title,
         subtitle

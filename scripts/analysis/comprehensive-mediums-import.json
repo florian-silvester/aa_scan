@@ -1,0 +1,431 @@
+[
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Ring",
+      "de": "Ring"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "ring"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Rings",
+      "de": "Ringe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "rings"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Wedding Rings",
+      "de": "Trauringe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "wedding-rings"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Necklace",
+      "de": "Halskette"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "necklace"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Chain",
+      "de": "Kette"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "chain"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Collier",
+      "de": "Collier"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "collier"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Earrings",
+      "de": "Ohrringe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "earrings"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Brooch",
+      "de": "Brosche"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "brooch"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Pendant",
+      "de": "Anhänger"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "pendant"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bracelet",
+      "de": "Armreif"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bracelet"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bangle",
+      "de": "Armspange"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bangle"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bangles",
+      "de": "Armspangen"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bangles"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Cufflinks",
+      "de": "Manschettenknöpfe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "cufflinks"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Vase",
+      "de": "Vase"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "vase"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Vessel",
+      "de": "Gefäß"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "vessel"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Vessels",
+      "de": "Gefäße"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "vessels"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bowl",
+      "de": "Schale"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bowl"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bowls",
+      "de": "Schalen"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bowls"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Cup",
+      "de": "Becher"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "cup"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Cups",
+      "de": "Becher"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "cups"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Plate",
+      "de": "Teller"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "plate"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Dish",
+      "de": "Schüssel"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "dish"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Tableware",
+      "de": "Tafelgeschirr"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "tableware"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Cutlery",
+      "de": "Besteck"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "cutlery"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Spoon",
+      "de": "Löffel"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "spoon"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Spoons",
+      "de": "Löffel"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "spoons"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Lamp",
+      "de": "Lampe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "lamp"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Lamps",
+      "de": "Lampen"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "lamps"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Oil Lamp",
+      "de": "Öllampe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "oil-lamp"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Floor Lamp",
+      "de": "Stehlampe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "floor-lamp"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Chair",
+      "de": "Stuhl"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "chair"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Table",
+      "de": "Tisch"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "table"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Furniture",
+      "de": "Möbel"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "furniture"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Carpet",
+      "de": "Teppich"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "carpet"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Quilt",
+      "de": "Quilt"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "quilt"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Scarf",
+      "de": "Schal"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "scarf"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Sculpture",
+      "de": "Skulptur"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "sculpture"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Installation",
+      "de": "Installation"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "installation"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Object",
+      "de": "Objekt"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "object"
+    }
+  }
+]

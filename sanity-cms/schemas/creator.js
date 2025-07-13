@@ -52,6 +52,47 @@ export default {
       description: 'Images of the creator\'s studio/workspace',
     },
     {
+      name: 'galleryImages',
+      title: 'Gallery Images',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            },
+            {
+              name: 'title',
+              title: 'Image Title',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            }
+          ]
+        }
+      ],
+      description: 'Portfolio/gallery images showcasing the creator\'s work, process, or artistic environment',
+    },
+    {
       name: 'biography',
       title: 'Biography',
       type: 'object',

@@ -119,6 +119,20 @@ export default {
       description: 'Select materials. Use the "+" button to create new materials if needed.'
     },
     {
+      name: 'finishes',
+      title: 'Finishes',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'finish'}]
+        }
+      ],
+      group: 'details',
+      fieldset: 'physical',
+      description: 'Select finishes/surface treatments. Use the "+" button to create new finishes if needed.'
+    },
+    {
       name: 'size',
       title: 'Size/Dimensions',
       type: 'string',

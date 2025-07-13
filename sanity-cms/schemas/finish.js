@@ -1,16 +1,16 @@
 import {TitleCaseInput} from '../components/TitleCaseInput'
 
 export default {
-  name: 'material',
-  title: 'Material',
+  name: 'finish',
+  title: 'Finish',
   type: 'document',
   fields: [
     {
       name: 'name',
-      title: 'Material Name',
+      title: 'Finish Name',
       type: 'object',
       validation: Rule => Rule.required(),
-      description: 'e.g., Gold, Silver, Bronze, Ceramic, Wood',
+      description: 'e.g., Polished, Matte, Brushed, Patinated',
       fields: [
         {
           name: 'en',
@@ -36,7 +36,7 @@ export default {
       name: 'description',
       title: 'Description',
       type: 'object',
-      description: 'Brief description of this material type',
+      description: 'Brief description of this finish type',
       fields: [
         {name: 'en', title: 'English', type: 'text'},
         {name: 'de', title: 'German', type: 'text'}
@@ -53,13 +53,6 @@ export default {
       validation: Rule => Rule.required()
     },
     {
-      name: 'materialType',
-      title: 'Material Type',
-      type: 'reference',
-      to: [{type: 'materialType'}],
-      description: 'Select a material type. Use the "+" button to create new material types if needed.'
-    },
-    {
       name: 'sortOrder',
       title: 'Sort Order',
       type: 'number',
@@ -70,24 +63,20 @@ export default {
       name: 'usageCount',
       title: 'Usage Count',
       type: 'number',
-      description: 'Number of artworks using this material (from analysis)',
+      description: 'Number of artworks using this finish (from analysis)',
       readOnly: true
     }
   ],
   preview: {
     select: {
       nameEn: 'name.en',
-      nameDe: 'name.de',
-      materialTypeEn: 'materialType.name.en',
-      materialTypeDe: 'materialType.name.de'
+      nameDe: 'name.de'
     },
-    prepare({nameEn, nameDe, materialTypeEn, materialTypeDe}) {
-      const title = nameEn || nameDe || 'Untitled Material'
-      const typeName = materialTypeEn || materialTypeDe
-      const subtitle = typeName ? `Type: ${typeName}` : 'No type assigned'
+    prepare({nameEn, nameDe}) {
+      const title = nameEn || nameDe || 'Untitled Finish'
       return {
         title,
-        subtitle
+        subtitle: `Finish: ${title}`
       }
     }
   }

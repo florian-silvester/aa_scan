@@ -1,0 +1,28 @@
+
+=== COMPREHENSIVE MATERIALS & MEDIUMS EXTRACTION ===
+
+MATERIALS FOUND: 53
+- Basic metals: Gold, Silver, Copper, Bronze, Steel, Platinum, etc.
+- Precious metal variants: White Gold, Yellow Gold, Rose Gold, Gold 750, Silver 925, etc.
+- Ceramic & glass: Ceramic, Porcelain, Glass, Studio Glass, Clay, Stoneware, etc.
+- Textiles: Silk, Cotton, Wool, Merino, etc.
+- Natural materials: Wood, Oak, Paper, Pearls, Crystal, Diamonds, etc.
+- Finishes & treatments: Oxidized, Blackened, Plated, Gold Plated, Enamel, etc.
+
+MEDIUMS FOUND: 39
+- Jewelry: Ring, Necklace, Earrings, Brooch, Pendant, Bracelet, Bangle, etc.
+- Vessels: Vase, Vessel, Bowl, Cup, Plate, Dish, etc.
+- Tableware: Tableware, Cutlery, Spoon, etc.
+- Lighting: Lamp, Oil Lamp, Floor Lamp, etc.
+- Furniture: Chair, Table, Furniture, etc.
+- Textiles: Carpet, Quilt, Scarf, etc.
+- Art objects: Sculpture, Installation, Object, etc.
+
+TOTAL ENTRIES: 92
+
+FILES CREATED:
+- comprehensive-materials-import.json (53 entries)
+- comprehensive-mediums-import.json (39 entries)
+
+This represents a comprehensive extraction of materials and mediums 
+discovered from analyzing 1709 artwork captions.

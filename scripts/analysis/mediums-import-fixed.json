@@ -1,0 +1,200 @@
+[
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Ring",
+      "de": "Ring"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "ring"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Rings",
+      "de": "Ringe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "rings"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Necklace",
+      "de": "Halskette"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "necklace"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Chain",
+      "de": "Kette"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "chain"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Earrings",
+      "de": "Ohrringe"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "earrings"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Ear Jewelry",
+      "de": "Ohrschmuck"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "ear-jewelry"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Brooch",
+      "de": "Brosche"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "brooch"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Pendant",
+      "de": "Anhänger"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "pendant"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bracelet",
+      "de": "Armreif"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bracelet"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Neck Jewelry",
+      "de": "Halsschmuck"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "neck-jewelry"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Vase",
+      "de": "Vase"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "vase"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Vessel",
+      "de": "Gefäß"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "vessel"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bowl",
+      "de": "Schale"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bowl"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Bowls",
+      "de": "Schalen"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "bowls"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Vessels",
+      "de": "Gefäße"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "vessels"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Scarf",
+      "de": "Schal"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "scarf"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Quilt",
+      "de": "Quilt"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "quilt"
+    }
+  },
+  {
+    "_type": "medium",
+    "name": {
+      "en": "Carpet",
+      "de": "Teppich"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "carpet"
+    }
+  }
+]

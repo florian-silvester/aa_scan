@@ -208,12 +208,46 @@ export default defineConfig({
                                     )
                                   )
                               }),
+
+                            // By Finish
+                            S.listItem()
+                              .id('byFinish')
+                              .title('By Finish')
+                              .child(async () => {
+                                const client = S.context.getClient({ apiVersion: '2023-01-01' })
+                                
+                                // Get all unique finishes from artworks
+                                const finishes = await client.fetch(`
+                                  *[_type == "finish"] {
+                                    _id,
+                                    "name": title.en,
+                                    "slug": slug.current
+                                  } | order(name asc)
+                                `)
+                                
+                                return S.list()
+                                  .title('By Finish')
+                                  .items(
+                                    finishes.map(finish => 
+                                      S.listItem()
+                                        .id(finish._id)
+                                        .title(finish.name)
+                                        .child(
+                                          S.documentList()
+                                            .title(`${finish.name} Artworks`)
+                                            .filter(`_type == "artwork" && $finishId in finishes[]._ref`)
+                                            .params({ finishId: finish._id })
+                                        )
+                                    )
+                                  )
+                              }),
                           ])
                       ),
                     
                     S.divider(),
                     S.documentTypeListItem('medium').title('Medium Types'),
                     S.documentTypeListItem('material').title('Materials'),
+                    S.documentTypeListItem('finish').title('Finishes'),
                     S.documentTypeListItem('materialType').title('Material Types'),
                   ])
               ),

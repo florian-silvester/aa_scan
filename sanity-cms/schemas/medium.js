@@ -1,3 +1,5 @@
+import {TitleCaseInput} from '../components/TitleCaseInput'
+
 export default {
   name: 'medium',
   title: 'Medium',
@@ -8,19 +10,25 @@ export default {
       title: 'Medium Name',
       type: 'object',
       validation: Rule => Rule.required(),
-      description: 'e.g., Vase, Chair, Ring, Brooch, Necklace',
+      description: 'e.g., Vase, Chair, Ring, Brooch, Necklace, Bracelet',
       fields: [
         {
           name: 'en',
           title: 'English',
           type: 'string',
-          validation: Rule => Rule.required()
+          validation: Rule => Rule.required(),
+          components: {
+            input: TitleCaseInput
+          }
         },
         {
           name: 'de',
           title: 'German',
           type: 'string',
-          validation: Rule => Rule.required()
+          validation: Rule => Rule.required(),
+          components: {
+            input: TitleCaseInput
+          }
         }
       ]
     },
@@ -50,6 +58,13 @@ export default {
       type: 'number',
       description: 'Used for ordering in dropdowns (lower numbers appear first)',
       initialValue: 100
+    },
+    {
+      name: 'usageCount',
+      title: 'Usage Count',
+      type: 'number',
+      description: 'Number of artworks using this medium (from analysis)',
+      readOnly: true
     }
   ],
   preview: {
