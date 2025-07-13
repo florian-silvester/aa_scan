@@ -8,5 +8,6 @@ import location from './location.js'
 import material from './material.js'
 import materialType from './materialType.js'
 import medium from './medium.js'
+import webflowSyncSettings from './webflowSyncSettings.js'
 
-export const schemaTypes = [artwork, category, city, country, creator, finish, location, material, materialType, medium] 
+export const schemaTypes = [artwork, category, city, country, creator, finish, location, material, materialType, medium, webflowSyncSettings] 
