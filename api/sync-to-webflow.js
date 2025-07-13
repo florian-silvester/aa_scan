@@ -1,8 +1,6 @@
 const {createClient} = require('@sanity/client')
 const crypto = require('crypto')
 const https = require('https')
-const fs = require('fs').promises
-const path = require('path')
 
 // Sanity client
 const sanityClient = createClient({
@@ -39,29 +37,44 @@ const idMappings = {
   creator: new Map()
 }
 
-// Asset tracking system for incremental image sync
-const ASSET_MAPPINGS_FILE = path.join(__dirname, 'asset-mappings.json')
+// Asset tracking system for incremental image sync (using Sanity as storage)
 let assetMappings = new Map()
 
-// Load asset mappings from file
+// Load asset mappings from Sanity
 async function loadAssetMappings() {
   try {
-    const data = await fs.readFile(ASSET_MAPPINGS_FILE, 'utf8')
-    const mappings = JSON.parse(data)
-    assetMappings = new Map(Object.entries(mappings))
-    console.log(`📁 Loaded ${assetMappings.size} asset mappings`)
+    const result = await sanityClient.fetch(`
+      *[_type == "webflowSyncSettings" && _id == "asset-mappings"][0] {
+        assetMappings
+      }
+    `)
+    
+    if (result?.assetMappings) {
+      assetMappings = new Map(Object.entries(result.assetMappings))
+      console.log(`📁 Loaded ${assetMappings.size} asset mappings from Sanity`)
+    } else {
+      console.log('📁 No existing asset mappings found, starting fresh')
+      assetMappings = new Map()
+    }
   } catch (error) {
-    console.log('📁 No existing asset mappings found, starting fresh')
+    console.log('📁 Failed to load asset mappings, starting fresh:', error.message)
     assetMappings = new Map()
   }
 }
 
-// Save asset mappings to file
+// Save asset mappings to Sanity
 async function saveAssetMappings() {
   try {
     const mappings = Object.fromEntries(assetMappings)
-    await fs.writeFile(ASSET_MAPPINGS_FILE, JSON.stringify(mappings, null, 2))
-    console.log(`💾 Saved ${assetMappings.size} asset mappings`)
+    
+    await sanityClient.createOrReplace({
+      _type: 'webflowSyncSettings',
+      _id: 'asset-mappings',
+      assetMappings: mappings,
+      lastUpdated: new Date().toISOString()
+    })
+    
+    console.log(`💾 Saved ${assetMappings.size} asset mappings to Sanity`)
   } catch (error) {
     console.error('❌ Failed to save asset mappings:', error.message)
   }
@@ -83,6 +96,7 @@ function hasImageMetadataChanged(sanityImage, trackedAsset) {
 // Update image metadata in Webflow
 async function updateImageMetadata(webflowAssetId, altText) {
   try {
+    // Try the standard assets endpoint first
     await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/assets/${webflowAssetId}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -92,8 +106,20 @@ async function updateImageMetadata(webflowAssetId, altText) {
     console.log(`  🏷️  Updated alt text: ${altText}`)
     return true
   } catch (error) {
-    console.warn(`  ⚠️  Failed to update alt text: ${error.message}`)
-    return false
+    // If that fails, try alternative format
+    try {
+      await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/assets/${webflowAssetId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          alt: altText || ''
+        })
+      })
+      console.log(`  🏷️  Updated alt text (alt format): ${altText}`)
+      return true
+    } catch (error2) {
+      console.warn(`  ⚠️  Failed to update alt text (tried both formats): ${error.message}`)
+      return false
+    }
   }
 }
 
@@ -216,30 +242,69 @@ async function createWebflowItems(collectionId, items) {
   return results
 }
 
-// Delete items from Webflow
+// Delete items from Webflow (with batch processing)
 async function deleteWebflowItems(collectionId, itemIds) {
   const results = []
+  const batchSize = 10  // Delete in smaller batches to avoid rate limits
   
-  for (const itemId of itemIds) {
-    try {
-      await webflowRequest(`/collections/${collectionId}/items/${itemId}`, {
-        method: 'DELETE'
-      })
-      results.push({ itemId, status: 'deleted' })
-    } catch (error) {
-      console.error(`Failed to delete ${itemId}:`, error.message)
-      results.push({ itemId, status: 'error', error: error.message })
+  for (let i = 0; i < itemIds.length; i += batchSize) {
+    const batch = itemIds.slice(i, i + batchSize)
+    console.log(`  🗑️  Deleting batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(itemIds.length/batchSize)} (${batch.length} items)`)
+    
+    const batchPromises = batch.map(async (itemId) => {
+      try {
+        await webflowRequest(`/collections/${collectionId}/items/${itemId}`, {
+          method: 'DELETE'
+        })
+        return { itemId, status: 'deleted' }
+      } catch (error) {
+        console.warn(`  ⚠️  Failed to delete ${itemId}: ${error.message}`)
+        return { itemId, status: 'error', error: error.message }
+      }
+    })
+    
+    const batchResults = await Promise.allSettled(batchPromises)
+    results.push(...batchResults.map(r => r.status === 'fulfilled' ? r.value : r.reason))
+    
+    // Small delay between batches to avoid rate limits
+    if (i + batchSize < itemIds.length) {
+      await new Promise(resolve => setTimeout(resolve, 100))
     }
+  }
+  
+  const successCount = results.filter(r => r.status === 'deleted').length
+  const errorCount = results.filter(r => r.status === 'error').length
+  
+  if (errorCount > 0) {
+    console.warn(`  ⚠️  ${errorCount} items failed to delete (${successCount} successful)`)
   }
   
   return results
 }
 
-// Get current Webflow items for comparison
+// Get current Webflow items for comparison (with pagination)
 async function getWebflowItems(collectionId) {
   try {
-    const result = await webflowRequest(`/collections/${collectionId}/items?limit=100`)
-    return result.items || []
+    let allItems = []
+    let offset = 0
+    const limit = 100
+    
+    while (true) {
+      const result = await webflowRequest(`/collections/${collectionId}/items?limit=${limit}&offset=${offset}`)
+      const items = result.items || []
+      
+      allItems.push(...items)
+      
+      // If we got fewer items than the limit, we've reached the end
+      if (items.length < limit) {
+        break
+      }
+      
+      offset += limit
+    }
+    
+    console.log(`  📄 Found ${allItems.length} existing items`)
+    return allItems
   } catch (error) {
     console.error(`Failed to get Webflow items:`, error.message)
     return []
@@ -793,37 +858,58 @@ async function performCompleteSync(progressCallback = null) {
     updateProgress('Phase 1', 'Starting foundation data sync...', 0, 4)
     console.log('\n📋 PHASE 1: Foundation Data')
     
-    updateProgress('Phase 1', 'Syncing Material Types...', 1, 4)
-    totalSynced += await syncMaterialTypes()
+    const syncFunctions = [
+      { name: 'Material Types', func: syncMaterialTypes },
+      { name: 'Finishes', func: syncFinishes },
+      { name: 'Categories', func: syncCategories },
+      { name: 'Locations', func: syncLocations }
+    ]
     
-    updateProgress('Phase 1', 'Syncing Finishes...', 2, 4)
-    totalSynced += await syncFinishes()
-    
-    updateProgress('Phase 1', 'Syncing Categories...', 3, 4)
-    totalSynced += await syncCategories()
-    
-    updateProgress('Phase 1', 'Syncing Locations...', 4, 4)
-    totalSynced += await syncLocations()
+    for (let i = 0; i < syncFunctions.length; i++) {
+      const { name, func } = syncFunctions[i]
+      try {
+        updateProgress('Phase 1', `Syncing ${name}...`, i + 1, 4)
+        totalSynced += await func()
+      } catch (error) {
+        console.error(`❌ Failed to sync ${name}: ${error.message}`)
+        updateProgress('Phase 1', `Failed to sync ${name}: ${error.message}`, i + 1, 4)
+        // Continue with other collections instead of failing completely
+      }
+    }
     
     // Phase 2: Reference data (with dependencies)
     updateProgress('Phase 2', 'Starting reference data sync...', 0, 3)
     console.log('\n🔗 PHASE 2: Reference Data')
     
-    updateProgress('Phase 2', 'Syncing Materials...', 1, 3)
-    totalSynced += await syncMaterials()
+    const syncFunctions2 = [
+      { name: 'Materials', func: syncMaterials },
+      { name: 'Mediums', func: syncMediums },
+      { name: 'Creators', func: syncCreators }
+    ]
     
-    updateProgress('Phase 2', 'Syncing Mediums...', 2, 3)
-    totalSynced += await syncMediums()
-    
-    updateProgress('Phase 2', 'Syncing Creators...', 3, 3)
-    totalSynced += await syncCreators()
+    for (let i = 0; i < syncFunctions2.length; i++) {
+      const { name, func } = syncFunctions2[i]
+      try {
+        updateProgress('Phase 2', `Syncing ${name}...`, i + 1, 3)
+        totalSynced += await func()
+      } catch (error) {
+        console.error(`❌ Failed to sync ${name}: ${error.message}`)
+        updateProgress('Phase 2', `Failed to sync ${name}: ${error.message}`, i + 1, 3)
+        // Continue with other collections instead of failing completely
+      }
+    }
     
     // Phase 3: Complex data (with multiple dependencies)
     updateProgress('Phase 3', 'Starting artwork sync...', 0, 1)
     console.log('\n🎨 PHASE 3: Complex Data')
     
-    updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
-    totalSynced += await syncArtworks()
+    try {
+      updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
+      totalSynced += await syncArtworks()
+    } catch (error) {
+      console.error(`❌ Failed to sync Artworks: ${error.message}`)
+      updateProgress('Phase 3', `Failed to sync Artworks: ${error.message}`, 1, 1)
+    }
     
     const duration = ((Date.now() - startTime) / 1000).toFixed(1)
     console.log(`\n✅ Complete sync finished in ${duration}s`)
