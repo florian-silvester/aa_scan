@@ -1,0 +1,88 @@
+{
+  "migrated_at": "2025-07-08T07:58:11.498Z",
+  "total_creators": 247,
+  "source_profile_posts": 251,
+  "source_custom_images": 1,
+  "creator_statistics": {
+    "with_specializations": 104,
+    "with_location": 211,
+    "with_birth_year": 20,
+    "with_exhibitions": 197,
+    "with_biography": 245
+  },
+  "specializations_found": [
+    "Jewelry",
+    "Design",
+    "Ceramics",
+    "Glass",
+    "Metal",
+    "Wood",
+    "Furniture",
+    "Textile"
+  ],
+  "locations_found": [
+    "munich",
+    "berlin",
+    "workshop",
+    "nuremberg",
+    "stuttgart",
+    "leipzig",
+    "italy",
+    "france",
+    "frankfurt",
+    "studio",
+    "köln",
+    "austria",
+    "hamburg",
+    "düsseldorf",
+    "cologne",
+    "germany",
+    "münchen",
+    "frankreich",
+    "netherlands",
+    "deutschland",
+    "dresden",
+    "switzerland",
+    "bremen"
+  ],
+  "sample_creators": [
+    {
+      "name": "Diessen Pottery Market 2025",
+      "specializations": [],
+      "location": "munich",
+      "birth_year": null,
+      "biography_length": 2000
+    },
+    {
+      "name": "Of Colors and Shapes",
+      "specializations": [],
+      "location": "munich",
+      "birth_year": null,
+      "biography_length": 2000
+    },
+    {
+      "name": "Existential Questions",
+      "specializations": [],
+      "location": "munich",
+      "birth_year": null,
+      "biography_length": 2000
+    },
+    {
+      "name": "Cans, Tinguely and Places of Longing",
+      "specializations": [
+        "Jewelry",
+        "Design"
+      ],
+      "location": "berlin",
+      "birth_year": null,
+      "biography_length": 2000
+    },
+    {
+      "name": "Warwick Freeman",
+      "specializations": [],
+      "location": "munich",
+      "birth_year": null,
+      "biography_length": 2000
+    }
+  ]
+}

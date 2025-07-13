@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "sanity": {
+      "command": "npx",
+      "args": ["-y", "@sanity/mcp-server@latest"],
+      "env": {
+        "SANITY_PROJECT_ID": "b8bczekj",
+        "SANITY_DATASET": "production",
+        "SANITY_API_TOKEN": "skVBzEsiOvqb0GLegHNbLREHuyb6iTut2CqPHyLWTYvjC3fOeF0YhzBTMqTHXGbngMFfanJKyg73tXLWwkhLItdGfXzwT5VGtcovQp8wtau8yyJHtA2numHl9BMCxpO5b5fHDqvi6jyxlLU8FRTtEj4ewsYLJs6GdtsvleguUnfQmqQWGKLn",
+        "MCP_USER_ROLE": "editor"
+      }
+    },
+    "webflow": {
+      "command": "npx mcp-remote https://mcp.webflow.com/sse",
+      "env": {
+        "WEBFLOW_API_TOKEN": "98ab2f0a52de5acda8f092d1bbc1da4d3c45e6a4bb1c522b1447ab4d02d4a895",
+        "WEBFLOW_SITE_ID": "aa-02",
+        "WEBFLOW_SITE_URL": "https://aa-02.webflow.io"
+      }
+    }
+  }
+} 

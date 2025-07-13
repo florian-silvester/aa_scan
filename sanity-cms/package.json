@@ -1,0 +1,47 @@
+{
+  "name": "art-jewelry-cms",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Art Jewelry CMS with Sanity",
+  "keywords": [
+    "sanity",
+    "cms",
+    "art",
+    "jewelry"
+  ],
+  "main": "package.json",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "dependencies": {
+    "@google-cloud/translate": "^9.2.0",
+    "@sanity/dashboard": "^4.1.3",
+    "@sanity/table": "^1.1.3",
+    "@sanity/vision": "^3.98.0",
+    "@tanstack/react-table": "^8.21.3",
+    "dotenv": "^16.6.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.3.1",
+    "sanity": "^3.98.0",
+    "sanity-plugin-media": "^3.0.3",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^4.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.0.0"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  }
+}

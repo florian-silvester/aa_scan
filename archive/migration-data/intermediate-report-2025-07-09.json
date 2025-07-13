@@ -1,0 +1,146 @@
+{
+  "timestamp": "2025-07-09T19:35:56.375Z",
+  "progress": {
+    "processed": 100,
+    "total": 10407,
+    "percentage": "1.0"
+  },
+  "stats": {
+    "uploaded": 2,
+    "failed": 98,
+    "skipped": 0,
+    "artworks_created": 0
+  },
+  "failed_uploads": [
+    {
+      "id": "262",
+      "title": "Kenn_prev",
+      "filename": "kenn_prev",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/Kenn_prev.jpg",
+      "date": "2012-06-27 16:26:15",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "Kenn_prev"
+    },
+    {
+      "id": "264",
+      "title": "galaxie",
+      "filename": "galaxie",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/galaxie.jpg",
+      "date": "2012-06-27 16:26:20",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "galaxie"
+    },
+    {
+      "id": "265",
+      "title": "Portrait",
+      "filename": "portrait",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/Portrait.jpg",
+      "date": "2012-06-27 16:26:22",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "Portrait"
+    },
+    {
+      "id": "266",
+      "title": "dau_fp",
+      "filename": "dau_fp",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/dau_fp.jpg",
+      "date": "2012-06-27 16:26:25",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "dau_fp"
+    },
+    {
+      "id": "267",
+      "title": "lightscape",
+      "filename": "lightscape",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/lightscape.jpg",
+      "date": "2012-06-27 16:26:27",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "lightscape"
+    },
+    {
+      "id": "268",
+      "title": "lightscape2",
+      "filename": "lightscape2",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/lightscape2.jpg",
+      "date": "2012-06-27 16:26:30",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "lightscape2"
+    },
+    {
+      "id": "269",
+      "title": "portarit",
+      "filename": "portarit",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/portarit.jpg",
+      "date": "2012-06-27 16:26:33",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "portarit"
+    },
+    {
+      "id": "270",
+      "title": "Picture 56",
+      "filename": "picture-56",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/Picture-56.png",
+      "date": "2012-06-27 16:26:42",
+      "type": "png",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "Picture-56"
+    },
+    {
+      "id": "271",
+      "title": "guy",
+      "filename": "guy",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/guy.jpg",
+      "date": "2012-06-27 16:26:49",
+      "type": "jpg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "guy"
+    },
+    {
+      "id": "272",
+      "title": "829_big",
+      "filename": "829_big",
+      "url": "https://artaurea.com/wp-content/uploads/2012/06/829_big.jpeg",
+      "date": "2012-06-27 16:26:55",
+      "type": "jpeg",
+      "parent": "0",
+      "description": "",
+      "excerpt": "",
+      "error": "Bad Request - Validation failed",
+      "safeFilename": "829_big"
+    }
+  ]
+}

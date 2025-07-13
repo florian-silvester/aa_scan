@@ -1,0 +1,145 @@
+{
+  "timestamp": "2025-07-09T20:13:29.861Z",
+  "progress": {
+    "processed": 10400,
+    "total": 10407,
+    "percentage": "99.9"
+  },
+  "stats": {
+    "uploaded": 10255,
+    "failed": 145,
+    "skipped": 0
+  },
+  "failed_uploads": [
+    {
+      "id": "51594",
+      "title": "Kunstprojek_Autos-zu-Fahrrädern_Kaltwasser-und-Köbberling",
+      "filename": "kunstprojek_autos-zu-fahrra%cc%88dern_kaltwasser-und-ko%cc%88bberling",
+      "url": "https://artaurea.com/wp-content/uploads/2017/06/Kunstprojek_Autos-zu-Fahrrädern_Kaltwasser-und-Köbberling.jpg",
+      "date": "2017-06-14 13:58:18",
+      "type": "jpg",
+      "parent": "51567",
+      "description": "Kunstprojekt, Kaltwasser, Köbberling",
+      "excerpt": "Kunstprojekt <em>Autos zu Fahrrädern</em>, Kaltwasser und Köbberling",
+      "error": "Local file not found: 51594_kunstprojek_autos-zu-fahrra%cc%88dern_kaltwasser-und-ko%cc%88bberling",
+      "safeFilename": "Kunstprojek_Autos-zu-Fahrra-dern_Kaltwasser-und-Ko-bberling"
+    },
+    {
+      "id": "51736",
+      "title": "Beate-Kuhn_Gefäßplastik_Vessel-sculpture_1983_Steinzeug-stoneware",
+      "filename": "beate-kuhn_gefa%cc%88ssplastik_vessel-sculpture_1983_steinzeug-stoneware",
+      "url": "https://artaurea.com/wp-content/uploads/2017/07/Beate-Kuhn_Gefäßplastik_Vessel-sculpture_1983_Steinzeug-stoneware.jpg",
+      "date": "2017-07-07 07:45:27",
+      "type": "jpg",
+      "parent": "51780",
+      "description": "Beate Kuhn, Gefäßplastik, Steinzeug, Keramik",
+      "excerpt": "Gefäßplastik, Steinzeug, 1983. Photo A. Laurenzo",
+      "error": "Local file not found: 51736_beate-kuhn_gefa%cc%88ssplastik_vessel-sculpture_1983_steinzeug-stoneware",
+      "safeFilename": "Beate-Kuhn_Gefa-ssplastik_Vessel-sculpture_1983_Steinzeug-stoneware"
+    },
+    {
+      "id": "51738",
+      "title": "Beate-Kuhn_Löffelobjekt_Spoon-Object-1975_Steinzeug_stoneware",
+      "filename": "beate-kuhn_lo%cc%88ffelobjekt_spoon-object-1975_steinzeug_stoneware",
+      "url": "https://artaurea.com/wp-content/uploads/2017/07/Beate-Kuhn_Löffelobjekt_Spoon-Object-1975_Steinzeug_stoneware.jpg",
+      "date": "2017-07-07 07:45:30",
+      "type": "jpg",
+      "parent": "51780",
+      "description": "Beate Kuhn, Löffelobjekt, Steinzeug, Keramik",
+      "excerpt": "Löffelobjekt, Steinzeug, 1975. Photo A. Laurenzo",
+      "error": "Local file not found: 51738_beate-kuhn_lo%cc%88ffelobjekt_spoon-object-1975_steinzeug_stoneware",
+      "safeFilename": "Beate-Kuhn_Lo-ffelobjekt_Spoon-Object-1975_Steinzeug_stoneware"
+    },
+    {
+      "id": "51744",
+      "title": "Beate-Kuhn_Objekt_Bäume-vor-Himmel_1991_Steinzeug-Stoneware",
+      "filename": "beate-kuhn_objekt_ba%cc%88ume-vor-himmel_1991_steinzeug-stoneware",
+      "url": "https://artaurea.com/wp-content/uploads/2017/07/Beate-Kuhn_Objekt_Bäume-vor-Himmel_1991_Steinzeug-Stoneware.jpg",
+      "date": "2017-07-07 07:45:40",
+      "type": "jpg",
+      "parent": "51780",
+      "description": "Beate Kuhn, Objekt, Bäume vor Himmel, Steinzeug, Keramik",
+      "excerpt": "Objekt <em>Bäume vor Himmel</em>, Steinzeug, 1991. Photo A. Laurenzo",
+      "error": "Local file not found: 51744_beate-kuhn_objekt_ba%cc%88ume-vor-himmel_1991_steinzeug-stoneware",
+      "safeFilename": "Beate-Kuhn_Objekt_Ba-ume-vor-Himmel_1991_Steinzeug-Stoneware"
+    },
+    {
+      "id": "53945",
+      "title": "Keramikpanorama-Murten_Erika-Fankhaeuser-Schuerch",
+      "filename": "keramikpanorama-murten_erika-fankhaeuser-schuerch",
+      "url": "https://artaurea.com/wp-content/uploads/2018/08/Keramikpanorama-Murten_Erika-Fankhaeuser-Schuerch.jpg",
+      "date": "2018-08-10 10:04:33",
+      "type": "jpg",
+      "parent": "53942",
+      "description": "Erika Fankhäuser Schürch, Keramikpanorama Murten",
+      "excerpt": "Schweizer Minimalismus, zwei Schalen von Erika Fankhäuser Schürch aus Wynigen im Emmental",
+      "error": "POST-request to https://b8bczekj.api.sanity.io/v2023-01-01/assets/images/production?title=Keramikpanorama-Murten_Erika-Fankhaeuser-Schuerch&description=Erika+Fankh%C3%A4user+Sch%C3%BCrch%2C+Keramikpanorama+Murten&filename=Keramikpanorama-Murten_Erika-Fankhaeuser-Schuerch.jpg&sourceId=53945&sourceName=WordPress+Import&sourceUrl=https%3A%2F%2Fartaurea.com%2Fwp-content%2Fuploads%2F2018%2F08%2FKeramikpanorama-Murten_Erika-Fankhaeuser-Schuerch.jpg resulted in HTTP 502 Bad Gateway (<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></cente…)",
+      "safeFilename": "Keramikpanorama-Murten_Erika-Fankhaeuser-Schuerch"
+    },
+    {
+      "id": "57840",
+      "title": "Ulrike-Poelk_noon-Berlin_Schmuckdiebstahl",
+      "filename": "ulrike-poelk_noon-berlin_schmuckdiebstahl-2",
+      "url": "https://artaurea.com/wp-content/uploads/2020/11/Ulrike-Poelk_noon-Berlin_Schmuckdiebstahl-1.jpg",
+      "date": "2020-11-05 16:29:13",
+      "type": "jpg",
+      "parent": "57826",
+      "description": "Ulrike Poelk, noon, Schmuckdiebstahl",
+      "excerpt": "Ulrike Poelk, <em>globolous</em> Ringe.",
+      "error": "Local file not found: 57840_ulrike-poelk_noon-berlin_schmuckdiebstahl-2",
+      "safeFilename": "Ulrike-Poelk_noon-Berlin_Schmuckdiebstahl"
+    },
+    {
+      "id": "57842",
+      "title": "Monika-Gloess_noon-Berlin_Schmuckdiebstahl",
+      "filename": "monika-gloess_noon-berlin_schmuckdiebstahl-2",
+      "url": "https://artaurea.com/wp-content/uploads/2020/11/Monika-Gloess_noon-Berlin_Schmuckdiebstahl-1.jpg",
+      "date": "2020-11-05 16:29:16",
+      "type": "jpg",
+      "parent": "57826",
+      "description": "Monika Glöss, noon, Schmuckdiebstahl",
+      "excerpt": "Monika Glöss, <em>detailed double rings</em>.",
+      "error": "Local file not found: 57842_monika-gloess_noon-berlin_schmuckdiebstahl-2",
+      "safeFilename": "Monika-Gloess_noon-Berlin_Schmuckdiebstahl"
+    },
+    {
+      "id": "57854",
+      "title": "Ulrike-Poelk_Schmuckdesign_attraente_necklaces_Nussbaecher_Art-Aurea",
+      "filename": "ulrike-poelk_schmuckdesign_attraente_necklaces_nussbaecher_art-aurea",
+      "url": "https://artaurea.com/wp-content/uploads/2014/04/Ulrike-Poelk_Schmuckdesign_attraente_necklaces_Nussbaecher_Art-Aurea.jpg",
+      "date": "2020-11-17 08:21:13",
+      "type": "jpg",
+      "parent": "4316",
+      "description": "Ulrike Poelk, Schmuckdesign",
+      "excerpt": "Halsschmuck <em>attraente</em>, divers plattiert. Foto Nussbaecher.",
+      "error": "Local file not found: 57854_ulrike-poelk_schmuckdesign_attraente_necklaces_nussbaecher_art-aurea",
+      "safeFilename": "Ulrike-Poelk_Schmuckdesign_attraente_necklaces_Nussbaecher_Art-Aurea"
+    },
+    {
+      "id": "57856",
+      "title": "Ulrike-Poelk_Schmuckdesign_attraente_necklace-goldplatet_Nussbaecher_Art-Aurea",
+      "filename": "ulrike-poelk_schmuckdesign_attraente_necklace-goldplatet_nussbaecher_art-aurea",
+      "url": "https://artaurea.com/wp-content/uploads/2014/04/Ulrike-Poelk_Schmuckdesign_attraente_necklace-goldplatet_Nussbaecher_Art-Aurea.jpg",
+      "date": "2020-11-17 08:21:17",
+      "type": "jpg",
+      "parent": "4316",
+      "description": "Ulrike Poelk, Schmuckdesign",
+      "excerpt": "Halsschmuck <em>attraente</em>, Feingold plattiert. Foto Nussbaecher.",
+      "error": "Local file not found: 57856_ulrike-poelk_schmuckdesign_attraente_necklace-goldplatet_nussbaecher_art-aurea",
+      "safeFilename": "Ulrike-Poelk_Schmuckdesign_attraente_necklace-goldplatet_Nussbaecher_Art-Aurea"
+    },
+    {
+      "id": "57858",
+      "title": "Ulrike-Poelk_Schmuckdesign_chainge_BambooCoral_Nussbaecher_Art-Aurea",
+      "filename": "ulrike-poelk_schmuckdesign_chainge_bamboocoral_nussbaecher_art-aurea",
+      "url": "https://artaurea.com/wp-content/uploads/2014/04/Ulrike-Poelk_Schmuckdesign_chainge_BambooCoral_Nussbaecher_Art-Aurea.jpg",
+      "date": "2020-11-17 08:21:21",
+      "type": "jpg",
+      "parent": "4316",
+      "description": "Ulrike Poelk, Schmuckdesign",
+      "excerpt": "Halsschmuck <em>chainge</em> Bambuskoralle. Foto Nussbaecher.",
+      "error": "Local file not found: 57858_ulrike-poelk_schmuckdesign_chainge_bamboocoral_nussbaecher_art-aurea",
+      "safeFilename": "Ulrike-Poelk_Schmuckdesign_chainge_BambooCoral_Nussbaecher_Art-Aurea"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-07-08T08:56:05.166Z",
+  "results": {
+    "imported": 6949,
+    "skipped": 0,
+    "errors": 0,
+    "total": 6949
+  },
+  "summary": "Successfully imported 6949 media assets to Sanity"
+}

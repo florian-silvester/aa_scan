@@ -1,0 +1,85 @@
+{
+  "analysis_date": "2025-07-09T19:10:19.803Z",
+  "sanity_count": 5113,
+  "wordpress_count": 10407,
+  "downloaded_count": 10372,
+  "overlaps": 6385,
+  "unique_wordpress": 4022,
+  "artwork_overlaps": 944,
+  "total_artworks": 3030,
+  "overlap_examples": [
+    {
+      "wp": "Freunde-von-Freunden_Johanna-Burke-028_img_1250",
+      "filename": "freunde-von-freunden_johanna-burke-028_img_1250"
+    },
+    {
+      "wp": "19202_RG_Vase_klein_bemalt_grey",
+      "filename": "19202_rg_vase_klein_bemalt_grey"
+    },
+    {
+      "wp": "report",
+      "filename": "report"
+    },
+    {
+      "wp": "sk02",
+      "filename": "sk02"
+    },
+    {
+      "wp": "preview",
+      "filename": "preview"
+    }
+  ],
+  "unique_examples": [
+    {
+      "title": "Philippe-Malouin-Studio-Visit-yatzer-7",
+      "filename": "philippe-malouin-studio-visit-yatzer-7-2",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Philippe-Malouin-Studio-Visit-yatzer-71.jpeg"
+    },
+    {
+      "title": "Philippe-Malouin-Studio-Visit-yatzer-19",
+      "filename": "philippe-malouin-studio-visit-yatzer-19-2",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Philippe-Malouin-Studio-Visit-yatzer-191.jpeg"
+    },
+    {
+      "title": "Philippe-Malouin-Studio-Visit-yatzer-1",
+      "filename": "philippe-malouin-studio-visit-yatzer-1",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Philippe-Malouin-Studio-Visit-yatzer-1.jpeg"
+    },
+    {
+      "title": "thisispaper-8",
+      "filename": "thisispaper-8",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/thisispaper-8.jpeg"
+    },
+    {
+      "title": "Lightscape_Mood_Landscape_bemalt",
+      "filename": "lightscape_mood_landscape_bemalt",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Lightscape_Mood_Landscape_bemalt.jpg"
+    },
+    {
+      "title": "Impressions_8",
+      "filename": "impressions_8",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Impressions_8.jpg"
+    },
+    {
+      "title": "Impressions_7",
+      "filename": "impressions_7",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Impressions_7.jpg"
+    },
+    {
+      "title": "Impressions_10",
+      "filename": "impressions_10",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Impressions_10.jpg"
+    },
+    {
+      "title": "Impressions_3",
+      "filename": "impressions_3",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Impressions_3.jpg"
+    },
+    {
+      "title": "Lightscape_Mood_Schalenkueche",
+      "filename": "lightscape_mood_schalenkueche",
+      "url": "https://artaurea.com/wp-content/uploads/2012/05/Lightscape_Mood_Schalenkueche.jpg"
+    }
+  ],
+  "recommendation": "REPLACE"
+}
