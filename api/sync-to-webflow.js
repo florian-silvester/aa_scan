@@ -84,10 +84,27 @@ function mapMediumFinishFields(sanityItem) {
 
 function generateSlug(text) {
   if (!text) return 'untitled'
-  return text.toLowerCase()
-    .replace(/[^a-z0-9]/gi, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}
+
+// Map Sanity location types to Webflow location types
+function mapLocationType(sanityType) {
+  const typeMapping = {
+    'museum': 'Museum',
+    'shop-gallery': 'Shop / Gallery',
+    'studio': 'Studio'
+  }
+  return typeMapping[sanityType] || 'Shop / Gallery' // Default to Shop / Gallery
+}
+
+// Map Sanity location types to Webflow location types
+function mapLocationType(sanityType) {
+  const typeMapping = {
+    'museum': 'Museum',
+    'shop-gallery': 'Shop / Gallery',
+    'studio': 'Studio'
+  }
+  return typeMapping[sanityType] || 'Shop / Gallery' // Default to Shop / Gallery
 }
 
 // Webflow API helper
@@ -356,7 +373,7 @@ async function syncLocations() {
       'name-german': item.name?.de || '',
       'description-english': item.description?.en || '',
       'description-german': item.description?.de || '',
-      'location-type': item.type || '',
+      'location-type': mapLocationType(item.type),
       address: item.address || '',
       'city-location': item.city?.name?.en || item.city?.name?.de || '',
       country: item.country?.name?.en || item.country?.name?.de || '',
@@ -441,8 +458,15 @@ async function syncArtworks() {
       size,
       year,
       price,
-      slug
-    }[0...100]
+      slug,
+      images[]{ 
+        asset->{
+          _id,
+          url
+        },
+        alt
+      }
+    }
   `)
   
   const webflowItems = sanityData.map(item => ({
@@ -461,7 +485,8 @@ async function syncArtworks() {
       finishes: item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || [],
       'size-dimensions': item.size || '',
       year: item.year || '',
-      price: item.price || ''
+      price: item.price || '',
+      'artwork-images': item.images?.map(img => img.asset?.url).filter(Boolean) || []
     }
   }))
   
@@ -472,9 +497,21 @@ async function syncArtworks() {
 }
 
 // Main sync function
-async function performCompleteSync() {
+async function performCompleteSync(progressCallback = null) {
   const startTime = Date.now()
   let totalSynced = 0
+  
+  const updateProgress = (step, message, currentCount = 0, totalCount = 0) => {
+    if (progressCallback) {
+      progressCallback({
+        phase: step,
+        message,
+        currentCount,
+        totalCount,
+        totalSynced
+      })
+    }
+  }
   
   try {
     console.log('🚀 Starting Complete Sanity → Webflow Sync')
@@ -484,25 +521,46 @@ async function performCompleteSync() {
     Object.values(idMappings).forEach(map => map.clear())
     
     // Phase 1: Foundation data (no dependencies)
+    updateProgress('Phase 1', 'Starting foundation data sync...', 0, 4)
     console.log('\n📋 PHASE 1: Foundation Data')
+    
+    updateProgress('Phase 1', 'Syncing Material Types...', 1, 4)
     totalSynced += await syncMaterialTypes()
+    
+    updateProgress('Phase 1', 'Syncing Finishes...', 2, 4)
     totalSynced += await syncFinishes()
+    
+    updateProgress('Phase 1', 'Syncing Categories...', 3, 4)
     totalSynced += await syncCategories()
+    
+    updateProgress('Phase 1', 'Syncing Locations...', 4, 4)
     totalSynced += await syncLocations()
     
     // Phase 2: Reference data (with dependencies)
+    updateProgress('Phase 2', 'Starting reference data sync...', 0, 3)
     console.log('\n🔗 PHASE 2: Reference Data')
+    
+    updateProgress('Phase 2', 'Syncing Materials...', 1, 3)
     totalSynced += await syncMaterials()
+    
+    updateProgress('Phase 2', 'Syncing Mediums...', 2, 3)
     totalSynced += await syncMediums()
+    
+    updateProgress('Phase 2', 'Syncing Creators...', 3, 3)
     totalSynced += await syncCreators()
     
     // Phase 3: Complex data (with multiple dependencies)
+    updateProgress('Phase 3', 'Starting artwork sync...', 0, 1)
     console.log('\n🎨 PHASE 3: Complex Data')
+    
+    updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
     totalSynced += await syncArtworks()
     
     const duration = ((Date.now() - startTime) / 1000).toFixed(1)
     console.log(`\n✅ Complete sync finished in ${duration}s`)
     console.log(`📊 Total items synced: ${totalSynced}`)
+    
+    updateProgress('Complete', `Sync completed! ${totalSynced} items synced`, totalSynced, totalSynced)
     
     return {
       success: true,
@@ -513,6 +571,13 @@ async function performCompleteSync() {
     
   } catch (error) {
     console.error('❌ Sync failed:', error.message)
+    if (progressCallback) {
+      progressCallback({
+        phase: 'Error',
+        message: error.message,
+        error: true
+      })
+    }
     throw error
   }
 }
@@ -541,13 +606,38 @@ module.exports = async function handler(req, res) {
       throw new Error('WEBFLOW_API_TOKEN environment variable is required')
     }
     
-    console.log('🔔 Sync triggered via API')
-    const result = await performCompleteSync()
+    // Check if client wants streaming progress
+    const { streaming } = req.body || {}
     
-    res.status(200).json({
-      message: 'Sync completed successfully',
-      ...result
-    })
+    if (streaming) {
+      // Set up Server-Sent Events
+      res.setHeader('Content-Type', 'text/event-stream')
+      res.setHeader('Cache-Control', 'no-cache')
+      res.setHeader('Connection', 'keep-alive')
+      
+      const sendProgress = (progress) => {
+        res.write(`data: ${JSON.stringify({ type: 'progress', ...progress })}\n\n`)
+      }
+      
+      try {
+        console.log('🔔 Sync triggered via API (streaming)')
+        const result = await performCompleteSync(sendProgress)
+        res.write(`data: ${JSON.stringify({ type: 'complete', result })}\n\n`)
+        res.end()
+      } catch (error) {
+        res.write(`data: ${JSON.stringify({ type: 'error', error: error.message })}\n\n`)
+        res.end()
+      }
+    } else {
+      // Regular sync without streaming
+      console.log('🔔 Sync triggered via API')
+      const result = await performCompleteSync()
+      
+      res.status(200).json({
+        message: 'Sync completed successfully',
+        ...result
+      })
+    }
     
   } catch (error) {
     console.error('API Error:', error.message)
