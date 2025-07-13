@@ -1,4 +1,4 @@
-import {TitleCaseInput} from '../components/TitleCaseInput'
+import {TitleCaseInput} from '../components/TitleCaseInput.jsx'
 
 export default {
   name: 'material',
