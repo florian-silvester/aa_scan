@@ -6,8 +6,8 @@ export default {
     {
       name: 'assetMappings',
       title: 'Asset Mappings',
-      type: 'object',
-      description: 'Maps Sanity asset IDs to Webflow asset IDs for incremental sync'
+      type: 'text',
+      description: 'JSON string mapping Sanity asset IDs to Webflow asset IDs for incremental sync'
     },
     {
       name: 'lastUpdated',

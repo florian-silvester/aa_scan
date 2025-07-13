@@ -50,7 +50,8 @@ async function loadAssetMappings() {
     `)
     
     if (result?.assetMappings) {
-      assetMappings = new Map(Object.entries(result.assetMappings))
+      const parsedMappings = JSON.parse(result.assetMappings)
+      assetMappings = new Map(Object.entries(parsedMappings))
       console.log(`📁 Loaded ${assetMappings.size} asset mappings from Sanity`)
     } else {
       console.log('📁 No existing asset mappings found, starting fresh')
@@ -70,7 +71,7 @@ async function saveAssetMappings() {
     await sanityClient.createOrReplace({
       _type: 'webflowSyncSettings',
       _id: 'asset-mappings',
-      assetMappings: mappings,
+      assetMappings: JSON.stringify(mappings),
       lastUpdated: new Date().toISOString()
     })
     
