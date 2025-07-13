@@ -279,8 +279,10 @@ async function syncCategories() {
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item)
+      name: item.name?.en || item.name?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+      'title-german': item.name?.de || '',
+      description: item.description?.en || item.description?.de || ''
     }
   }))
   
@@ -308,17 +310,19 @@ async function syncLocations() {
       address,
       city->{name},
       country->{name},
+      website,
       slug
     }
   `)
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item),
+      name: item.name?.en || item.name?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
       address: item.address || '',
-      city: item.city?.name?.en || item.city?.name?.de || '',
-      country: item.country?.name?.en || item.country?.name?.de || ''
+      'city-location': item.city?.name?.en || item.city?.name?.de || '',
+      country: item.country?.name?.en || item.country?.name?.de || '',
+      website: item.website || ''
     }
   }))
   
@@ -342,26 +346,30 @@ async function syncCreators() {
     *[_type == "creator"] | order(name.en asc) {
       _id,
       name,
-      description,
       biography,
+      description,
       birthYear,
-      deathYear,
-      birthPlace->{name},
-      categories[]->{_id, name},
+      nationality,
+      category->{_id},
+      website,
+      email,
       slug
     }
   `)
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item),
+      name: item.name?.en || item.name?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
       'biography-english': item.biography?.en || '',
       'biography-german': item.biography?.de || '',
+      'portrait-english': item.description?.en || '',
+      'portrait-german': item.description?.de || '',
       'birth-year': item.birthYear || null,
-      'death-year': item.deathYear || null,
-      'birth-place': item.birthPlace?.name?.en || item.birthPlace?.name?.de || '',
-      categories: item.categories?.map(cat => idMappings.category.get(cat._id)).filter(Boolean) || []
+      nationality: item.nationality || '',
+      category: item.category?._id ? idMappings.category.get(item.category._id) : null,
+      website: item.website || '',
+      email: item.email || ''
     }
   }))
   
@@ -386,34 +394,35 @@ async function syncArtworks() {
       _id,
       name,
       description,
-      creator->{_id, name},
-      categories[]->{_id, name},
-      materials[]->{_id, name},
-      medium->{_id, name},
-      finish->{_id, name},
-      location->{_id, name},
+      creator->{_id},
+      categories[]->{_id},
+      materials[]->{_id},
+      medium[]->{_id},
+      finishes[]->{_id},
       dimensions,
       yearCreated,
       price,
-      isAvailable,
       slug
     }[0...100]
   `)
   
   const webflowItems = sanityData.map(item => ({
     fieldData: {
-      ...mapBilingualName(item),
-      ...mapBilingualDescription(item),
+      name: item.name?.en || item.name?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+      'work-title': item.name?.en || item.name?.de || '',
+      'work-title-english': item.name?.en || '',
+      'work-title-german': item.name?.de || '',
+      'description-english': item.description?.en || '',
+      'description-german': item.description?.de || '',
       creator: item.creator?._id ? idMappings.creator.get(item.creator._id) : null,
-      categories: item.categories?.map(cat => idMappings.category.get(cat._id)).filter(Boolean) || [],
+      category: item.categories?.map(cat => idMappings.category.get(cat._id)).filter(Boolean) || [],
       materials: item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || [],
-      medium: item.medium?._id ? idMappings.medium.get(item.medium._id) : null,
-      finish: item.finish?._id ? idMappings.finish.get(item.finish._id) : null,
-      location: item.location?._id ? idMappings.location.get(item.location._id) : null,
-      dimensions: item.dimensions || '',
-      'year-created': item.yearCreated || null,
-      price: item.price || null,
-      'is-available': item.isAvailable || false
+      medium: item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || [],
+      finishes: item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || [],
+      'size-dimensions': item.dimensions || '',
+      year: item.yearCreated ? String(item.yearCreated) : '',
+      price: item.price ? String(item.price) : ''
     }
   }))
   
