@@ -14,8 +14,8 @@ export default function SyncToWebflowAction() {
     try {
       console.log('🚀 Starting sync to Webflow...')
       
-      // Call Vercel API endpoint
-      const response = await fetch('/api/sync-to-webflow', {
+      // Call separate API project endpoint
+      const response = await fetch('https://art-aurea-qri7btv6d-florian-s-projects-e1761f42.vercel.app/api/sync-to-webflow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
