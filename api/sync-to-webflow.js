@@ -236,30 +236,39 @@ async function createWebflowItems(collectionId, items) {
 // Delete items from Webflow (with batch processing)
 async function deleteWebflowItems(collectionId, itemIds) {
   const results = []
-  const batchSize = 10  // Delete in smaller batches to avoid rate limits
+  const batchSize = 5  // Smaller batches to avoid rate limits
   
   for (let i = 0; i < itemIds.length; i += batchSize) {
     const batch = itemIds.slice(i, i + batchSize)
     console.log(`  🗑️  Deleting batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(itemIds.length/batchSize)} (${batch.length} items)`)
     
     const batchPromises = batch.map(async (itemId) => {
-      try {
-        await webflowRequest(`/collections/${collectionId}/items/${itemId}`, {
-          method: 'DELETE'
-        })
-        return { itemId, status: 'deleted' }
-      } catch (error) {
-        console.warn(`  ⚠️  Failed to delete ${itemId}: ${error.message}`)
-        return { itemId, status: 'error', error: error.message }
+      let attempts = 0
+      while (attempts < 3) {
+        try {
+          await webflowRequest(`/collections/${collectionId}/items/${itemId}`, {
+            method: 'DELETE'
+          })
+          return { itemId, status: 'deleted' }
+        } catch (error) {
+          attempts++
+          if (error.message.includes('429') && attempts < 3) {
+            console.log(`  ⏳ Rate limited, retrying ${itemId} in ${attempts * 2}s...`)
+            await new Promise(resolve => setTimeout(resolve, attempts * 2000))
+            continue
+          }
+          console.warn(`  ⚠️  Failed to delete ${itemId}: ${error.message}`)
+          return { itemId, status: 'error', error: error.message }
+        }
       }
     })
     
     const batchResults = await Promise.allSettled(batchPromises)
     results.push(...batchResults.map(r => r.status === 'fulfilled' ? r.value : r.reason))
     
-    // Small delay between batches to avoid rate limits
+    // Longer delay between batches to avoid rate limits
     if (i + batchSize < itemIds.length) {
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise(resolve => setTimeout(resolve, 500))
     }
   }
   
