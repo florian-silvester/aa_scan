@@ -6,6 +6,7 @@ import {media} from 'sanity-plugin-media'
 import {dashboardTool} from '@sanity/dashboard'
 
 import MediaStatsWidget from './components/MediaStatsWidget'
+import SyncToWebflowAction from './components/SyncToWebflowAction'
 
 export default defineConfig({
   name: 'default',
@@ -389,6 +390,14 @@ export default defineConfig({
     media(),
     dashboardTool({
       widgets: [
+        {
+          name: 'sync-to-webflow',
+          component: SyncToWebflowAction,
+          layout: {
+            width: 'medium',
+            height: 'auto'
+          }
+        },
         {
           name: 'media-stats',
           component: MediaStatsWidget,
