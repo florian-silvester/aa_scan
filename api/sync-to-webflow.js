@@ -188,16 +188,6 @@ function mapLocationType(sanityType) {
   return typeMapping[sanityType] || 'Shop / Gallery' // Default to Shop / Gallery
 }
 
-// Map Sanity location types to Webflow location types
-function mapLocationType(sanityType) {
-  const typeMapping = {
-    'museum': 'Museum',
-    'shop-gallery': 'Shop / Gallery',
-    'studio': 'Studio'
-  }
-  return typeMapping[sanityType] || 'Shop / Gallery' // Default to Shop / Gallery
-}
-
 // Webflow API helper
 async function webflowRequest(endpoint, options = {}) {
   const baseUrl = 'https://api.webflow.com/v2'
@@ -330,16 +320,38 @@ async function clearWebflowCollection(collectionId, collectionName) {
 // Add after the existing utility functions
 async function downloadImageBuffer(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
+    const timeout = setTimeout(() => {
+      reject(new Error('Image download timeout (30s)'))
+    }, 30000) // 30 second timeout
+    
+    const request = https.get(url, (response) => {
       if (response.statusCode !== 200) {
+        clearTimeout(timeout)
         reject(new Error(`Failed to download image: ${response.statusCode}`))
         return
       }
       
       const chunks = []
       response.on('data', (chunk) => chunks.push(chunk))
-      response.on('end', () => resolve(Buffer.concat(chunks)))
-      response.on('error', reject)
+      response.on('end', () => {
+        clearTimeout(timeout)
+        resolve(Buffer.concat(chunks))
+      })
+      response.on('error', (error) => {
+        clearTimeout(timeout)
+        reject(error)
+      })
+    })
+    
+    request.on('error', (error) => {
+      clearTimeout(timeout)
+      reject(error)
+    })
+    
+    request.on('timeout', () => {
+      clearTimeout(timeout)
+      request.destroy()
+      reject(new Error('Image download timeout'))
     })
   })
 }
@@ -574,7 +586,7 @@ async function syncMaterials() {
   const webflowItems = sanityData.map(item => ({
     fieldData: {
       ...mapMediumFinishFields(item),
-      'material-type': item.materialType?._id ? idMappings.materialType.get(item.materialType._id) : null
+      'material-type': item.materialType?._id ? idMappings.materialType.get(item.materialType._id) || null : null
     }
   }))
   
@@ -799,6 +811,41 @@ async function syncArtworks() {
   const webflowItems = await Promise.all(sanityData.map(async (item) => {
     const artworkImages = await syncArtworkImages(item.images)
     
+    // Validate and map references with error logging
+    const creatorId = item.creator?._id ? idMappings.creator.get(item.creator._id) || null : null
+    if (item.creator?._id && !creatorId) {
+      console.warn(`  ⚠️  Creator reference not found for artwork '${item.name}': ${item.creator._id}`)
+    }
+    
+    const categoryId = item.category?._id ? idMappings.category.get(item.category._id) || null : null
+    if (item.category?._id && !categoryId) {
+      console.warn(`  ⚠️  Category reference not found for artwork '${item.name}': ${item.category._id}`)
+    }
+    
+    const materialIds = item.materials?.map(mat => {
+      const mappedId = idMappings.material.get(mat._id)
+      if (!mappedId) {
+        console.warn(`  ⚠️  Material reference not found for artwork '${item.name}': ${mat._id}`)
+      }
+      return mappedId
+    }).filter(Boolean) || []
+    
+    const mediumIds = item.medium?.map(med => {
+      const mappedId = idMappings.medium.get(med._id)
+      if (!mappedId) {
+        console.warn(`  ⚠️  Medium reference not found for artwork '${item.name}': ${med._id}`)
+      }
+      return mappedId
+    }).filter(Boolean) || []
+    
+    const finishIds = item.finishes?.map(fin => {
+      const mappedId = idMappings.finish.get(fin._id)
+      if (!mappedId) {
+        console.warn(`  ⚠️  Finish reference not found for artwork '${item.name}': ${fin._id}`)
+      }
+      return mappedId
+    }).filter(Boolean) || []
+    
     return {
       fieldData: {
         name: item.name || 'Untitled',
@@ -808,11 +855,11 @@ async function syncArtworks() {
         'work-title-german': item.workTitle?.de || '',
         'description-english': item.description?.en || '',
         'description-german': item.description?.de || '',
-        creator: item.creator?._id ? idMappings.creator.get(item.creator._id) : null,
-        category: item.category?._id ? [idMappings.category.get(item.category._id)].filter(Boolean) : [],
-        materials: item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || [],
-        medium: item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || [],
-        finishes: item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || [],
+        creator: creatorId,
+        category: categoryId ? [categoryId] : [],
+        materials: materialIds,
+        medium: mediumIds,
+        finishes: finishIds,
         'size-dimensions': item.size || '',
         year: item.year || '',
         price: item.price || '',
