@@ -8,7 +8,6 @@ import {
   Flex, 
   Box, 
   Badge, 
-  Progress, 
   Grid,
   Heading
 } from '@sanity/ui'
@@ -34,199 +33,210 @@ export default function SyncToWebflowAction() {
 
   // Load last sync from localStorage
   useEffect(() => {
-    const savedLastSync = localStorage.getItem('webflow-last-sync')
-    if (savedLastSync) {
-      setLastSync(JSON.parse(savedLastSync))
+    const stored = localStorage.getItem('webflow-sync-last')
+    if (stored) {
+      try {
+        setLastSync(JSON.parse(stored))
+      } catch (e) {
+        console.error('Failed to parse stored sync data:', e)
+      }
     }
   }, [])
+
+  // Save last sync to localStorage
+  useEffect(() => {
+    if (lastSync) {
+      localStorage.setItem('webflow-sync-last', JSON.stringify(lastSync))
+    }
+  }, [lastSync])
 
   const handleSync = async () => {
     setIsLoading(true)
     setError(null)
     setProgress(null)
     setSyncPhases([])
-    
+
     try {
-      console.log('🚀 Starting sync to Webflow...')
-      
-      // Use streaming API
+      // Try streaming first
       const response = await fetch('https://art-aurea-api.vercel.app/api/sync-to-webflow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ streaming: true })
+        body: JSON.stringify({ streaming: true }),
       })
-      
+
       if (!response.ok) {
-        throw new Error('Failed to start sync')
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
+
+      const contentType = response.headers.get('content-type')
       
-      // Set up EventSource for streaming progress
-      const reader = response.body.getReader()
-      const decoder = new TextDecoder()
-      
-      const processStream = async () => {
+      if (contentType && contentType.includes('text/event-stream')) {
+        // Handle streaming response
+        const reader = response.body.getReader()
+        const decoder = new TextDecoder()
+        
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
           
-          const chunk = decoder.decode(value, { stream: true })
+          const chunk = decoder.decode(value)
           const lines = chunk.split('\n')
           
           for (const line of lines) {
             if (line.startsWith('data: ')) {
               try {
-                const data = JSON.parse(line.substring(6))
-                
-                if (data.type === 'progress') {
-                  setProgress(data)
-                  setSyncPhases(prev => {
-                    const newPhases = [...prev]
-                    const existingIndex = newPhases.findIndex(p => p.phase === data.phase)
-                    
-                    if (existingIndex >= 0) {
-                      newPhases[existingIndex] = { ...data, status: 'active' }
-                    } else {
-                      newPhases.push({ ...data, status: 'active' })
-                    }
-                    
-                    return newPhases
-                  })
-                } else if (data.type === 'complete') {
-                  const result = data.result
-                  setLastSync({
-                    timestamp: result.timestamp,
-                    totalSynced: result.totalSynced,
-                    duration: result.duration
-                  })
-                  
-                  // Save to localStorage
-                  localStorage.setItem('webflow-last-sync', JSON.stringify({
-                    timestamp: result.timestamp,
-                    totalSynced: result.totalSynced,
-                    duration: result.duration
-                  }))
-                  
-                  setSyncPhases(prev => prev.map(p => ({ ...p, status: 'complete' })))
-                  
-                  // Show success notification
-                  if (window.sanity?.ui?.toast) {
-                    window.sanity.ui.toast.push({
-                      status: 'success',
-                      title: 'Sync Completed!',
-                      description: `${result.totalSynced} items synced in ${result.duration}`
-                    })
-                  }
-                } else if (data.type === 'error') {
-                  throw new Error(data.error)
+                const data = JSON.parse(line.slice(6))
+                if (data.progress) {
+                  setProgress(data.progress)
                 }
-              } catch (parseError) {
-                console.warn('Failed to parse SSE data:', parseError)
+                if (data.phase) {
+                  setSyncPhases(prev => [...prev, data.phase])
+                }
+                if (data.complete) {
+                  setLastSync({
+                    timestamp: new Date().toISOString(),
+                    duration: data.duration,
+                    totalItems: data.totalItems,
+                    success: true
+                  })
+                }
+              } catch (e) {
+                console.error('Error parsing SSE data:', e)
               }
             }
           }
         }
+      } else {
+        // Handle regular JSON response
+        const data = await response.json()
+        if (data.success) {
+          setLastSync({
+            timestamp: new Date().toISOString(),
+            duration: data.duration,
+            totalItems: data.totalItems,
+            success: true
+          })
+        }
       }
-      
-      await processStream()
-      
-    } catch (error) {
-      console.error('❌ Sync failed:', error)
-      setError(error.message)
-      
-      // Show error notification
-      if (window.sanity?.ui?.toast) {
-        window.sanity.ui.toast.push({
-          status: 'error',
-          title: 'Sync Failed',
-          description: error.message
-        })
-      }
+    } catch (err) {
+      console.error('Sync error:', err)
+      setError(err.message)
+      setLastSync({
+        timestamp: new Date().toISOString(),
+        error: err.message,
+        success: false
+      })
     } finally {
       setIsLoading(false)
+      setProgress(null)
+      setSyncPhases([])
     }
+  }
+
+  const formatDuration = (seconds) => {
+    if (seconds < 60) return `${seconds}s`
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}m ${secs}s`
   }
 
   const getPhaseIcon = (phase) => {
     switch (phase) {
-      case 'Phase 1': return <TagIcon />
-      case 'Phase 2': return <DocumentIcon />
-      case 'Phase 3': return <ImagesIcon />
-      case 'Complete': return <CheckmarkIcon />
+      case 'Foundation Data': return <TagIcon />
+      case 'Reference Data': return <DocumentIcon />
+      case 'Complex Data': return <ImagesIcon />
       default: return <SyncIcon />
     }
   }
 
-  const getPhaseColor = (phase, status) => {
-    if (status === 'complete') return 'positive'
-    if (status === 'active') return 'primary'
-    return 'default'
-  }
-
   return (
-    <Card padding={4} radius={2} shadow={1} tone="transparent" border>
+    <Card padding={4} radius={2} shadow={1}>
       <Stack space={4}>
-        <Flex align="center" gap={3}>
-          <Box>
-            <SyncIcon style={{ fontSize: '1.5rem' }} />
-          </Box>
-          <Stack space={2}>
-            <Heading size={1}>Sync to Webflow</Heading>
-            <Text size={1} muted>
-              Push all your content changes to the public website. This will sync artworks, creators, materials, and all other content to Webflow.
-            </Text>
-          </Stack>
-        </Flex>
+        <Heading size={1}>Webflow Sync</Heading>
         
+        {/* Last Sync Status */}
+        {lastSync && (
+          <Card padding={3} radius={2} tone={lastSync.success ? 'positive' : 'critical'}>
+            <Flex align="center" gap={2}>
+              {lastSync.success ? (
+                <CheckmarkIcon style={{ color: 'var(--card-positive-fg-color)' }} />
+              ) : (
+                <WarningOutlineIcon style={{ color: 'var(--card-critical-fg-color)' }} />
+              )}
+              <Text size={1}>
+                {lastSync.success ? (
+                  <>
+                    Last sync: {lastSync.totalItems} items in {formatDuration(lastSync.duration)}
+                  </>
+                ) : (
+                  <>
+                    Last sync failed: {lastSync.error}
+                  </>
+                )}
+              </Text>
+              <Text size={0} muted>
+                {new Date(lastSync.timestamp).toLocaleString()}
+              </Text>
+            </Flex>
+          </Card>
+        )}
+
         {/* Progress Display */}
-        {isLoading && progress && (
-          <Card padding={3} radius={2} tone="primary" border>
-            <Stack space={3}>
-              <Flex align="center" justify="between">
+        {progress && (
+          <Card padding={3} radius={2} tone="primary">
+            <Stack space={2}>
+              <Flex align="center" gap={2}>
+                <Spinner size={1} />
                 <Text size={1} weight="medium">
-                  {progress.message}
+                  {progress.phase || 'Processing...'}
                 </Text>
                 <Badge tone="primary" fontSize={0}>
-                  {progress.totalSynced} synced
+                  {progress.current}/{progress.total}
                 </Badge>
               </Flex>
               
-              {progress.currentCount > 0 && progress.totalCount > 0 && (
-                <Progress 
-                  value={progress.currentCount} 
-                  max={progress.totalCount} 
-                  radius={1}
-                />
-              )}
+              {/* Simple progress bar using Box */}
+              <Box>
+                <Box
+                  style={{
+                    width: '100%',
+                    height: '4px',
+                    backgroundColor: 'var(--card-border-color)',
+                    borderRadius: '2px',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <Box
+                    style={{
+                      width: `${(progress.current / progress.total) * 100}%`,
+                      height: '100%',
+                      backgroundColor: 'var(--card-primary-fg-color)',
+                      transition: 'width 0.3s ease'
+                    }}
+                  />
+                </Box>
+              </Box>
+              
+              <Text size={0} muted>
+                {progress.message || 'Syncing data...'}
+              </Text>
             </Stack>
           </Card>
         )}
-        
-        {/* Phase Progress */}
+
+        {/* Phase History */}
         {syncPhases.length > 0 && (
-          <Card padding={3} radius={2} tone="transparent" border>
-            <Stack space={3}>
-              <Text size={1} weight="medium">Sync Progress</Text>
-              <Grid columns={[1, 2, 3]} gap={2}>
+          <Card padding={3} radius={2}>
+            <Stack space={2}>
+              <Text size={1} weight="medium">Sync Phases</Text>
+              <Grid columns={3} gap={2}>
                 {syncPhases.map((phase, index) => (
-                  <Card 
-                    key={index}
-                    padding={2} 
-                    radius={1} 
-                    tone={getPhaseColor(phase.phase, phase.status)}
-                    border
-                  >
+                  <Card key={index} padding={2} radius={2} tone="positive">
                     <Flex align="center" gap={2}>
-                      {getPhaseIcon(phase.phase)}
-                      <Stack space={1}>
-                        <Text size={0} weight="medium">
-                          {phase.phase}
-                        </Text>
-                        <Text size={0} muted>
-                          {phase.currentCount || 0}/{phase.totalCount || 0}
-                        </Text>
-                      </Stack>
+                      {getPhaseIcon(phase)}
+                      <Text size={0}>{phase}</Text>
                     </Flex>
                   </Card>
                 ))}
@@ -234,55 +244,28 @@ export default function SyncToWebflowAction() {
             </Stack>
           </Card>
         )}
-        
-        {/* Last Sync Status */}
-        {lastSync && !isLoading && (
-          <Card padding={3} radius={2} tone="positive" border>
-            <Flex align="center" gap={2}>
-              <CheckmarkIcon />
-              <Stack space={1}>
-                <Text size={1} weight="medium">
-                  Last sync: {new Date(lastSync.timestamp).toLocaleString()}
-                </Text>
-                <Text size={0} muted>
-                  {lastSync.totalSynced} items synced in {lastSync.duration}
-                </Text>
-              </Stack>
-            </Flex>
-          </Card>
-        )}
-        
+
         {/* Error Display */}
         {error && (
-          <Card padding={3} radius={2} tone="critical" border>
+          <Card padding={3} radius={2} tone="critical">
             <Flex align="center" gap={2}>
               <WarningOutlineIcon />
-              <Stack space={1}>
-                <Text size={1} weight="medium">Sync Failed</Text>
-                <Text size={0} muted>{error}</Text>
-              </Stack>
+              <Text size={1}>
+                Sync failed: {error}
+              </Text>
             </Flex>
           </Card>
         )}
-        
+
         {/* Sync Button */}
         <Button
-          mode="default"
           tone="primary"
-          fontSize={2}
-          padding={3}
+          icon={isLoading ? <Spinner /> : <PlayIcon />}
           disabled={isLoading}
           onClick={handleSync}
-          icon={isLoading ? Spinner : PlayIcon}
-          text={isLoading ? 'Syncing to Webflow...' : 'Sync to Webflow'}
+          text={isLoading ? 'Syncing...' : 'Sync to Webflow'}
+          style={{ alignSelf: 'flex-start' }}
         />
-        
-        {/* Info */}
-        <Box padding={2} style={{ backgroundColor: 'var(--card-bg-color)' }}>
-          <Text size={1} muted>
-            💡 <strong>Tip:</strong> Use this after making changes to ensure the public website is up to date.
-          </Text>
-        </Box>
       </Stack>
     </Card>
   )
