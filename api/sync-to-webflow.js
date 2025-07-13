@@ -1,4 +1,6 @@
 const {createClient} = require('@sanity/client')
+const crypto = require('crypto')
+const https = require('https')
 
 // Sanity client
 const sanityClient = createClient({
@@ -8,6 +10,9 @@ const sanityClient = createClient({
   apiVersion: '2023-01-01',
   token: process.env.SANITY_API_TOKEN
 })
+
+// Webflow site ID
+const WEBFLOW_SITE_ID = '68664367794a916bfa6d247c'
 
 // Webflow collection IDs
 const WEBFLOW_COLLECTIONS = {
@@ -179,6 +184,98 @@ async function getWebflowItems(collectionId) {
     console.error(`Failed to get Webflow items:`, error.message)
     return []
   }
+}
+
+// Add after the existing utility functions
+async function downloadImageBuffer(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`Failed to download image: ${response.statusCode}`))
+        return
+      }
+      
+      const chunks = []
+      response.on('data', (chunk) => chunks.push(chunk))
+      response.on('end', () => resolve(Buffer.concat(chunks)))
+      response.on('error', reject)
+    })
+  })
+}
+
+function generateMD5Hash(buffer) {
+  return crypto.createHash('md5').update(buffer).digest('hex')
+}
+
+async function uploadImageToWebflow(imageUrl, siteName) {
+  try {
+    // 1. Download image from Sanity
+    console.log(`  📥 Downloading: ${imageUrl}`)
+    const imageBuffer = await downloadImageBuffer(imageUrl)
+    
+    // 2. Generate MD5 hash
+    const fileHash = generateMD5Hash(imageBuffer)
+    
+    // 3. Get filename from URL
+    const filename = imageUrl.split('/').pop().split('?')[0] || 'image.jpg'
+    
+    // 4. Create asset metadata in Webflow
+    const metadataResponse = await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/assets`, {
+      method: 'POST',
+      body: JSON.stringify({
+        fileName: filename,
+        fileHash: fileHash,
+        fileSize: imageBuffer.length
+      })
+    })
+    
+    if (!metadataResponse.uploadUrl || !metadataResponse.uploadDetails) {
+      throw new Error('Failed to get upload credentials from Webflow')
+    }
+    
+    // 5. Upload to Amazon S3
+    const uploadResponse = await fetch(metadataResponse.uploadUrl, {
+      method: 'POST',
+      headers: {
+        ...metadataResponse.uploadDetails.headers,
+        'Content-Type': 'application/octet-stream'
+      },
+      body: imageBuffer
+    })
+    
+    if (!uploadResponse.ok) {
+      throw new Error(`S3 upload failed: ${uploadResponse.status}`)
+    }
+    
+    // 6. Return Webflow asset ID
+    console.log(`  ✅ Uploaded: ${filename}`)
+    return metadataResponse.id
+    
+  } catch (error) {
+    console.error(`  ❌ Failed to upload image: ${error.message}`)
+    return null
+  }
+}
+
+async function syncArtworkImages(artworkImages) {
+  if (!artworkImages || artworkImages.length === 0) {
+    return []
+  }
+  
+  console.log(`  🖼️  Syncing ${artworkImages.length} images...`)
+  const webflowAssetIds = []
+  
+  for (const image of artworkImages) {
+    if (image.asset?.url) {
+      const assetId = await uploadImageToWebflow(image.asset.url, 'artwork')
+      if (assetId) {
+        webflowAssetIds.push(assetId)
+      }
+    }
+  }
+  
+  console.log(`  ✅ Successfully synced ${webflowAssetIds.length}/${artworkImages.length} images`)
+  return webflowAssetIds
 }
 
 // PHASE 1: Sync Material Types
@@ -469,24 +566,28 @@ async function syncArtworks() {
     }
   `)
   
-  const webflowItems = sanityData.map(item => ({
-    fieldData: {
-      name: item.name || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.name || item.workTitle?.en),
-      'work-title': item.workTitle?.en || item.workTitle?.de || '',
-      'work-title-english': item.workTitle?.en || '',
-      'work-title-german': item.workTitle?.de || '',
-      'description-english': item.description?.en || '',
-      'description-german': item.description?.de || '',
-      creator: item.creator?._id ? idMappings.creator.get(item.creator._id) : null,
-      category: item.category?._id ? [idMappings.category.get(item.category._id)].filter(Boolean) : [],
-      materials: item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || [],
-      medium: item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || [],
-      finishes: item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || [],
-      'size-dimensions': item.size || '',
-      year: item.year || '',
-      price: item.price || '',
-      'artwork-images': item.images?.map(img => img.asset?.url).filter(Boolean) || []
+  const webflowItems = await Promise.all(sanityData.map(async (item) => {
+    const artworkImages = await syncArtworkImages(item.images)
+    
+    return {
+      fieldData: {
+        name: item.name || 'Untitled',
+        slug: item.slug?.current || generateSlug(item.name || item.workTitle?.en),
+        'work-title': item.workTitle?.en || item.workTitle?.de || '',
+        'work-title-english': item.workTitle?.en || '',
+        'work-title-german': item.workTitle?.de || '',
+        'description-english': item.description?.en || '',
+        'description-german': item.description?.de || '',
+        creator: item.creator?._id ? idMappings.creator.get(item.creator._id) : null,
+        category: item.category?._id ? [idMappings.category.get(item.category._id)].filter(Boolean) : [],
+        materials: item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || [],
+        medium: item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || [],
+        finishes: item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || [],
+        'size-dimensions': item.size || '',
+        year: item.year || '',
+        price: item.price || '',
+        'artwork-images': artworkImages
+      }
     }
   }))
   
