@@ -8,7 +8,8 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@sanity/client": "6.21.4"
+    "@sanity/client": "^6.21.3",
+    "form-data": "^4.0.0"
   },
   "engines": {
     "node": "22.x"

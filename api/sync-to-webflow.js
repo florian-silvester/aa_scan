@@ -1,3 +1,18 @@
+const fs = require('fs')
+const path = require('path')
+
+// Load environment variables manually
+const envPath = path.join(__dirname, '..', '.env')
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8')
+  envContent.split('\n').forEach(line => {
+    const [key, value] = line.split('=')
+    if (key && value) {
+      process.env[key.trim()] = value.trim()
+    }
+  })
+}
+
 const {createClient} = require('@sanity/client')
 const crypto = require('crypto')
 const https = require('https')
@@ -34,7 +49,79 @@ const idMappings = {
   medium: new Map(),
   category: new Map(),
   location: new Map(),
-  creator: new Map()
+  creator: new Map(),
+  artwork: new Map()
+}
+
+// Persistent ID mappings system (like asset mappings)
+let persistentIdMappings = new Map()
+
+// Load ID mappings from Sanity
+async function loadIdMappings() {
+  try {
+    const result = await sanityClient.fetch(`
+      *[_type == "webflowSyncSettings" && _id == "id-mappings"][0] {
+        idMappings
+      }
+    `)
+    
+    if (result?.idMappings) {
+      const parsedMappings = JSON.parse(result.idMappings)
+      persistentIdMappings = new Map(Object.entries(parsedMappings))
+      console.log(`🔗 Loaded ${persistentIdMappings.size} ID mappings from Sanity`)
+    } else {
+      console.log('🔗 No existing ID mappings found, starting fresh')
+      persistentIdMappings = new Map()
+    }
+  } catch (error) {
+    console.log('🔗 Failed to load ID mappings, starting fresh:', error.message)
+    persistentIdMappings = new Map()
+  }
+}
+
+// Save ID mappings to Sanity
+async function saveIdMappings() {
+  try {
+    // Merge all collection mappings into one persistent store
+    const allMappings = {}
+    Object.entries(idMappings).forEach(([collection, map]) => {
+      map.forEach((webflowId, sanityId) => {
+        allMappings[`${collection}:${sanityId}`] = webflowId
+      })
+    })
+    
+    await sanityClient.createOrReplace({
+      _type: 'webflowSyncSettings',
+      _id: 'id-mappings',
+      idMappings: JSON.stringify(allMappings),
+      lastUpdated: new Date().toISOString()
+    })
+    
+    console.log(`💾 Saved ${Object.keys(allMappings).length} ID mappings to Sanity`)
+  } catch (error) {
+    console.error('❌ Failed to save ID mappings:', error.message)
+  }
+}
+
+// Load persistent mappings into memory collections
+function loadPersistentMappings() {
+  Object.keys(idMappings).forEach(collection => {
+    idMappings[collection].clear()
+  })
+  
+  persistentIdMappings.forEach((webflowId, key) => {
+    const [collection, sanityId] = key.split(':')
+    if (idMappings[collection]) {
+      idMappings[collection].set(sanityId, webflowId)
+    }
+  })
+  
+  console.log(`🔄 Loaded mappings into memory: ${Object.entries(idMappings).map(([k,v]) => `${k}:${v.size}`).join(', ')}`)
+}
+
+// Find existing Webflow item by Sanity ID (using stored mappings)
+function findExistingWebflowId(sanityId, collection) {
+  return idMappings[collection]?.get(sanityId) || null
 }
 
 // Asset tracking system for incremental image sync (using Sanity as storage)
@@ -212,10 +299,16 @@ async function webflowRequest(endpoint, options = {}, retryCount = 0) {
   }
   
   if (!response.ok) {
-    const error = await response.text()
-    throw new Error(`Webflow API error: ${response.status} ${error}`)
+    const errorBody = await response.text()
+    console.error('Webflow API Error Response:', errorBody)
+    throw new Error(`Webflow API error: ${response.status} ${errorBody}`)
   }
   
+  // Handle empty responses for DELETE requests
+  if (response.status === 204 || options.method === 'DELETE') {
+    return {} // Return empty object for successful deletions
+  }
+
   return response.json()
 }
 
@@ -246,39 +339,35 @@ async function createWebflowItems(collectionId, items) {
 // Delete items from Webflow (with batch processing)
 async function deleteWebflowItems(collectionId, itemIds) {
   const results = []
-  const batchSize = 5  // Smaller batches to avoid rate limits
+  const batchSize = 50 // Can use a larger batch size for logging, requests are sequential
   
   for (let i = 0; i < itemIds.length; i += batchSize) {
     const batch = itemIds.slice(i, i + batchSize)
     console.log(`  🗑️  Deleting batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(itemIds.length/batchSize)} (${batch.length} items)`)
     
-    const batchPromises = batch.map(async (itemId) => {
+    // Process items sequentially within the batch
+    for (const itemId of batch) {
       let attempts = 0
       while (attempts < 3) {
         try {
           await webflowRequest(`/collections/${collectionId}/items/${itemId}`, {
             method: 'DELETE'
           })
-          return { itemId, status: 'deleted' }
+          results.push({ itemId, status: 'deleted' })
+          break // Success, exit while loop
         } catch (error) {
           attempts++
           if (error.message.includes('429') && attempts < 3) {
-            console.log(`  ⏳ Rate limited, retrying ${itemId} in ${attempts * 2}s...`)
-            await new Promise(resolve => setTimeout(resolve, attempts * 2000))
+            const waitTime = attempts * 2000 // 2s, 4s
+            console.log(`  ⏳ Rate limited, retrying ${itemId} in ${waitTime/1000}s...`)
+            await new Promise(resolve => setTimeout(resolve, waitTime))
             continue
           }
           console.warn(`  ⚠️  Failed to delete ${itemId}: ${error.message}`)
-          return { itemId, status: 'error', error: error.message }
+          results.push({ itemId, status: 'error', error: error.message })
+          break // Failure, exit while loop
         }
       }
-    })
-    
-    const batchResults = await Promise.allSettled(batchPromises)
-    results.push(...batchResults.map(r => r.status === 'fulfilled' ? r.value : r.reason))
-    
-    // Longer delay between batches to avoid rate limits
-    if (i + batchSize < itemIds.length) {
-      await new Promise(resolve => setTimeout(resolve, 500))
     }
   }
   
@@ -382,6 +471,9 @@ function generateMD5Hash(buffer) {
 
 async function uploadImageToWebflow(imageUrl, siteName, altText = null, originalFilename = null) {
   try {
+    // Add a 5-second delay to respect asset creation rate limits
+    await new Promise(resolve => setTimeout(resolve, 5000))
+
     // 1. Download image from Sanity
     console.log(`  📥 Downloading: ${imageUrl}`)
     const imageBuffer = await downloadImageBuffer(imageUrl)
@@ -389,8 +481,24 @@ async function uploadImageToWebflow(imageUrl, siteName, altText = null, original
     // 2. Generate MD5 hash
     const fileHash = generateMD5Hash(imageBuffer)
     
-    // 3. Use meaningful filename (prefer original, fall back to URL)
-    const filename = originalFilename || imageUrl.split('/').pop().split('?')[0] || 'artwork-image.jpg'
+    // 3. Create meaningful filename from alt text or description
+    let filename = originalFilename || 'artwork-image.jpg'
+    
+    if (altText && altText.trim()) {
+      // Use alt text to create descriptive filename
+      const cleanAltText = altText
+        .trim()
+        .substring(0, 80) // Limit length
+        .replace(/[^a-zA-Z0-9\s\-_]/g, '') // Remove special chars
+        .replace(/\s+/g, '-') // Replace spaces with dashes
+        .toLowerCase()
+      
+      if (cleanAltText) {
+        const extension = originalFilename ? 
+          originalFilename.split('.').pop() : 'jpg'
+        filename = `${cleanAltText}.${extension}`
+      }
+    }
     
     // 4. Create asset metadata in Webflow
     const metadataResponse = await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/assets`, {
@@ -406,31 +514,43 @@ async function uploadImageToWebflow(imageUrl, siteName, altText = null, original
       throw new Error('Failed to get upload credentials from Webflow')
     }
     
-    // 5. Upload to Amazon S3
+    // 5. Upload to Amazon S3 using FormData (the correct way)
+    console.log('  📤 Uploading to S3 with FormData...')
+    
+    const form = new FormData()
+    
+    // Add all presigned fields from uploadDetails
+    Object.entries(metadataResponse.uploadDetails).forEach(([key, value]) => {
+      form.append(key, value)
+    })
+    
+    // Add the file last - create a Blob from the buffer for fetch()
+    const blob = new Blob([imageBuffer], { 
+      type: metadataResponse.uploadDetails['content-type'] || 'image/jpeg' 
+    })
+    form.append('file', blob, filename)
+    
     const uploadResponse = await fetch(metadataResponse.uploadUrl, {
       method: 'POST',
-      headers: {
-        ...metadataResponse.uploadDetails.headers,
-        'Content-Type': 'application/octet-stream'
-      },
-      body: imageBuffer
+      body: form
     })
     
     if (!uploadResponse.ok) {
-      throw new Error(`S3 upload failed: ${uploadResponse.status}`)
+      const errorText = await uploadResponse.text()
+      throw new Error(`S3 upload failed: ${uploadResponse.status} - ${errorText}`)
     }
     
-    // 6. Set alt text if provided
-    if (altText && metadataResponse.id) {
-      await updateImageMetadata(metadataResponse.id, altText)
-    }
+    // 6. Set alt text if provided (currently not working with Webflow API v2)
+    // if (altText && metadataResponse.id) {
+    //   await updateImageMetadata(metadataResponse.id, altText)
+    // }
     
     // 7. Return Webflow asset ID
     console.log(`  ✅ Uploaded: ${filename}${altText ? ' (with alt text)' : ''}`)
     return metadataResponse.id
     
   } catch (error) {
-    console.error(`  ❌ Failed to upload image: ${error.message}`)
+    console.error(`❌ Failed to upload image. URL: ${imageUrl}, Error:`, error)
     return null
   }
 }
@@ -450,9 +570,23 @@ async function syncArtworkImages(artworkImages) {
     if (!image.asset?.url) continue
     
     const sanityAssetId = image.asset._id
-    const altText = image.alt?.en || image.alt?.de || ''
     const originalFilename = image.asset.originalFilename || ''
     const imageUrl = image.asset.url
+    
+    // Create enhanced alt text from artwork context
+    const altText = image.alt?.en || image.alt?.de || ''
+    const artworkContext = image.artworkContext
+    
+    let enhancedAltText = altText
+    if (!enhancedAltText && artworkContext) {
+      // Build descriptive text from artwork data
+      const parts = []
+      if (artworkContext.creatorName) parts.push(artworkContext.creatorName)
+      if (artworkContext.workTitle) parts.push(artworkContext.workTitle)
+      else if (artworkContext.name) parts.push(artworkContext.name)
+      
+      enhancedAltText = parts.join(' - ')
+    }
     
     // Check if we've seen this image before
     const existingAsset = assetMappings.get(sanityAssetId)
@@ -460,23 +594,20 @@ async function syncArtworkImages(artworkImages) {
     if (!existingAsset) {
       // New image - upload it
       console.log(`  📤 Uploading new image: ${originalFilename}`)
-      
-      const meaningfulFilename = altText 
-        ? `${altText.substring(0, 50).replace(/[^a-zA-Z0-9]/g, '-')}.jpg`
-        : originalFilename
+      console.log(`  🏷️  Enhanced description: ${enhancedAltText}`)
         
       const assetId = await uploadImageToWebflow(
         imageUrl, 
         'artwork', 
-        altText, 
-        meaningfulFilename
+        enhancedAltText, 
+        originalFilename
       )
       
       if (assetId) {
         // Track this asset
         assetMappings.set(sanityAssetId, {
           webflowAssetId: assetId,
-          altText: altText,
+          altText: enhancedAltText,
           filename: originalFilename,
           url: imageUrl,
           lastUpdated: new Date().toISOString()
@@ -485,22 +616,20 @@ async function syncArtworkImages(artworkImages) {
         webflowAssetIds.push(assetId)
         uploadedCount++
       }
-    } else if (hasImageMetadataChanged(image, existingAsset)) {
-      // Metadata changed - update without re-uploading
+    } else if (hasImageMetadataChanged({...image, alt: {en: enhancedAltText}}, existingAsset)) {
+      // Metadata changed - update tracking (no API call needed)
       console.log(`  🔄 Updating metadata for: ${originalFilename}`)
+      console.log(`  🏷️  New description: ${enhancedAltText}`)
       
-      const success = await updateImageMetadata(existingAsset.webflowAssetId, altText)
-      if (success) {
-        // Update tracking
-        assetMappings.set(sanityAssetId, {
-          ...existingAsset,
-          altText: altText,
-          filename: originalFilename,
-          url: imageUrl,
-          lastUpdated: new Date().toISOString()
-        })
-        updatedCount++
-      }
+      // Update tracking (skip API call since it doesn't work)
+      assetMappings.set(sanityAssetId, {
+        ...existingAsset,
+        altText: enhancedAltText,
+        filename: originalFilename,
+        url: imageUrl,
+        lastUpdated: new Date().toISOString()
+      })
+      updatedCount++
       
       webflowAssetIds.push(existingAsset.webflowAssetId)
     } else {
@@ -519,9 +648,6 @@ async function syncArtworkImages(artworkImages) {
 async function syncMaterialTypes() {
   console.log('📋 Syncing Material Types...')
   
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.materialType, 'Material Types')
-  
   const sanityData = await sanityClient.fetch(`
     *[_type == "materialType"] | order(sortOrder asc, name.en asc) {
       _id,
@@ -539,14 +665,30 @@ async function syncMaterialTypes() {
     }
   }))
   
-  // Create in Webflow
-  const results = await createWebflowItems(WEBFLOW_COLLECTIONS.materialType, webflowItems)
+  // Filter out items that already exist
+  const newItems = []
+  const existingCount = 0
   
-  // Store mappings
-  results.forEach((webflowItem, index) => {
-    const sanityItem = sanityData[index]
-    idMappings.materialType.set(sanityItem._id, webflowItem.id)
+  sanityData.forEach((item, index) => {
+    const existingId = idMappings.materialType.get(item._id)
+    if (!existingId) {
+      newItems.push({ item, webflowItem: webflowItems[index] })
+    }
   })
+  
+  console.log(`  📊 ${newItems.length} new, ${sanityData.length - newItems.length} existing`)
+  
+  // Create only new items in Webflow
+  let results = []
+  if (newItems.length > 0) {
+    results = await createWebflowItems(WEBFLOW_COLLECTIONS.materialType, newItems.map(ni => ni.webflowItem))
+    
+    // Store new mappings
+    results.forEach((webflowItem, index) => {
+      const sanityItem = newItems[index].item
+      idMappings.materialType.set(sanityItem._id, webflowItem.id)
+    })
+  }
   
   console.log(`✅ Material Types: ${results.length} created`)
   return results.length
@@ -555,9 +697,6 @@ async function syncMaterialTypes() {
 // PHASE 2: Sync Finishes
 async function syncFinishes() {
   console.log('🎨 Syncing Finishes...')
-  
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.finish, 'Finishes')
   
   const sanityData = await sanityClient.fetch(`
     *[_type == "finish"] | order(name.en asc) {
@@ -589,9 +728,6 @@ async function syncFinishes() {
 // PHASE 3: Sync Materials (with Material Type references)
 async function syncMaterials() {
   console.log('🪨 Syncing Materials...')
-  
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.material, 'Materials')
   
   const sanityData = await sanityClient.fetch(`
     *[_type == "material"] | order(name.en asc) {
@@ -626,9 +762,6 @@ async function syncMaterials() {
 async function syncMediums() {
   console.log('🎭 Syncing Mediums...')
   
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.medium, 'Mediums')
-  
   const sanityData = await sanityClient.fetch(`
     *[_type == "medium"] | order(name.en asc) {
       _id,
@@ -658,9 +791,6 @@ async function syncMediums() {
 
 async function syncCategories() {
   console.log('📂 Syncing Categories...')
-  
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.category, 'Categories')
   
   const sanityData = await sanityClient.fetch(`
     *[_type == "category"] | order(title.en asc) {
@@ -696,9 +826,6 @@ async function syncCategories() {
 
 async function syncLocations() {
   console.log('📍 Syncing Locations...')
-  
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.location, 'Locations')
   
   const sanityData = await sanityClient.fetch(`
     *[_type == "location"] | order(name.en asc) {
@@ -752,9 +879,6 @@ async function syncLocations() {
 async function syncCreators() {
   console.log('👤 Syncing Creators...')
   
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.creator, 'Creators')
-  
   const sanityData = await sanityClient.fetch(`
     *[_type == "creator"] | order(name asc) {
       _id,
@@ -799,9 +923,6 @@ async function syncCreators() {
 async function syncArtworks() {
   console.log('🎨 Syncing Artworks...')
   
-  // Clear existing items first
-  await clearWebflowCollection(WEBFLOW_COLLECTIONS.artwork, 'Artworks')
-  
   const sanityData = await sanityClient.fetch(`
     *[_type == "artwork"] | order(name asc) {
       _id,
@@ -829,7 +950,18 @@ async function syncArtworks() {
   `)
   
   const webflowItems = await Promise.all(sanityData.map(async (item) => {
-    const artworkImages = await syncArtworkImages(item.images)
+    // Create enhanced image data with artwork context for better filenames
+    const enhancedImages = item.images?.map(image => ({
+      ...image,
+      artworkContext: {
+        name: item.name,
+        workTitle: item.workTitle?.en || item.workTitle?.de,
+        creatorName: item.creator?.name,
+        description: item.description?.en || item.description?.de
+      }
+    })) || []
+    
+    const artworkImages = await syncArtworkImages(enhancedImages)
     
     // Validate and map references with error logging
     const creatorId = item.creator?._id ? idMappings.creator.get(item.creator._id) || null : null
@@ -918,8 +1050,24 @@ async function performCompleteSync(progressCallback = null) {
     // Load asset mappings for incremental image sync
     await loadAssetMappings()
     
-    // Clear existing mappings
-    Object.values(idMappings).forEach(map => map.clear())
+    // Load ID mappings for persistent ID matching
+    await loadIdMappings()
+    loadPersistentMappings()
+    
+    // Keep existing mappings for duplicate detection (DON'T clear them!)
+
+    // PHASE 0: Clear all Webflow collections in CORRECT dependency order
+    console.log('\n🧹 PHASE 0: Clearing All Webflow Collections (in dependency order)')
+    
+    // Clear in reverse dependency order (children first, then parents)
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.artwork, 'Artworks')        // References: creator, category, materials, medium, finishes
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.material, 'Materials')      // References: materialType
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.creator, 'Creators')        // No references
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.finish, 'Finishes')         // No references
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.medium, 'Mediums')          // No references
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.category, 'Categories')     // No references
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.location, 'Locations')      // No references
+    await clearWebflowCollection(WEBFLOW_COLLECTIONS.materialType, 'Material Types') // No references (cleared last)
     
     // Phase 1: Foundation data (no dependencies)
     updateProgress('Phase 1', 'Starting foundation data sync...', 0, 4)
@@ -974,7 +1122,7 @@ async function performCompleteSync(progressCallback = null) {
       updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
       totalSynced += await syncArtworks()
     } catch (error) {
-      console.error(`❌ Failed to sync Artworks: ${error.message}`)
+      console.error(`❌ Failed to sync Artworks:`, error)
       updateProgress('Phase 3', `Failed to sync Artworks: ${error.message}`, 1, 1)
     }
     
@@ -984,6 +1132,9 @@ async function performCompleteSync(progressCallback = null) {
     
     // Save asset mappings for future incremental syncs
     await saveAssetMappings()
+    
+    // Save ID mappings for future persistent ID matching
+    await saveIdMappings()
     
     updateProgress('Complete', `Sync completed! ${totalSynced} items synced`, totalSynced, totalSynced)
     
@@ -1073,3 +1224,67 @@ module.exports = async function handler(req, res) {
     })
   }
 } 
+
+// Allow running directly from command line
+if (require.main === module) {
+  console.log('🚀 Running sync directly...')
+  performCompleteSync((progress) => {
+    console.log(`[${progress.phase}] ${progress.message}`)
+  }).then(() => {
+    console.log('✅ Sync completed!')
+    process.exit(0)
+  }).catch((error) => {
+    console.error('❌ Sync failed:', error.message)
+    process.exit(1)
+  })
+  // debugImageUpload().catch(console.error)
+} 
+
+// New isolated test function for debugging image uploads
+async function debugImageUpload() {
+  console.log('🧪 Starting isolated image upload debug...')
+
+  // 1. Load mappings needed for the test
+  await loadAssetMappings()
+  
+  // 2. Fetch one artwork with images from Sanity
+  const testArtwork = await sanityClient.fetch(`
+    *[_type == "artwork" && count(images) > 0][0] {
+      _id,
+      name,
+      images[]{ 
+        asset->{
+          _id,
+          url,
+          originalFilename
+        },
+        alt
+      }
+    }
+  `)
+
+  if (!testArtwork) {
+    console.error('❌ No artworks with images found to test.')
+    return
+  }
+
+  console.log(`🖼️  Testing with artwork: "${testArtwork.name}" (${testArtwork.images.length} images)`)
+
+  // 3. Run only the image sync logic
+  try {
+    const webflowAssetIds = await syncArtworkImages(testArtwork.images)
+    console.log('✅ Debug image sync complete.')
+    console.log('Uploaded Webflow Asset IDs:', webflowAssetIds)
+    
+    // 4. Save any new asset mappings
+    await saveAssetMappings()
+
+  } catch (error) {
+    console.error('❌ Debug image sync failed:', error)
+  }
+}
+
+// To run the debug function: comment out the performCompleteSync call and uncomment this
+// if (require.main === module) {
+//   debugImageUpload().catch(console.error)
+// } 
