@@ -189,9 +189,11 @@ function mapLocationType(sanityType) {
   return typeMapping[sanityType] || 'Shop / Gallery' // Default to Shop / Gallery
 }
 
-// Webflow API helper
-async function webflowRequest(endpoint, options = {}) {
+// Webflow API helper with rate limit handling
+async function webflowRequest(endpoint, options = {}, retryCount = 0) {
   const baseUrl = 'https://api.webflow.com/v2'
+  const maxRetries = 3
+  
   const response = await fetch(`${baseUrl}${endpoint}`, {
     headers: {
       'Authorization': `Bearer ${process.env.WEBFLOW_API_TOKEN}`,
@@ -200,6 +202,14 @@ async function webflowRequest(endpoint, options = {}) {
     },
     ...options
   })
+  
+  // Handle rate limits with exponential backoff
+  if (response.status === 429 && retryCount < maxRetries) {
+    const waitTime = Math.pow(2, retryCount) * 1000 // 1s, 2s, 4s
+    console.log(`⏳ Rate limited, waiting ${waitTime/1000}s before retry ${retryCount + 1}/${maxRetries}`)
+    await new Promise(resolve => setTimeout(resolve, waitTime))
+    return webflowRequest(endpoint, options, retryCount + 1)
+  }
   
   if (!response.ok) {
     const error = await response.text()

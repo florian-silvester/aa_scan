@@ -58,13 +58,15 @@ export default function SyncToWebflowAction() {
 
     try {
       // Try streaming first
-      const response = await fetch('https://art-aurea-9z9jitcnz-florian-s-projects-e1761f42.vercel.app/api/sync-to-webflow', {
+      console.log('Starting sync to:', 'https://art-aurea-api.vercel.app/api/sync-to-webflow')
+      const response = await fetch('https://art-aurea-api.vercel.app/api/sync-to-webflow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ streaming: true }),
       })
+      console.log('Response status:', response.status)
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
