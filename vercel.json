@@ -1,5 +1,4 @@
 {
-  "buildCommand": "cd sanity-cms && npm install && npm run build",
-  "outputDirectory": "sanity-cms/dist",
-  "framework": "other"
+  "buildCommand": "cd sanity-cms && npm run build",
+  "outputDirectory": "sanity-cms/dist"
 }
