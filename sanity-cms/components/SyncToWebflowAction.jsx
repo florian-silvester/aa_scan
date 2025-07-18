@@ -58,8 +58,8 @@ export default function SyncToWebflowAction() {
 
     try {
       // Try streaming first
-      console.log('Starting sync to:', 'https://art-aurea-api.vercel.app/api/sync-to-webflow')
-      const response = await fetch('https://art-aurea-api.vercel.app/api/sync-to-webflow', {
+          console.log('Starting sync to:', 'https://aabackend-ten.vercel.app/api/sync-to-webflow')
+    const response = await fetch('https://aabackend-ten.vercel.app/api/sync-to-webflow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
