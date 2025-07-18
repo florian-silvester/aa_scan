@@ -1,0 +1,10 @@
+{
+  "build": {
+    "env": {
+      "NODE_VERSION": "20.x"
+    }
+  },
+  "buildCommand": "cd sanity-cms && npm install && npm run build",
+  "outputDirectory": "sanity-cms/dist",
+  "framework": "other"
+}
