@@ -423,4 +423,3 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
-})// Force deployment Fri Jul 18 12:55:42 CEST 2025
