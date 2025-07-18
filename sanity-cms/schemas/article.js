@@ -8,6 +8,60 @@ export default {
   ],
   fields: [
     {
+      name: 'featureImage',
+      title: 'Feature Image',
+      type: 'image',
+      options: {
+        hotspot: true
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
+          fields: [
+            {
+              name: 'en',
+              title: 'English',
+              type: 'string'
+            },
+            {
+              name: 'de',
+              title: 'German',
+              type: 'string'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'coverImage',
+      title: 'Cover Image/Video',
+      type: 'file',
+      options: {
+        accept: '.jpg,.jpeg,.png,.gif,.webp,.mp4,.mov,.avi,.mkv,.webm'
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text / Video Description',
+          type: 'object',
+          fields: [
+            {
+              name: 'en',
+              title: 'English',
+              type: 'string'
+            },
+            {
+              name: 'de',
+              title: 'German',
+              type: 'string'
+            }
+          ]
+        }
+      ]
+    },
+    {
       name: 'title',
       title: 'Title',
       type: 'object',
@@ -85,7 +139,7 @@ export default {
     },
     {
       name: 'images',
-      title: 'Featured Images',
+      title: 'Images',
       type: 'array',
       description: 'Select images from the media library for this article',
       of: [
@@ -119,6 +173,34 @@ export default {
       options: {
         layout: 'grid',
       }
+    },
+    {
+      name: 'medium',
+      title: 'Medium',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'medium'}]}],
+      description: 'Select relevant mediums for this article'
+    },
+    {
+      name: 'materials',
+      title: 'Materials',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'material'}]}],
+      description: 'Select relevant materials for this article'
+    },
+    {
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{type: 'category'}],
+      description: 'Select the primary category for this article'
+    },
+    {
+      name: 'finishes',
+      title: 'Finishes',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'finish'}]}],
+      description: 'Select relevant finishes for this article'
     },
     {
       name: 'slug',
