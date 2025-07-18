@@ -3,7 +3,6 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
 import {media} from 'sanity-plugin-media'
-import {dashboardTool} from '@sanity/dashboard'
 
 import MediaStatsWidget from './components/MediaStatsWidget'
 import SyncToWebflowAction from './components/SyncToWebflowAction'
@@ -410,26 +409,6 @@ export default defineConfig({
     }),
     visionTool(),
     media(),
-    dashboardTool({
-      widgets: [
-        {
-          name: 'sync-to-webflow',
-          component: SyncToWebflowAction,
-          layout: {
-            width: 'medium',
-            height: 'auto'
-          }
-        },
-        {
-          name: 'media-stats',
-          component: MediaStatsWidget,
-          layout: {
-            width: 'full',
-            height: 'auto'
-          }
-        }
-      ]
-    }),
   ],
 
   schema: {

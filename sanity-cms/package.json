@@ -20,9 +20,7 @@
   },
   "dependencies": {
     "@google-cloud/translate": "^9.2.0",
-    "@sanity/dashboard": "^4.1.3",
-    "@sanity/table": "^1.1.3",
-    "@sanity/vision": "^3.98.0",
+    "@sanity/vision": "^4.0.1",
     "@tanstack/react-table": "^8.21.3",
     "dotenv": "^16.6.1",
     "react": "^18.2.0",
