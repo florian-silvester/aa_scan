@@ -7,6 +7,14 @@ import {media} from 'sanity-plugin-media'
 import MediaStatsWidget from './components/MediaStatsWidget'
 import SyncToWebflowAction from './components/SyncToWebflowAction'
 
+// Custom tool for Webflow sync
+const webflowSyncTool = {
+  name: 'webflow-sync',
+  title: 'Webflow Sync',
+  icon: () => '🔄',
+  component: SyncToWebflowAction,
+}
+
 export default defineConfig({
   name: 'default',
   title: 'Art Jewelry CMS',
@@ -409,6 +417,7 @@ export default defineConfig({
     }),
     visionTool(),
     media(),
+    webflowSyncTool,
   ],
 
   schema: {
