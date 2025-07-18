@@ -99,6 +99,28 @@ export default defineConfig({
             
             S.divider(),
             
+            // 📝 ARTICLES SECTION
+            S.listItem()
+              .title('📝 Articles')
+              .child(
+                S.list()
+                  .title('Articles')
+                  .items([
+                    S.listItem()
+                      .title('All Articles')
+                      .child(S.documentTypeList('article').title('All Articles')),
+                    S.divider(),
+                    S.listItem()
+                      .title('Published Articles')
+                      .child(S.documentTypeList('article').title('Published Articles').filter('_type == "article" && defined(date)')),
+                    S.listItem()
+                      .title('Draft Articles')
+                      .child(S.documentTypeList('article').title('Draft Articles').filter('_type == "article" && !defined(date)')),
+                  ])
+              ),
+            
+            S.divider(),
+            
             // 🎨 ARTWORKS & MATERIALS SECTION
             S.listItem()
               .title('🎨 Artworks & Materials')
