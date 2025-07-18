@@ -69,3 +69,4 @@ wordpress-all-images/
 archive/
 sanity-migration/
 sanity-cms/scripts/data-files/*.json
+.vercel
