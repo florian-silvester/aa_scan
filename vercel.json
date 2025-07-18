@@ -1,7 +1,7 @@
 {
   "buildCommand": "cd sanity-cms && npm run build",
   "outputDirectory": "sanity-cms/dist",
-  "installCommand": "npm install && cd sanity-cms && npm install",
+  "installCommand": "npm install --legacy-peer-deps && cd sanity-cms && npm install --legacy-peer-deps",
   "headers": [
     {
       "source": "/api/(.*)",
