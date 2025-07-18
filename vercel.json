@@ -1,4 +1,7 @@
 {
+  "buildCommand": "cd sanity-cms && npm run build",
+  "outputDirectory": "sanity-cms/dist",
+  "installCommand": "npm install && cd sanity-cms && npm install",
   "headers": [
     {
       "source": "/api/(.*)",
