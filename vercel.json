@@ -1,4 +1,0 @@
-{
-  "buildCommand": "cd sanity-cms && rm -rf node_modules package-lock.json && npm install && npm run build",
-  "outputDirectory": "sanity-cms/dist"
-}
