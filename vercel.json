@@ -4,7 +4,7 @@
       "NODE_VERSION": "20.x"
     }
   },
-  "buildCommand": "cd sanity-cms && npm install && npm run build",
+  "buildCommand": "cd sanity-cms && npm install --legacy-peer-deps && npm run build",
   "outputDirectory": "sanity-cms/dist",
   "framework": "sanity"
 }
