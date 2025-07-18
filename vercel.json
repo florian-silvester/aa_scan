@@ -1,4 +1,0 @@
-{
-  "buildCommand": "cd sanity-cms && npm run build",
-  "outputDirectory": "sanity-cms/dist"
-}
