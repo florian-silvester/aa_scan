@@ -13,18 +13,7 @@ if (fs.existsSync(envPath)) {
   })
 }
 
-let createClient
-try {
-  createClient = require('@sanity/client').createClient
-} catch (e) {
-  try {
-    // Fallback to Sanity subproject dependency
-    createClient = require(path.join(__dirname, '..', 'sanity-cms', 'node_modules', '@sanity', 'client')).createClient
-    console.log('ℹ️  Using @sanity/client from sanity-cms/node_modules')
-  } catch (e2) {
-    throw new Error("@sanity/client not found. Install it at repo root or in sanity-cms.")
-  }
-}
+const {createClient} = require('@sanity/client')
 const crypto = require('crypto')
 const https = require('https')
 
@@ -37,68 +26,19 @@ const sanityClient = createClient({
   token: process.env.SANITY_API_TOKEN
 })
 
-// Webflow site ID (from env)
-const WEBFLOW_SITE_ID = process.env.WEBFLOW_SITE_ID
-if (!WEBFLOW_SITE_ID) {
-  throw new Error('WEBFLOW_SITE_ID environment variable is required')
-}
+// Webflow site ID (TEST SITE)
+const WEBFLOW_SITE_ID = '68aacc3d883db0097582af82'
 
-// Webflow collection IDs (resolved dynamically at runtime)
-let WEBFLOW_COLLECTIONS = null
-
-function normalize(str) {
-  return (str || '')
-    .toString()
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-}
-
-async function resolveWebflowCollections() {
-  // Allow explicit override via env JSON
-  if (process.env.WEBFLOW_COLLECTIONS_JSON) {
-    try {
-      const parsed = JSON.parse(process.env.WEBFLOW_COLLECTIONS_JSON)
-      return parsed
-    } catch (e) {
-      console.warn('⚠️  Invalid WEBFLOW_COLLECTIONS_JSON, falling back to API resolution')
-    }
-  }
-
-  const siteCollections = await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/collections`)
-  const bySlug = new Map()
-  for (const c of (siteCollections.collections || siteCollections || [])) {
-    // Support both possible response shapes
-    const slug = normalize(c.slug || c.displayName || c.singularName)
-    bySlug.set(slug, c)
-  }
-
-  // Helper to find a collection by possible names
-  const pick = (...candidates) => {
-    for (const name of candidates) {
-      const c = bySlug.get(normalize(name))
-      if (c) return c.id
-    }
-    return null
-  }
-
-  const resolved = {
-    materialType: pick('material-types', 'material type', 'material types', 'materialtype'),
-    material: pick('materials', 'material'),
-    finish: pick('finishes', 'finish'),
-    medium: pick('mediums', 'media', 'medium'),
-    category: pick('categories', 'category'),
-    location: pick('locations', 'location'),
-    creator: pick('creators', 'creator', 'profiles', 'profile'),
-    artwork: pick('artworks', 'artwork', 'works', 'work')
-  }
-
-  // Validate presence
-  const missing = Object.entries(resolved).filter(([, v]) => !v).map(([k]) => k)
-  if (missing.length > 0) {
-    console.warn(`⚠️  Missing collections on site: ${missing.join(', ')}`)
-  }
-  return resolved
+// Webflow collection IDs (TEST SITE)
+const WEBFLOW_COLLECTIONS = {
+  materialType: '68aad35c5f9465b30ae4bb44',
+  material: '68aad380a2762418bb1f3319',
+  finish: '68aad35da2762418bb1f2b27',
+  medium: '68aad37f5603cbf2a8bb8c2b',
+  category: '68aad35b5603cbf2a8bb8406',
+  location: '68aad38146a81372cc38b231',
+  creator: '68aad3c44fd764c0e47de4be',
+  artwork: '68aad3efdbc15ad60b856a43'
 }
 
 // Store mapping of Sanity IDs to Webflow IDs (in production, use database)
@@ -1150,7 +1090,6 @@ async function syncArtworks(limit = null) {
       return mappedId
     }).filter(Boolean) || []
     
-    // NEW: map single main image if present
     const mainImage = item.mainImage?.asset?.url ? {
       url: item.mainImage.asset.url,
       alt: (item.mainImage?.alt?.en || item.mainImage?.alt?.de || item.name || item.workTitle?.en || item.workTitle?.de || 'Main image')
@@ -1222,110 +1161,6 @@ async function syncArtworks(limit = null) {
   })
 }
 
-// Sync artworks only for a specific subset of creators (by Sanity IDs)
-async function syncArtworksForCreators(creatorIds = []) {
-  if (!Array.isArray(creatorIds) || creatorIds.length === 0) {
-    console.log('⚪ No creator IDs provided for filtered artwork sync. Skipping.')
-    return 0
-  }
-
-  // Local custom image sync (same as in syncArtworks)
-  const artworkCustomSync = async (item) => {
-    const artworkImages = item.images?.map(image => {
-      if (!image.asset?.url) return null
-      const altText = image.alt?.en || image.alt?.de || ''
-      const artworkName = item.name || item.workTitle?.en || item.workTitle?.de
-      const creatorName = item.creator?.name
-      let enhancedAltText = altText
-      if (!enhancedAltText && artworkName) {
-        const parts = []
-        if (creatorName) parts.push(creatorName)
-        if (artworkName) parts.push(artworkName)
-        enhancedAltText = parts.join(' - ')
-      }
-      return {
-        url: image.asset.url,
-        alt: enhancedAltText || artworkName || 'Artwork image'
-      }
-    }).filter(Boolean) || []
-
-    console.log(`  🖼️  Prepared ${artworkImages.length} images for upload via URLs`)
-
-    const creatorId = item.creator?._id ? idMappings.creator.get(item.creator._id) || null : null
-    if (item.creator?._id && !creatorId) {
-      console.warn(`  ⚠️  Creator reference not found for artwork '${item.name}': ${item.creator._id}`)
-    }
-
-    const categoryId = item.category?._id ? idMappings.category.get(item.category._id) || null : null
-    if (item.category?._id && !categoryId) {
-      console.warn(`  ⚠️  Category reference not found for artwork '${item.name}': ${item.category._id}`)
-    }
-
-    const materialIds = item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || []
-    const mediumIds = item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || []
-    const finishIds = item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || []
-
-    return {
-      fieldData: {
-        name: item.name || 'Untitled',
-        slug: item.slug?.current || generateSlug(item.name || item.workTitle?.en),
-        'work-title': item.workTitle?.en || item.workTitle?.de || '',
-        'work-title-english': item.workTitle?.en || '',
-        'work-title-german': item.workTitle?.de || '',
-        'description-english': item.description?.en || '',
-        'description-german': item.description?.de || '',
-        creator: creatorId,
-        category: categoryId ? [categoryId] : [],
-        materials: materialIds,
-        medium: mediumIds,
-        finishes: finishIds,
-        'size-dimensions': item.size || '',
-        year: item.year || '',
-        price: item.price || '',
-        'artwork-images': artworkImages
-      }
-    }
-  }
-
-  // Inline IDs into query (simple and effective for a one-off filtered sync)
-  const idsList = creatorIds.map(id => `"${id}"`).join(',')
-  const filteredQuery = `
-      *[_type == "artwork" && defined(creator._ref) && creator._ref in [${idsList}]] | order(name asc) {
-        _id,
-        name,
-        workTitle,
-        description,
-        creator->{_id,name},
-        category->{_id},
-        materials[]->{_id},
-        medium[]->{_id},
-        finishes[]->{_id},
-        size,
-        year,
-        price,
-        slug,
-        images[]{ 
-          asset->{
-            _id,
-            url,
-            originalFilename
-          },
-          alt
-        }
-      }
-    `
-
-  return syncCollection({
-    name: 'Artworks (filtered by creators)',
-    collectionId: WEBFLOW_COLLECTIONS.artwork,
-    mappingKey: 'artwork',
-    sanityQuery: filteredQuery,
-    fieldMapper: null,
-    customImageSync: artworkCustomSync,
-    limit: null
-  })
-}
-
 // PHASE 4: Populate Creator Works (Reverse Linkage)
 async function populateCreatorWorks() {
   console.log('\n🔗 PHASE 4: Populating Creator Works (Reverse Linkage)')
@@ -1379,11 +1214,11 @@ async function populateCreatorWorks() {
         
         await webflowRequest(`/collections/${WEBFLOW_COLLECTIONS.creator}/items/${creator.id}`, {
           method: 'PATCH',
-          body: JSON.stringify({
+          body: {
             fieldData: {
               works: artworkIds
             }
-          })
+          }
         })
       } else {
         console.log(`  ⚪ ${creatorName}: 0 artworks`)
@@ -1400,7 +1235,7 @@ async function populateCreatorWorks() {
 
 // Main sync function
 async function performCompleteSync(progressCallback = null, options = {}) {
-  const { limitPerCollection = null, only = null } = options || {}
+  const { limitPerCollection = null } = options || {}
   const startTime = Date.now()
   let totalSynced = 0
   
@@ -1420,15 +1255,6 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     console.log('🚀 Starting Complete Sanity → Webflow Sync')
     console.log('='.repeat(60))
     
-    // Resolve Webflow collections for this site
-    if (!WEBFLOW_COLLECTIONS) {
-      WEBFLOW_COLLECTIONS = await resolveWebflowCollections()
-      if (!WEBFLOW_COLLECTIONS) {
-        throw new Error('Failed to resolve Webflow collections for the site')
-      }
-      console.log('🗂️  Resolved Webflow collections:', WEBFLOW_COLLECTIONS)
-    }
-
     // Load asset mappings for incremental image sync
     await loadAssetMappings()
     
@@ -1451,13 +1277,12 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     updateProgress('Phase 1', 'Starting foundation data sync...', 0, 4)
     console.log('\n📋 PHASE 1: Foundation Data')
     
-    const phase1All = [
-      { name: 'Material Types', key: 'materialType', func: syncMaterialTypes },
-      { name: 'Finishes', key: 'finish', func: syncFinishes },
-      { name: 'Categories', key: 'category', func: syncCategories },
-      { name: 'Locations', key: 'location', func: syncLocations }
+    const syncFunctions = [
+      { name: 'Material Types', func: syncMaterialTypes },
+      { name: 'Finishes', func: syncFinishes },
+      { name: 'Categories', func: syncCategories },
+      { name: 'Locations', func: syncLocations }
     ]
-    const syncFunctions = (only ? phase1All.filter(p => p.key === only || normalize(p.name) === normalize(only)) : phase1All)
     
     for (let i = 0; i < syncFunctions.length; i++) {
       const { name, func } = syncFunctions[i]
@@ -1475,12 +1300,11 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     updateProgress('Phase 2', 'Starting reference data sync...', 0, 3)
     console.log('\n🔗 PHASE 2: Reference Data')
     
-    const phase2All = [
-      { name: 'Materials', key: 'material', func: syncMaterials },
-      { name: 'Mediums', key: 'medium', func: syncMediums },
-      { name: 'Creators', key: 'creator', func: syncCreators }
+    const syncFunctions2 = [
+      { name: 'Materials', func: syncMaterials },
+      { name: 'Mediums', func: syncMediums },
+      { name: 'Creators', func: syncCreators }
     ]
-    const syncFunctions2 = (only ? phase2All.filter(p => p.key === only || normalize(p.name) === normalize(only)) : phase2All)
     
     for (let i = 0; i < syncFunctions2.length; i++) {
       const { name, func } = syncFunctions2[i]
@@ -1498,25 +1322,21 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     updateProgress('Phase 3', 'Starting artwork sync...', 0, 1)
     console.log('\n🎨 PHASE 3: Complex Data')
     
-    if (!only || only === 'artwork' || normalize(only) === 'artworks') {
-      try {
-        updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
-        totalSynced += await syncArtworks(limitPerCollection)
-      } catch (error) {
-        console.error(`❌ Failed to sync Artworks:`, error)
-        updateProgress('Phase 3', `Failed to sync Artworks: ${error.message}`, 1, 1)
-      }
+    try {
+      updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
+      totalSynced += await syncArtworks(limitPerCollection)
+    } catch (error) {
+      console.error(`❌ Failed to sync Artworks:`, error)
+      updateProgress('Phase 3', `Failed to sync Artworks: ${error.message}`, 1, 1)
     }
     
     // PHASE 4: Populate Creator Works (Reverse Linkage)
-    if (!only || only === 'creator' || normalize(only) === 'creators') {
-      try {
-        updateProgress('Phase 4', 'Linking artworks to creators...', 1, 1)
-        await populateCreatorWorks()
-      } catch (error) {
-        console.error(`❌ Failed to populate creator works:`, error)
-        updateProgress('Phase 4', `Failed to populate creator works: ${error.message}`, 1, 1)
-      }
+    try {
+      updateProgress('Phase 4', 'Linking artworks to creators...', 1, 1)
+      await populateCreatorWorks()
+    } catch (error) {
+      console.error(`❌ Failed to populate creator works:`, error)
+      updateProgress('Phase 4', `Failed to populate creator works: ${error.message}`, 1, 1)
     }
     
     const duration = ((Date.now() - startTime) / 1000).toFixed(1)
@@ -1625,42 +1445,17 @@ if (require.main === module) {
   // Parse simple --limit=N flag or LIMIT_PER_COLLECTION env
   const argv = process.argv.slice(2)
   let cliLimit = null
-  let cliOnly = null
-  let cliCreatorsForArtworks = null
   const limitArg = argv.find(a => a.startsWith('--limit='))
   if (limitArg) {
     const val = Number(limitArg.split('=')[1])
     if (Number.isFinite(val)) cliLimit = val
   }
-  const onlyArg = argv.find(a => a.startsWith('--only='))
-  if (onlyArg) {
-    cliOnly = onlyArg.split('=')[1]
-  }
-  const creatorsArg = argv.find(a => a.startsWith('--artworks-for-creators='))
-  if (creatorsArg) {
-    cliCreatorsForArtworks = creatorsArg.split('=')[1]
-  }
 
   const limitValue = cliLimit ?? (process.env.LIMIT_PER_COLLECTION ? Number(process.env.LIMIT_PER_COLLECTION) : null)
 
-  const run = async () => {
-    if (cliCreatorsForArtworks) {
-      // Resolve collections before running filtered sync
-      WEBFLOW_COLLECTIONS = await resolveWebflowCollections()
-      await loadIdMappings();
-      loadPersistentMappings();
-      const ids = cliCreatorsForArtworks.split(',').map(s => s.trim()).filter(Boolean)
-      await syncArtworksForCreators(ids)
-      await populateCreatorWorks()
-      return
-    }
-
-    await performCompleteSync((progress) => {
-      console.log(`[${progress.phase}] ${progress.message}`)
-    }, { limitPerCollection: limitValue, only: cliOnly })
-  }
-
-  run().then(() => {
+  performCompleteSync((progress) => {
+    console.log(`[${progress.phase}] ${progress.message}`)
+  }, { limitPerCollection: limitValue }).then(() => {
     console.log('✅ Sync completed!')
     process.exit(0)
   }).catch((error) => {
