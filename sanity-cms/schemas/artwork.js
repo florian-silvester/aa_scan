@@ -24,6 +24,27 @@ export default {
       description: 'Main display title in format: Creator_work title'
     },
     {
+      name: 'mainImage',
+      title: 'Main Image',
+      type: 'image',
+      group: 'main',
+      options: {
+        hotspot: true,
+        storeOriginalFilename: true
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
+          fields: [
+            {name: 'en', title: 'English', type: 'string'},
+            {name: 'de', title: 'German', type: 'string'}
+          ]
+        }
+      ]
+    },
+    {
       name: 'images',
       title: 'Artwork Images',
       type: 'array',
@@ -34,7 +55,7 @@ export default {
           type: 'image',
           options: {
             hotspot: true,
-            storeOriginalFilename: false
+            storeOriginalFilename: true
           },
           fields: [
             {

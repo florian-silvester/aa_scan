@@ -12,6 +12,26 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
+      name: 'cover',
+      title: 'Cover Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+        storeOriginalFilename: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
+          fields: [
+            {name: 'en', title: 'English', type: 'string'},
+            {name: 'de', title: 'German', type: 'string'}
+          ]
+        }
+      ]
+    },
+    {
       name: 'image',
       title: 'Profile Image',
       type: 'image',
