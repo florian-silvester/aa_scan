@@ -43,6 +43,25 @@ if (!WEBFLOW_SITE_ID) {
   throw new Error('WEBFLOW_SITE_ID environment variable is required')
 }
 
+// Webflow locale IDs (will be resolved at runtime)
+let WEBFLOW_LOCALES = {
+  en: null,      // Primary locale ID
+  'de-DE': null  // German locale ID
+}
+
+// CLI args
+const ARGS = process.argv.slice(2)
+function getArg(name) {
+  const pref = `--${name}=`
+  const hit = ARGS.find(a => a.startsWith(pref))
+  return hit ? hit.substring(pref.length) : null
+}
+const FLAG_QUICK = ARGS.includes('--quick')
+const FLAG_CHECK_ONLY = ARGS.includes('--check-only')
+const FLAG_PUBLISH = ARGS.includes('--publish')
+const ARG_ONLY = getArg('only') // e.g. --only=creator|artwork|material
+const ARG_ITEM = getArg('item') // e.g. --item=creator-id-123 (single item sync)
+
 // Webflow collection IDs (resolved dynamically at runtime)
 let WEBFLOW_COLLECTIONS = null
 
@@ -52,6 +71,29 @@ function normalize(str) {
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
+}
+
+async function resolveWebflowLocales() {
+  try {
+    const siteInfo = await webflowRequest(`/sites/${WEBFLOW_SITE_ID}`)
+    if (siteInfo.locales) {
+      // Primary locale
+      if (siteInfo.locales.primary?.cmsLocaleId) {
+        WEBFLOW_LOCALES.en = siteInfo.locales.primary.cmsLocaleId
+        console.log(`  🌍 Primary locale (en): ${WEBFLOW_LOCALES.en}`)
+      }
+      // Secondary locales
+      if (Array.isArray(siteInfo.locales.secondary)) {
+        const germanLocale = siteInfo.locales.secondary.find(l => l.tag === 'de' || l.tag === 'de-DE')
+        if (germanLocale?.cmsLocaleId) {
+          WEBFLOW_LOCALES['de-DE'] = germanLocale.cmsLocaleId
+          console.log(`  🌍 German locale (de-DE): ${WEBFLOW_LOCALES['de-DE']}`)
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('⚠️  Failed to resolve locales:', e.message)
+  }
 }
 
 async function resolveWebflowCollections() {
@@ -115,6 +157,7 @@ const idMappings = {
 
 // Persistent ID mappings system (like asset mappings)
 let persistentIdMappings = new Map()
+let persistentHashes = new Map() // key: collection:sanityId => lastSyncedHash
 
 // Load ID mappings from Sanity
 async function loadIdMappings() {
@@ -136,6 +179,25 @@ async function loadIdMappings() {
   } catch (error) {
     console.log('🔗 Failed to load ID mappings, starting fresh:', error.message)
     persistentIdMappings = new Map()
+  }
+
+  // Load hashes
+  try {
+    const result2 = await sanityClient.fetch(`
+      *[_type == "webflowSyncSettings" && _id == "sync-hashes"][0] {
+        hashes
+      }
+    `)
+    if (result2?.hashes) {
+      const parsed = JSON.parse(result2.hashes)
+      persistentHashes = new Map(Object.entries(parsed))
+      console.log(`🔗 Loaded ${persistentHashes.size} item hashes`)
+    } else {
+      persistentHashes = new Map()
+    }
+  } catch (e) {
+    console.log('🔗 Failed to load hashes, starting fresh:', e.message)
+    persistentHashes = new Map()
   }
 }
 
@@ -184,6 +246,20 @@ async function saveIdMappings() {
     console.log(`💾 Saved ${Object.keys(allMappings).length} ID mappings to Sanity`)
   } catch (error) {
     console.error('❌ Failed to save ID mappings:', error.message)
+  }
+
+  // Save hashes
+  try {
+    const allHashes = Object.fromEntries(persistentHashes)
+    await sanityClient.createOrReplace({
+      _type: 'webflowSyncSettings',
+      _id: 'sync-hashes',
+      hashes: JSON.stringify(allHashes),
+      lastUpdated: new Date().toISOString()
+    })
+    console.log(`💾 Saved ${Object.keys(allHashes).length} item hashes to Sanity`)
+  } catch (e) {
+    console.error('❌ Failed to save hashes:', e.message)
   }
 }
 
@@ -394,64 +470,70 @@ function extractTextFromBlocks(blocks) {
 }
 
 // Collection-specific mapping functions
-function mapMaterialTypeFields(sanityItem) {
+function mapMaterialTypeFields(sanityItem, locale = 'en') {
+  const isGerman = locale === 'de-DE' || locale === 'de'
   return {
-    'name-english': sanityItem.name?.en || '',
-    'name-german': sanityItem.name?.de || '',
-    'description-english': sanityItem.description?.en || '',
-    'description-german': sanityItem.description?.de || '',
     'sort-order': sanityItem.sortOrder || 0,
-    name: sanityItem.name?.en || sanityItem.name?.de || 'Untitled',
+    name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
     slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
   }
 }
 
-function mapCategoryFields(sanityItem) {
+function mapCategoryFields(sanityItem, locale = 'en') {
+  const isGerman = locale === 'de-DE' || locale === 'de'
   return {
-    'title-german': sanityItem.title?.de || '',
-    description: sanityItem.description?.en || sanityItem.description?.de || '',
-    name: sanityItem.title?.en || sanityItem.title?.de || 'Untitled',
-    slug: sanityItem.slug?.current || generateSlug(sanityItem.title?.en || sanityItem.title?.de)
+    name: isGerman ? (sanityItem.title?.de || sanityItem.title?.en || 'Untitled') : (sanityItem.title?.en || sanityItem.title?.de || 'Untitled'),
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.title?.en || sanityItem.title?.de),
+    description: isGerman ? (sanityItem.description?.de || '') : (sanityItem.description?.en || '')
   }
 }
 
-function mapCreatorFields(sanityItem) {
-  return {
+function mapCreatorFields(sanityItem, locale = 'en') {
+  // Locale-agnostic fields (same for all locales)
+  const baseFields = {
     'name': sanityItem.name || 'Untitled',
     'slug': sanityItem.slug?.current || generateSlug(sanityItem.name),
     'hero-image': (sanityItem.cover?.asset?.url ? {
       url: sanityItem.cover.asset.url,
       alt: (sanityItem.cover?.alt?.en || sanityItem.cover?.alt?.de || sanityItem.name || '')
     } : undefined),
-    'biography-english': extractTextFromBlocks(sanityItem.biography?.en),
-    'biography-german': extractTextFromBlocks(sanityItem.biography?.de),
-    'portrait-english': extractTextFromBlocks(sanityItem.portrait?.en),
-    'portrait-german': extractTextFromBlocks(sanityItem.portrait?.de),
+    'profile-image': (sanityItem.image?.asset?.url ? {
+      url: sanityItem.image.asset.url,
+      alt: (sanityItem.image?.alt?.en || sanityItem.image?.alt?.de || sanityItem.name || '')
+    } : undefined),
     'website': sanityItem.website || '',
     'email': sanityItem.email || '',
-    'nationality-english': sanityItem.nationality?.en || '',
-    'nationality-german': sanityItem.nationality?.de || '',
     'birth-year': sanityItem.birthYear ? parseInt(sanityItem.birthYear, 10) : null,
-    'specialties-english': sanityItem.specialties?.en?.join(', ') || '',
-    'specialties-german': sanityItem.specialties?.de?.join(', ') || '',
     'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null
   }
+
+  // Locale-specific fields
+  const isGerman = locale === 'de-DE' || locale === 'de'
+  const localeFields = {
+    'biography': extractTextFromBlocks(isGerman ? sanityItem.biography?.de : sanityItem.biography?.en),
+    'portrait-english': extractTextFromBlocks(isGerman ? sanityItem.portrait?.de : sanityItem.portrait?.en), // TODO: rename to 'portrait' once slug is fixed in Webflow
+    'nationality': isGerman ? (sanityItem.nationality?.de || '') : (sanityItem.nationality?.en || ''),
+    'specialties': isGerman ? (sanityItem.specialties?.de?.join(', ') || '') : (sanityItem.specialties?.en?.join(', ') || '')
+  }
+
+  return { ...baseFields, ...localeFields }
 }
 
-function mapLocationFields(sanityItem) {
+function mapLocationFields(sanityItem, locale = 'en') {
+  const isGerman = locale === 'de-DE' || locale === 'de'
   return {
-    name: sanityItem.name?.en || sanityItem.name?.de || 'Untitled',
-    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
+    name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de),
+    'location-type': mapLocationType(sanityItem.type),
+    website: sanityItem.website || '',
+    email: sanityItem.email || ''
   }
 }
 
-function mapMediumFinishFields(sanityItem) {
+function mapMediumFinishFields(sanityItem, locale = 'en') {
+  const isGerman = locale === 'de-DE' || locale === 'de'
   return {
-    'name-english': sanityItem.name?.en || '',
-    'name-german': sanityItem.name?.de || '',
-    'description-english': sanityItem.description?.en || '',
-    'description-german': sanityItem.description?.de || '',
-    name: sanityItem.name?.en || sanityItem.name?.de || 'Untitled',
+    name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
     slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
   }
 }
@@ -507,6 +589,60 @@ async function webflowRequest(endpoint, options = {}, retryCount = 0) {
   return response.json()
 }
 
+// Update one item in a Webflow collection (UPSERT path)
+async function updateWebflowItem(collectionId, itemId, fieldData, localeId = null) {
+  try {
+    await sleep(300) // basic throttle
+    const endpoint = localeId 
+      ? `/collections/${collectionId}/items/${itemId}?cmsLocaleId=${localeId}`
+      : `/collections/${collectionId}/items/${itemId}`
+    const result = await webflowRequest(endpoint, {
+      method: 'PATCH',
+      body: JSON.stringify({ fieldData })
+    })
+    return result
+  } catch (error) {
+    console.error(`Update failed for ${itemId} (locale: ${localeId || 'primary'}):`, error.message)
+    throw error
+  }
+}
+
+// Update secondary locale (German) for an item
+async function updateItemGermanLocale(collectionId, itemId, sanityItem, fieldMapper) {
+  if (!WEBFLOW_LOCALES['de-DE']) {
+    return // Skip if German locale not available
+  }
+  
+  try {
+    // For artworks with customImageSync, sanityItem might be a wrapped object
+    const actualItem = sanityItem._sanityItem || sanityItem
+    
+    const germanFields = fieldMapper ? fieldMapper(actualItem, 'de-DE') : {}
+    
+    // For artworks without standard fieldMapper, manually map German content
+    if (!fieldMapper && actualItem.workTitle) {
+      germanFields['work-title'] = actualItem.workTitle?.de || ''
+      germanFields['description'] = actualItem.description?.de || ''
+    }
+    
+    // Only send locale-specific fields, not base fields like name/slug/images
+    const localeOnlyFields = {}
+    const localeFieldNames = ['biography', 'portrait', 'portrait-english', 'nationality', 'specialties', 'description', 'work-title']
+    localeFieldNames.forEach(field => {
+      if (germanFields[field] !== undefined) {
+        localeOnlyFields[field] = germanFields[field]
+      }
+    })
+    
+    if (Object.keys(localeOnlyFields).length > 0) {
+      await updateWebflowItem(collectionId, itemId, localeOnlyFields, WEBFLOW_LOCALES['de-DE'])
+      console.log(`    🇩🇪 Updated German locale`)
+    }
+  } catch (error) {
+    console.warn(`    ⚠️  Failed to update German locale: ${error.message}`)
+  }
+}
+
 // Create items in Webflow
 async function createWebflowItems(collectionId, items) {
   const batchSize = 50
@@ -521,7 +657,17 @@ async function createWebflowItems(collectionId, items) {
         method: 'POST',
         body: JSON.stringify({ items: batch })
       })
-      results.push(...result.items)
+      const created = Array.isArray(result?.items) ? result.items : []
+      results.push(...created)
+      // If --publish was requested, publish created items immediately
+      if (FLAG_PUBLISH && created.length > 0) {
+        const createdIds = created.map(i => i?.id).filter(Boolean)
+        try {
+          await publishWebflowItems(collectionId, createdIds)
+        } catch (e) {
+          console.warn(`  ⚠️  Failed to publish ${createdIds.length} created items: ${e.message}`)
+        }
+      }
     } catch (error) {
       console.error(`Batch failed:`, error.message)
       throw error
@@ -529,6 +675,31 @@ async function createWebflowItems(collectionId, items) {
   }
   
   return results
+}
+
+// Publish items in batches
+async function publishWebflowItems(collectionId, itemIds) {
+  const batchSize = 50
+  for (let i = 0; i < itemIds.length; i += batchSize) {
+    const batch = itemIds.slice(i, i + batchSize)
+    let attempt = 0
+    const maxAttempts = 3
+    while (attempt < maxAttempts) {
+      try {
+        console.log(`  🚀 Publishing batch ${Math.floor(i/batchSize)+1}/${Math.ceil(itemIds.length/batchSize)} (${batch.length} items)...`)
+        await webflowRequest(`/collections/${collectionId}/items/publish`, {
+          method: 'POST',
+          body: JSON.stringify({ itemIds: batch })
+        })
+        break
+      } catch (e) {
+        attempt++
+        const wait = Math.pow(2, attempt) * 1000
+        console.warn(`  ⚠️  Publish failed (attempt ${attempt}/${maxAttempts}): ${e.message}. Retrying in ${wait/1000}s...`)
+        await sleep(wait)
+      }
+    }
+  }
 }
 
 // Delete items from Webflow (with batch processing)
@@ -663,6 +834,13 @@ async function downloadImageBuffer(url) {
 function generateMD5Hash(buffer) {
   return crypto.createHash('md5').update(buffer).digest('hex')
 }
+
+function hashObjectStable(obj) {
+  const json = JSON.stringify(obj, Object.keys(obj).sort())
+  return generateMD5Hash(Buffer.from(json))
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)) }
 
 async function uploadImageToWebflow(imageUrl, siteName, altText = null, originalFilename = null) {
   try {
@@ -839,7 +1017,7 @@ async function syncArtworkImages(artworkImages) {
   return webflowAssetIds
 }
 
-// Universal duplicate-aware collection sync helper
+// Universal duplicate-aware collection sync helper with UPSERT and delta detection
 async function syncCollection(options) {
   const {
     name,
@@ -854,53 +1032,167 @@ async function syncCollection(options) {
   console.log(`📋 Syncing ${name}...`)
   
   let sanityData = await sanityClient.fetch(sanityQuery)
+  const dataArray = Array.isArray(sanityData) ? sanityData : (sanityData ? [sanityData] : [])
+  
   if (limit && Number.isFinite(limit)) {
     const capped = Math.max(0, Number(limit))
-    if (sanityData.length > capped) {
-      console.log(`  🔎 Limiting to first ${capped} of ${sanityData.length} ${name}`)
-      sanityData = sanityData.slice(0, capped)
+    if (dataArray.length > capped) {
+      console.log(`  🔎 Limiting to first ${capped} of ${dataArray.length} ${name}`)
+      sanityData = dataArray.slice(0, capped)
+    } else {
+      sanityData = dataArray
     }
+  } else {
+    sanityData = dataArray
+  }
+  
+  console.log(`  • Total Sanity items: ${sanityData.length}`)
+  
+  // Get existing Webflow items for adoption logic
+  const existingWebflowItems = await getWebflowItems(collectionId)
+  const webflowBySlug = new Map()
+  for (const wfItem of existingWebflowItems) {
+    const slug = wfItem?.fieldData?.slug
+    if (slug) webflowBySlug.set(slug, wfItem)
   }
   
   // Process items and check for duplicates
   const newItems = []
+  const updateItems = []
   let existingCount = 0
   
   for (const item of sanityData) {
-    const existingId = idMappings[mappingKey].get(item._id)
-    if (!existingId) {
-      // Handle custom image sync for artworks
-      let webflowItem
+    let existingId = idMappings[mappingKey].get(item._id) || item.webflowId || null
+    
+    // Prepare mapped fields (used for both create and update)
+    let mappedFieldsForId
+    try {
       if (customImageSync) {
-        webflowItem = await customImageSync(item)
+        mappedFieldsForId = await customImageSync(item)
+        mappedFieldsForId = mappedFieldsForId.fieldData
       } else {
-        webflowItem = {
-          fieldData: fieldMapper(item)
+        mappedFieldsForId = fieldMapper(item)
+      }
+    } catch (e) {
+      console.warn(`  ⚠️  Field mapping failed for ${item._id}: ${e.message}`)
+      continue
+    }
+
+    // Verify webflowId still exists, clear if stale
+    if (existingId) {
+      try {
+        await webflowRequest(`/collections/${collectionId}/items/${existingId}`)
+      } catch (error) {
+        if (error.message.includes('404')) {
+          console.log(`  ❌ Stale webflowId ${existingId} not found, clearing mapping`)
+          idMappings[mappingKey].delete(item._id)
+          const key = `${mappingKey}:${item._id}`
+          persistentHashes.delete(key)
+          existingId = null
         }
       }
-      
+    }
+
+    // If no ID, try to adopt by slug
+    if (!existingId && mappedFieldsForId?.slug) {
+      const adopt = webflowBySlug.get(mappedFieldsForId.slug)
+      if (adopt?.id) {
+        existingId = adopt.id
+        idMappings[mappingKey].set(item._id, existingId)
+        console.log(`  ↳ Adopted existing item by slug for ${mappingKey}:${item._id} → ${existingId}`)
+      }
+    }
+
+    if (!existingId) {
+      // New item - prepare for creation
+      const webflowItem = { fieldData: mappedFieldsForId }
       newItems.push({ item, webflowItem })
     } else {
+      // Existing item - check if update is needed via delta hash
+      const mapped = { ...mappedFieldsForId }
+      delete mapped.slug // Don't change slug on update to avoid conflicts
+      const webflowItem = { fieldData: mapped }
+      const hash = hashObjectStable(webflowItem.fieldData)
+      const key = `${mappingKey}:${item._id}`
+      const prev = persistentHashes.get(key)
+      
+      if (prev !== hash) {
+        updateItems.push({ item, webflowId: existingId, webflowItem, hash, key })
+      }
       existingCount++
     }
   }
   
-  console.log(`  📊 ${newItems.length} new, ${existingCount} existing`)
+  console.log(`  📊 ${newItems.length} new, ${updateItems.length} to update, ${existingCount} existing`)
   
-  // Create only new items in Webflow
+  // Create new items in Webflow (primary locale)
   let results = []
   if (newItems.length > 0) {
     results = await createWebflowItems(collectionId, newItems.map(ni => ni.webflowItem))
     
-    // Store new mappings
-    results.forEach((webflowItem, index) => {
+    // Store new mappings and update German locale
+    for (let index = 0; index < results.length; index++) {
+      const webflowItem = results[index]
       const sanityItem = newItems[index].item
       idMappings[mappingKey].set(sanityItem._id, webflowItem.id)
-    })
+      // Store hash for newly created items
+      const hash = hashObjectStable(webflowItem.fieldData)
+      persistentHashes.set(`${mappingKey}:${sanityItem._id}`, hash)
+      
+      // Update German locale if fieldMapper supports it
+      if (fieldMapper && webflowItem.id) {
+        await updateItemGermanLocale(collectionId, webflowItem.id, sanityItem, fieldMapper)
+      }
+    }
   }
   
-  console.log(`✅ ${name}: ${results.length} created, ${existingCount} skipped (already exist)`)
-  return results.length
+  // Update existing items
+  let updatedCount = 0
+  const updatedItemIds = []
+  if (updateItems.length > 0) {
+    console.log(`  🔄 Updating ${updateItems.length} existing ${name} items (delta only)...`)
+  }
+  for (let i = 0; i < updateItems.length; i++) {
+    const u = updateItems[i]
+    try {
+      await updateWebflowItem(collectionId, u.webflowId, u.webflowItem.fieldData)
+      persistentHashes.set(u.key, u.hash)
+      updatedItemIds.push(u.webflowId)
+      
+      // Update German locale
+      if (fieldMapper) {
+        await updateItemGermanLocale(collectionId, u.webflowId, u.item, fieldMapper)
+      }
+      
+      updatedCount++
+      if ((i + 1) % 25 === 0 || i === updateItems.length - 1) {
+        console.log(`    ↳ Updated ${i + 1}/${updateItems.length}`)
+      }
+    } catch (e) {
+      if (String(e.message).includes('429')) {
+        await sleep(1500)
+        await updateWebflowItem(collectionId, u.webflowId, u.webflowItem.fieldData)
+        if (fieldMapper) {
+          await updateItemGermanLocale(collectionId, u.webflowId, u.item, fieldMapper)
+        }
+        persistentHashes.set(u.key, u.hash)
+        updatedItemIds.push(u.webflowId)
+        updatedCount++
+      } else {
+        console.warn(`  ⚠️  Update failed for ${u.webflowId}: ${e.message}`)
+      }
+    }
+  }
+  
+  // Batch publish all updated items
+  if (FLAG_PUBLISH && updatedItemIds.length > 0) {
+    console.log(`  📢 Batch publishing ${updatedItemIds.length} updated items...`)
+    await publishWebflowItems(collectionId, updatedItemIds)
+  }
+
+  const unchangedCount = Math.max(existingCount - updateItems.length, 0)
+  console.log(`✅ ${name}: ${results.length} created, ${updatedCount} updated, ${unchangedCount} unchanged`)
+  return results.length + updatedCount
 }
 
 // PHASE 1: Sync Material Types
@@ -957,10 +1249,14 @@ async function syncMaterials(limit = null) {
         slug
       }
     `,
-    fieldMapper: (item) => ({
-      ...mapMediumFinishFields(item),
-      'material-type': item.materialType?._id ? idMappings.materialType.get(item.materialType._id) || null : null
-    }),
+    fieldMapper: (item, locale = 'en') => {
+      const isGerman = locale === 'de-DE' || locale === 'de'
+      return {
+        ...mapMediumFinishFields(item, locale),
+        'material-type': item.materialType?._id ? idMappings.materialType.get(item.materialType._id) || null : null,
+        description: isGerman ? (item.description?.de || '') : (item.description?.en || '')
+      }
+    },
     limit
   })
 }
@@ -997,14 +1293,7 @@ async function syncCategories(limit = null) {
         slug
       }
     `,
-    fieldMapper: (item) => ({
-      name: item.title?.en || item.title?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.title?.en || item.title?.de),
-      'name-english': item.title?.en || '',
-      'name-german': item.title?.de || '',
-      'description-english': item.description?.en || '',
-      'description-german': item.description?.de || ''
-    }),
+    fieldMapper: mapCategoryFields,
     limit
   })
 }
@@ -1030,23 +1319,7 @@ async function syncLocations(limit = null) {
         slug
       }
     `,
-    fieldMapper: (item) => ({
-      name: item.name?.en || item.name?.de || 'Untitled',
-      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
-      'name-english': item.name?.en || '',
-      'name-german': item.name?.de || '',
-      'description-english': item.description?.en || '',
-      'description-german': item.description?.de || '',
-      'location-type': mapLocationType(item.type),
-      address: item.address || '',
-      'city-location': item.city?.name?.en || item.city?.name?.de || '',
-      country: item.country?.name?.en || item.country?.name?.de || '',
-      website: item.website || '',
-      'opening-times-english': item.times?.en || '',
-      'opening-times-german': item.times?.de || '',
-      phone: item.phone || '',
-      email: item.email || ''
-    }),
+    fieldMapper: mapLocationFields,
     limit
   })
 }
@@ -1068,6 +1341,14 @@ async function syncCreators(limit = null) {
           },
           alt
         },
+        image{
+          asset->{
+            _id,
+            url,
+            originalFilename
+          },
+          alt
+        },
         biography,
         portrait,
         nationality,
@@ -1077,7 +1358,6 @@ async function syncCreators(limit = null) {
         website,
         email,
         birthYear,
-        tier,
         category
       }
     `,
@@ -1156,15 +1436,14 @@ async function syncArtworks(limit = null) {
       alt: (item.mainImage?.alt?.en || item.mainImage?.alt?.de || item.name || item.workTitle?.en || item.workTitle?.de || 'Main image')
     } : undefined
 
+    // Note: customImageSync doesn't support locale parameter yet, always returns English
+    // German locale will be updated separately after creation
     return {
       fieldData: {
         name: item.name || 'Untitled',
         slug: item.slug?.current || generateSlug(item.name || item.workTitle?.en),
         'work-title': item.workTitle?.en || item.workTitle?.de || '',
-        'work-title-english': item.workTitle?.en || '',
-        'work-title-german': item.workTitle?.de || '',
-        'description-english': item.description?.en || '',
-        'description-german': item.description?.de || '',
+        description: item.description?.en || '',
         creator: creatorId,
         category: categoryId ? [categoryId] : [],
         materials: materialIds,
@@ -1175,7 +1454,8 @@ async function syncArtworks(limit = null) {
         price: item.price || '',
         ...(mainImage ? { 'main-image': mainImage } : {}),
         'artwork-images': artworkImages
-      }
+      },
+      _sanityItem: item // Store for German locale update
     }
   }
 
@@ -1400,7 +1680,7 @@ async function populateCreatorWorks() {
 
 // Main sync function
 async function performCompleteSync(progressCallback = null, options = {}) {
-  const { limitPerCollection = null, only = null } = options || {}
+  const { limitPerCollection = null, only = ARG_ONLY } = options || {}
   const startTime = Date.now()
   let totalSynced = 0
   
@@ -1428,6 +1708,10 @@ async function performCompleteSync(progressCallback = null, options = {}) {
       }
       console.log('🗂️  Resolved Webflow collections:', WEBFLOW_COLLECTIONS)
     }
+
+    // Resolve Webflow locales
+    await resolveWebflowLocales()
+    console.log('🌍 Resolved Webflow locales:', WEBFLOW_LOCALES)
 
     // Load asset mappings for incremental image sync
     await loadAssetMappings()
@@ -1622,31 +1906,17 @@ module.exports = async function handler(req, res) {
 // Allow running directly from command line
 if (require.main === module) {
   console.log('🚀 Running sync directly...')
-  // Parse simple --limit=N flag or LIMIT_PER_COLLECTION env
-  const argv = process.argv.slice(2)
-  let cliLimit = null
-  let cliOnly = null
-  let cliCreatorsForArtworks = null
-  const limitArg = argv.find(a => a.startsWith('--limit='))
-  if (limitArg) {
-    const val = Number(limitArg.split('=')[1])
-    if (Number.isFinite(val)) cliLimit = val
-  }
-  const onlyArg = argv.find(a => a.startsWith('--only='))
-  if (onlyArg) {
-    cliOnly = onlyArg.split('=')[1]
-  }
-  const creatorsArg = argv.find(a => a.startsWith('--artworks-for-creators='))
-  if (creatorsArg) {
-    cliCreatorsForArtworks = creatorsArg.split('=')[1]
-  }
+  const cliLimit = Number(getArg('limit')) || null
+  const cliCreatorsForArtworks = getArg('artworks-for-creators')
 
   const limitValue = cliLimit ?? (process.env.LIMIT_PER_COLLECTION ? Number(process.env.LIMIT_PER_COLLECTION) : null)
 
   const run = async () => {
+    // Resolve collections and locales first
+    WEBFLOW_COLLECTIONS = await resolveWebflowCollections()
+    await resolveWebflowLocales()
+    
     if (cliCreatorsForArtworks) {
-      // Resolve collections before running filtered sync
-      WEBFLOW_COLLECTIONS = await resolveWebflowCollections()
       await loadIdMappings();
       loadPersistentMappings();
       const ids = cliCreatorsForArtworks.split(',').map(s => s.trim()).filter(Boolean)
@@ -1657,7 +1927,7 @@ if (require.main === module) {
 
     await performCompleteSync((progress) => {
       console.log(`[${progress.phase}] ${progress.message}`)
-    }, { limitPerCollection: limitValue, only: cliOnly })
+    }, { limitPerCollection: limitValue })
   }
 
   run().then(() => {

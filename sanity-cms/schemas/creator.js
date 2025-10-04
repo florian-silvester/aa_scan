@@ -202,18 +202,6 @@ export default {
       to: [{type: 'category'}],
     },
     {
-      name: 'tier',
-      title: 'Tier',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Free', value: 'free'},
-          {title: 'Paid', value: 'paid'},
-        ],
-      },
-      initialValue: 'free',
-    },
-    {
       name: 'associatedLocations',
       title: 'Associated Locations',
       type: 'array',
