@@ -195,23 +195,39 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // ============================================================================
-      // 🖼️ SCROLL FADE FOR MEDIA (idempotent)
+      // 🖼️ SCROLL FADE FOR MEDIA (idempotent, with stagger for row/grid items)
       // ============================================================================
       function initScrollImageFades(root) {
         if (!window.gsap || !window.ScrollTrigger) return;
         const scope = (root && root.querySelector && (root.querySelector('main') || root)) || document;
         const mediaEls = scope.querySelectorAll('img, picture, video, [data-animate-media]');
+        
+        // Group media elements by rough vertical position (bucket by ~100px)
+        const groups = {};
         mediaEls.forEach((el) => {
           if (el.dataset.scrollFadeBound) return;
           const rect = el.getBoundingClientRect();
           const visibleNow = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
           el.dataset.scrollFadeBound = 'true';
           if (!visibleNow) gsap.set(el, { opacity: 0 });
+          
+          // Bucket by vertical center rounded to nearest 100px
+          const bucket = Math.round((rect.top + rect.height / 2) / 100) * 100;
+          if (!groups[bucket]) groups[bucket] = [];
+          groups[bucket].push(el);
+        });
+        
+        // For each group, create one ScrollTrigger that staggers the items
+        Object.values(groups).forEach((group) => {
+          if (group.length === 0) return;
+          // Use the first element as the trigger for the whole group
           ScrollTrigger.create({
-            trigger: el,
+            trigger: group[0],
             start: 'top 85%',
             once: true,
-            onEnter: () => gsap.to(el, { opacity: 1, duration: 0.8, ease: 'sine.inOut' })
+            onEnter: () => {
+              gsap.to(group, { opacity: 1, duration: 0.8, ease: 'sine.inOut', stagger: 0.08 });
+            }
           });
         });
       }
@@ -242,15 +258,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return tl;
       }
 
-      // Helper: leave – fade images, fade+move text down, then fade container
+      // Helper: leave – fade images+overlays, fade+move text down, then fade container
       function leaveMediaAndText(root) {
         if (!window.gsap) return null;
         const scope = (root && root.querySelector && (root.querySelector('main') || root)) || document;
-        const mediaEls = scope.querySelectorAll('img, picture, video, [data-animate-media]');
+        const mediaEls = scope.querySelectorAll('img, picture, video, .overlay_wrap, [data-animate-media]');
         const textEls = scope.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,[data-animate-text]');
         const tl = gsap.timeline();
-        tl.to(mediaEls, { opacity: 0, duration: 0.2, ease: 'sine.inOut', stagger: 0.03 }, 0);
-        tl.to(textEls, { y: '0.5vh', opacity: 0, duration: 0.25, ease: 'sine.inOut', stagger: 0.02 }, 0);
+        tl.to(mediaEls, { opacity: 0, duration: 0.2, ease: 'sine.inOut', stagger: 0.01 }, 0);
+        tl.to(textEls, { y: '0.5vh', opacity: 0, duration: 0.25, ease: 'sine.inOut', stagger: 0.01 }, 0);
         tl.to(root, { opacity: 0, duration: 0.2, ease: 'sine.inOut' }, '-=0.12');
         return tl;
       }
