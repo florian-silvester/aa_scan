@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@sanity/client": "^7.11.0",
+    "cheerio": "^1.1.2",
+    "dotenv": "^17.2.3",
+    "dropbox": "^10.34.0",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.19.0"
+  }
+}

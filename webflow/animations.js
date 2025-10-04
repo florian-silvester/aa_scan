@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!window.gsap) return null;
         const scope = (root && root.querySelector && (root.querySelector('main') || root)) || document;
         const mediaEls = scope.querySelectorAll('img, picture, video, [data-animate-media]');
-        const textEls = scope.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,[data-animate-text]');
+        const textEls = scope.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,.button_main_wrap,[data-animate-text]');
         const tl = gsap.timeline();
         // Prepare inner elements first so we don't see a second fade after container appears
         tl.set(mediaEls, { opacity: 0 }, 0);
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!window.gsap) return null;
         const scope = (root && root.querySelector && (root.querySelector('main') || root)) || document;
         const mediaEls = scope.querySelectorAll('img, picture, video, .overlay_wrap, [data-animate-media]');
-        const textEls = scope.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,[data-animate-text]');
+        const textEls = scope.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,.button_main_wrap,[data-animate-text]');
         const tl = gsap.timeline();
         tl.to(mediaEls, { opacity: 0, duration: 0.2, ease: 'sine.inOut', stagger: 0.01 }, 0);
         tl.to(textEls, { y: '0.5vh', opacity: 0, duration: 0.25, ease: 'sine.inOut', stagger: 0.01 }, 0);
