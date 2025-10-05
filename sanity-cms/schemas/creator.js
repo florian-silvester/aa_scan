@@ -12,6 +12,12 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
+      name: 'lastName',
+      title: 'Last Name',
+      type: 'string',
+      description: 'Last name for sorting purposes',
+    },
+    {
       name: 'cover',
       title: 'Cover Image',
       type: 'image',
