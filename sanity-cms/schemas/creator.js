@@ -203,9 +203,10 @@ export default {
     },
     {
       name: 'category',
-      title: 'Category',
+      title: 'Medium',
       type: 'reference',
       to: [{type: 'category'}],
+      description: 'Primary craft medium (e.g., Ceramics, Glass, Jewelry, Metalwork, Textiles, Woodwork)',
     },
     {
       name: 'associatedLocations',

@@ -128,8 +128,8 @@ async function resolveWebflowCollections() {
     materialType: pick('material-types', 'material type', 'material types', 'materialtype'),
     material: pick('materials', 'material'),
     finish: pick('finishes', 'finish'),
-    medium: pick('media', 'medium'), // Sanity medium → Webflow Media
-    category: pick('category', 'categories'), // Sanity category → Webflow Category
+    medium: pick('type', 'types', 'media', 'medium'), // Sanity medium (Type) → Webflow Type
+    category: pick('medium', 'mediums', 'category', 'categories'), // Sanity category (Medium) → Webflow Medium
     location: pick('locations', 'location'),
     creator: pick('creators', 'creator', 'profiles', 'profile'),
     artwork: pick('artworks', 'artwork', 'works', 'work')
@@ -1303,7 +1303,7 @@ async function syncMaterials(limit = null) {
 // PHASE 4: Sync other collections
 async function syncMediums(limit = null) {
   return syncCollection({
-    name: 'Mediums',
+    name: 'Types',
     collectionId: WEBFLOW_COLLECTIONS.medium,
     mappingKey: 'medium',
     sanityQuery: `
@@ -1321,7 +1321,7 @@ async function syncMediums(limit = null) {
 
 async function syncCategories(limit = null) {
   return syncCollection({
-    name: 'Categories',
+    name: 'Mediums',
     collectionId: WEBFLOW_COLLECTIONS.category,
     mappingKey: 'category',
     sanityQuery: `
@@ -1778,7 +1778,7 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     const phase1All = [
       { name: 'Material Types', key: 'materialType', func: syncMaterialTypes },
       { name: 'Finishes', key: 'finish', func: syncFinishes },
-      { name: 'Categories', key: 'category', func: syncCategories },
+      { name: 'Mediums', key: 'category', func: syncCategories },
       { name: 'Locations', key: 'location', func: syncLocations }
     ]
     const syncFunctions = (only ? phase1All.filter(p => p.key === only || normalize(p.name) === normalize(only)) : phase1All)
@@ -1801,7 +1801,7 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     
     const phase2All = [
       { name: 'Materials', key: 'material', func: syncMaterials },
-      { name: 'Mediums', key: 'medium', func: syncMediums },
+      { name: 'Types', key: 'medium', func: syncMediums },
       { name: 'Creators', key: 'creator', func: syncCreators }
     ]
     const syncFunctions2 = (only ? phase2All.filter(p => p.key === only || normalize(p.name) === normalize(only)) : phase2All)

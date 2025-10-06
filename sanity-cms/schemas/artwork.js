@@ -112,18 +112,19 @@ export default {
     },
     {
       name: 'category',
-      title: 'Category',
+      title: 'Medium',
       type: 'reference',
       to: [{type: 'category'}],
-      group: 'main'
+      group: 'main',
+      description: 'Primary craft medium (e.g., Ceramics, Glass, Jewelry, Metalwork, Textiles, Woodwork)'
     },
     {
       name: 'medium',
-      title: 'Medium',
+      title: 'Type',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'medium'}]}],
       group: 'main',
-      description: 'Type of artwork (e.g., vase, chair, ring, brooch). Use the "+" button to create new medium types.'
+      description: 'Object type(s) (e.g., Vase, Chair, Ring, Brooch, Necklace, Bracelet). Use the "+" button to create new types.'
     },
     {
       name: 'materials',

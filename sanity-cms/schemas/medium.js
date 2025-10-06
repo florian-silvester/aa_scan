@@ -2,12 +2,12 @@ import {TitleCaseInput} from '../components/TitleCaseInput'
 
 export default {
   name: 'medium',
-  title: 'Medium',
+  title: 'Type',
   type: 'document',
   fields: [
     {
       name: 'name',
-      title: 'Medium Name',
+      title: 'Type Name',
       type: 'object',
       validation: Rule => Rule.required(),
       description: 'e.g., Vase, Chair, Ring, Brooch, Necklace, Bracelet',
@@ -63,7 +63,7 @@ export default {
       name: 'usageCount',
       title: 'Usage Count',
       type: 'number',
-      description: 'Number of artworks using this medium (from analysis)',
+      description: 'Number of artworks using this type (from analysis)',
       readOnly: true
     }
   ],
@@ -73,10 +73,10 @@ export default {
       nameDe: 'name.de'
     },
     prepare({nameEn, nameDe}) {
-      const title = nameEn || nameDe || 'Untitled Medium'
+      const title = nameEn || nameDe || 'Untitled Type'
       return {
         title,
-        subtitle: `Medium: ${title}`
+        subtitle: `Type: ${title}`
       }
     }
   }
