@@ -128,8 +128,8 @@ async function resolveWebflowCollections() {
     materialType: pick('material-types', 'material type', 'material types', 'materialtype'),
     material: pick('materials', 'material'),
     finish: pick('finishes', 'finish'),
-    medium: pick('tags', 'tag'), // Sanity medium → Webflow Tags
-    category: pick('media', 'medium', 'categories', 'category'), // Sanity category → Webflow Media
+    medium: pick('media', 'medium'), // Sanity medium → Webflow Media
+    category: pick('category', 'categories'), // Sanity category → Webflow Category
     location: pick('locations', 'location'),
     creator: pick('creators', 'creator', 'profiles', 'profile'),
     artwork: pick('artworks', 'artwork', 'works', 'work')
