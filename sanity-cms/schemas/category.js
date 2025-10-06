@@ -1,6 +1,6 @@
 export default {
   name: 'category',
-  title: 'Category',
+  title: 'Medium',
   type: 'document',
   fields: [
     {
@@ -57,7 +57,7 @@ export default {
     },
     prepare(selection) {
       const { titleEn, titleDe } = selection
-      const title = titleEn || titleDe || 'Untitled Category'
+      const title = titleEn || titleDe || 'Untitled Medium'
       const subtitle = titleDe ? `DE: ${titleDe}` : undefined
       return {
         title,
