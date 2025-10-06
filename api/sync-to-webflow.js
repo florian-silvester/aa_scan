@@ -128,8 +128,8 @@ async function resolveWebflowCollections() {
     materialType: pick('material-types', 'material type', 'material types', 'materialtype'),
     material: pick('materials', 'material'),
     finish: pick('finishes', 'finish'),
-    medium: pick('mediums', 'media', 'medium'),
-    category: pick('categories', 'category'),
+    medium: pick('tags', 'tag'), // Sanity medium → Webflow Tags
+    category: pick('media', 'medium', 'categories', 'category'), // Sanity category → Webflow Media
     location: pick('locations', 'location'),
     creator: pick('creators', 'creator', 'profiles', 'profile'),
     artwork: pick('artworks', 'artwork', 'works', 'work')
@@ -593,7 +593,7 @@ async function webflowRequest(endpoint, options = {}, retryCount = 0) {
 // Update one item in a Webflow collection (UPSERT path)
 async function updateWebflowItem(collectionId, itemId, fieldData, localeId = null) {
   try {
-    await sleep(300) // basic throttle
+    await sleep(500) // throttle to avoid rate limits
     const endpoint = localeId 
       ? `/collections/${collectionId}/items/${itemId}?cmsLocaleId=${localeId}`
       : `/collections/${collectionId}/items/${itemId}`
@@ -626,9 +626,9 @@ async function updateItemGermanLocale(collectionId, itemId, sanityItem, fieldMap
       germanFields['description'] = actualItem.description?.de || ''
     }
     
-    // Only send locale-specific fields, not base fields like name/slug/images
+    // Only send locale-specific fields, not base fields like slug/images
     const localeOnlyFields = {}
-    const localeFieldNames = ['biography', 'portrait', 'portrait-english', 'nationality', 'specialties', 'description', 'work-title']
+    const localeFieldNames = ['name', 'biography', 'portrait', 'portrait-english', 'nationality', 'specialties', 'description', 'work-title']
     localeFieldNames.forEach(field => {
       if (germanFields[field] !== undefined) {
         localeOnlyFields[field] = germanFields[field]
@@ -1126,6 +1126,43 @@ async function syncCollection(options) {
   
   console.log(`  📊 ${newItems.length} new, ${updateItems.length} to update, ${existingCount} existing`)
   
+  // Find and delete orphaned items (in Webflow but not in Sanity)
+  const sanityIds = new Set(sanityData.map(item => item._id))
+  const sanitySlugs = new Set(sanityData.map(item => {
+    const slug = item.slug?.current || null
+    return slug
+  }).filter(Boolean))
+  
+  const orphanedItems = existingWebflowItems.filter(wfItem => {
+    // Check if this Webflow item has a mapping to a Sanity ID
+    for (const [sanityId, webflowId] of idMappings[mappingKey]) {
+      if (webflowId === wfItem.id) {
+        return !sanityIds.has(sanityId) // Orphaned if Sanity ID doesn't exist
+      }
+    }
+    // Also check by slug - if no Sanity item has this slug, it's orphaned
+    const wfSlug = wfItem.fieldData?.slug
+    if (wfSlug && !sanitySlugs.has(wfSlug)) {
+      return true
+    }
+    return false
+  })
+  
+  if (orphanedItems.length > 0) {
+    console.log(`  🗑️  Deleting ${orphanedItems.length} orphaned items from Webflow...`)
+    const orphanedIds = orphanedItems.map(item => item.id)
+    await deleteWebflowItems(collectionId, orphanedIds)
+    // Clean up mappings
+    orphanedItems.forEach(wfItem => {
+      for (const [sanityId, webflowId] of idMappings[mappingKey]) {
+        if (webflowId === wfItem.id) {
+          idMappings[mappingKey].delete(sanityId)
+          persistentHashes.delete(`${mappingKey}:${sanityId}`)
+        }
+      }
+    })
+  }
+  
   // Create new items in Webflow (primary locale)
   let results = []
   if (newItems.length > 0) {
@@ -1162,6 +1199,7 @@ async function syncCollection(options) {
       
       // Update German locale
       if (fieldMapper) {
+        await sleep(300) // Extra delay between primary and German locale
         await updateItemGermanLocale(collectionId, u.webflowId, u.item, fieldMapper)
       }
       
@@ -1447,7 +1485,7 @@ async function syncArtworks(limit = null) {
         'work-title': item.workTitle?.en || item.workTitle?.de || '',
         description: item.description?.en || '',
         creator: creatorId,
-        category: categoryId ? [categoryId] : [],
+        ...(categoryId ? { category: [categoryId] } : {}),
         materials: materialIds,
         medium: mediumIds,
         finishes: finishIds,
@@ -1557,7 +1595,7 @@ async function syncArtworksForCreators(creatorIds = []) {
         'description-english': item.description?.en || '',
         'description-german': item.description?.de || '',
         creator: creatorId,
-        category: categoryId ? [categoryId] : [],
+        ...(categoryId ? { category: [categoryId] } : {}),
         materials: materialIds,
         medium: mediumIds,
         finishes: finishIds,
