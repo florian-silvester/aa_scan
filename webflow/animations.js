@@ -7,7 +7,7 @@ console.log('🚀🚀🚀 ANIMATIONS.JS FILE LOADED 🚀🚀🚀');
 // ================================================================================
 // 🚫 TEMPORARY DISABLE FLAG FOR NEW CREATOR FEATURES
 // ================================================================================
-const ENABLE_CREATOR_ANIMATIONS = false; // Set to true to re-enable
+const ENABLE_CREATOR_ANIMATIONS = true; // Set to true to re-enable
 
 // ================================================================================
 // 🎨 NAV COLOR CHANGE ON SCROLL
@@ -106,138 +106,187 @@ function initNavColorChange() {
   try { window.__updateNavTheme = checkNavState; } catch (e) {}
 }
 
-// ================================================================================
-// 🖱️ CREATOR HOVER PREVIEW (port of working pattern)
-// ================================================================================
-function initCreatorHoverPreviews() {
-  if (!ENABLE_CREATOR_ANIMATIONS) return;
-  if (!window.gsap) return;
 
-  const items = document.querySelectorAll('.creators_item');
-  if (!items.length) return;
-
-  // Only hide previews if in list view (not grid view)
-  const list = document.querySelector('.creators_list');
-  const isGridView = list && list.dataset.view === 'grid';
-  
-  if (!isGridView) {
-    document.querySelectorAll('.creator_sticky_inner').forEach((el) => {
-      // Don't hide if element has .is-visible class (grid mode)
-      if (!el.classList.contains('is-visible')) {
-        gsap.set(el, { opacity: 0, visibility: 'hidden' });
-      }
-    });
-  }
-
-  let lastPreview = null;
-
-  // Deduplicate bindings across Barba calls
-  items.forEach((item) => {
-    if (item.dataset.creatorHoverBound) return;
-    item.dataset.creatorHoverBound = 'true';
-
-    const preview = item.querySelector('.creator_sticky_inner');
-    if (!preview) return;
-
-    const onEnter = () => {
-      // Skip hover animation if in grid view
-      const list = item.closest('.creators_list');
-      if (list && list.dataset.view === 'grid') return;
-      
-      if (lastPreview && lastPreview !== preview) {
-        gsap.to(lastPreview, { opacity: 0, visibility: 'hidden', duration: 0.9, ease: 'circ.out' });
-      }
-      gsap.to(preview, { opacity: 1, visibility: 'visible', duration: 0.9, ease: 'circ.out' });
-      lastPreview = preview;
-    };
-
-    const onLeave = () => {
-      // Skip hover animation if in grid view
-      const list = item.closest('.creators_list');
-      if (list && list.dataset.view === 'grid') return;
-      
-      gsap.to(preview, { opacity: 0, visibility: 'hidden', duration: 0.9, ease: 'circ.out' });
-      if (lastPreview === preview) lastPreview = null;
-    };
-
-    item.addEventListener('mouseenter', onEnter);
-    item.addEventListener('mouseleave', onLeave);
-  });
-
-  // Hide on scroll (bind once) - but ONLY in list view, not grid
-  if (!window.__creatorHoverHideOnScroll) {
-    window.__creatorHoverHideOnScroll = () => {
-      // Skip if in grid view
-      const list = document.querySelector('.creators_list');
-      if (list && list.dataset.view === 'grid') return;
-      
-      const all = document.querySelectorAll('.creator_sticky_inner');
-      all.forEach((el) => gsap.to(el, { opacity: 0, visibility: 'hidden', duration: 0.5, ease: 'power1.out' }));
-      try { window.__creatorLastPreview = null; } catch (_) {}
-    };
-    window.addEventListener('scroll', window.__creatorHoverHideOnScroll, { passive: true });
-  }
-}
 
 // ================================================================================
 // 🔁 LIST ↔ GRID TOGGLE (GSAP Flip)
-// - CTA selector: [data-id="grid-toggle"] (preferred) or .grid_toggle_btn
-// - Toggles classes on .creators_list and each .creator_thumb_wrap
-// - Grid view: all .creator_sticky_inner are visible (opacity 1)
+// - Toggle buttons: [toggle="is-grid"] and [toggle="is-list"]
+// - Toggles classes on .index_collection and nested elements
+// - Grid view: .index_layout.u-grid-autofit, .index_item.is-in-grid
+// - List view: .index_layout.u-flex-vertical-wrap, .index_item.is-in-row
 // ================================================================================
 function initCreatorGridToggle() {
-  if (!ENABLE_CREATOR_ANIMATIONS) return;
+  console.log('🔁 initCreatorGridToggle called');
+  if (!ENABLE_CREATOR_ANIMATIONS) {
+    console.log('⏭️ ENABLE_CREATOR_ANIMATIONS is false, skipping');
+    return;
+  }
+  
   const activeContainer = document.querySelector('[data-barba="container"]:not([aria-hidden="true"])') || document;
-  const list = activeContainer.querySelector('.creators_list');
-  if (!list) return;
+  const collection = activeContainer.querySelector('.index_collection');
+  console.log('🔍 Looking for .index_collection:', collection ? '✅ Found' : '❌ Not found');
+  if (!collection) return;
 
-  const cta = activeContainer.querySelector('[data-id="grid-toggle"], .grid_toggle_btn');
-  if (!cta || cta.dataset.gridToggleBound === 'true') return;
-  cta.dataset.gridToggleBound = 'true';
+  const gridBtn = activeContainer.querySelector('[toggle="is-grid"]');
+  const listBtn = activeContainer.querySelector('[toggle="is-list"]');
+  console.log('🔍 Grid button:', gridBtn ? '✅ Found' : '❌ Not found');
+  console.log('🔍 List button:', listBtn ? '✅ Found' : '❌ Not found');
+  if (!gridBtn || !listBtn) return;
+  
+  if (gridBtn.dataset.gridToggleBound === 'true') {
+    console.log('⏭️ Buttons already bound, skipping');
+    return;
+  }
+  gridBtn.dataset.gridToggleBound = 'true';
+  listBtn.dataset.gridToggleBound = 'true';
 
-  const items = () => Array.from(list.querySelectorAll('.creators_item'));
+  const layout = collection.querySelector('.index_layout');
+  const items = () => Array.from(collection.querySelectorAll('.index_item'));
+  
+  console.log('✅ Grid toggle initialized, buttons bound');
+
+  // ============================================================================
+  // 🎯 CLASS CONFIGURATION - All class changes defined here in one place
+  // ============================================================================
+  const classConfig = {
+    // Parent collection
+    '.index_collection': {
+      grid: ['is-grid-view'],
+      list: ['is-list-view']
+    },
+    // Layout wrapper
+    '.index_layout': {
+      grid: ['u-grid-autofit'],
+      list: ['u-flex-vertical-wrap']
+    },
+    // Each item
+    '.index_item': {
+      grid: ['is-in-grid'],
+      list: ['is-in-row', 'u-flex-horizontal-wrap', 'u-padding-block-1', 'u-position-relative', 'u-width-full', 'u-gap-1', 'u-align-items-start']
+    },
+    // Item name/heading
+    '.index_name': {
+      grid: [], // No extra classes in grid view
+      list: ['u-flex-grow', 'u-text-style-h1', 'is-first', 'u-alignment-start']
+    },
+    // Description wrapper (NOTE: it's "decription" not "description" - missing 's'!)
+    '.index_decription_wrap': {
+      grid: ['is-hidden'],
+      list: ['u-max-width-20ch', 'u-flex-grow']
+    },
+    // Image - remove padding in list view
+    '.index_item img, .index_item picture': {
+      grid: ['u-padding-7'],
+      list: []
+    },
+    // First u-content-wrapper (image wrapper)
+    '.index_item > [data-wf--content-wrapper--alignment="inherit"]:nth-child(4) .u-content-wrapper': {
+      grid: [],
+      list: ['u-max-width-16ch']
+    },
+    // Second u-content-wrapper (text wrapper with heading)
+    '.index_item > [data-wf--content-wrapper--alignment="inherit"]:nth-child(5) .u-content-wrapper': {
+      grid: ['u-display-none'],
+      list: ['u-margin-trim', 'u-align-self-start', 'u-padding-left-6']
+    }
+  };
+
+  // ============================================================================
+  // 🔄 APPLY CLASSES - Universal function that applies config
+  // ============================================================================
+  const applyViewClasses = (view) => {
+    console.log(`🎨 Applying ${view.toUpperCase()} view classes`);
+    
+    Object.keys(classConfig).forEach(selector => {
+      const config = classConfig[selector];
+      const elements = collection.querySelectorAll(selector);
+      
+      elements.forEach(el => {
+        // Remove ALL classes from both views (to avoid duplicates)
+        const allClasses = [...config.grid, ...config.list];
+        el.classList.remove(...allClasses);
+        
+        // Add classes for current view
+        const classesToAdd = config[view];
+        if (classesToAdd && classesToAdd.length > 0) {
+          el.classList.add(...classesToAdd);
+        }
+      });
+    });
+    
+    console.log(`✅ ${view.toUpperCase()} view classes applied`);
+  };
 
   const showGridView = () => {
     const elItems = items();
+    console.log('🎨 Switching to GRID view');
+    // Save state
+    collection.dataset.currentView = 'grid';
     // Fade out quickly
     gsap.to(elItems, { opacity: 0, duration: 0.15, ease: 'power1.inOut', onComplete: () => {
-      list.classList.add('u-grid-custom');
-      list.classList.remove('u-flex-vertical-wrap','u-width-full','u-position-relative');
-      list.dataset.view = 'grid';
-      list.querySelectorAll('.creator_thumb_wrap').forEach(el => el.classList.add('is-grid'));
-      // In grid: add .is-visible class AND clear GSAP inline styles so CSS can work
-      list.querySelectorAll('.creator_sticky_inner').forEach(el => {
-        el.classList.add('is-visible');
-        gsap.set(el, { clearProps: 'opacity,visibility' }); // Clear GSAP inline styles
-      });
-      // Fade in with minimal stagger, no transforms that affect positioning
+      applyViewClasses('grid');
+      // Fade in with minimal stagger
       gsap.to(elItems, { opacity: 1, duration: 0.25, ease: 'power1.out', stagger: 0.01 });
     }});
   };
 
   const showListView = () => {
     const elItems = items();
+    console.log('🎨 Switching to LIST view');
+    // Save state
+    collection.dataset.currentView = 'list';
     // Fade out quickly
     gsap.to(elItems, { opacity: 0, duration: 0.15, ease: 'power1.inOut', onComplete: () => {
-      list.classList.remove('u-grid-custom');
-      list.classList.add('u-flex-vertical-wrap','u-width-full','u-position-relative');
-      delete list.dataset.view;
-      list.querySelectorAll('.creator_thumb_wrap').forEach(el => el.classList.remove('is-grid'));
-      // Back to hover behavior: remove .is-visible class and reset GSAP styles
-      list.querySelectorAll('.creator_sticky_inner').forEach(el => {
-        el.classList.remove('is-visible');
-        gsap.set(el, { opacity: 0, visibility: 'hidden' }); // Reset for hover animation
-      });
-      try { initCreatorHoverPreviews(); } catch (_) {}
-      // Fade in with minimal stagger, no transforms that affect positioning
+      applyViewClasses('list');
+      // Fade in with minimal stagger
       gsap.to(elItems, { opacity: 1, duration: 0.25, ease: 'power1.out', stagger: 0.01 });
     }});
   };
+  
+  // ============================================================================
+  // 🔄 FINSWEET PAGINATION FIX - Reapply view after Finsweet updates DOM
+  // ============================================================================
+  const observeFinsweet = () => {
+    const listContainer = collection.querySelector('.w-dyn-items');
+    if (!listContainer) return;
+    
+    const observer = new MutationObserver((mutations) => {
+      const hasChanges = mutations.some(m => m.type === 'childList');
+      if (hasChanges) {
+        // Get saved view state
+        const currentView = collection.dataset.currentView || 'grid';
+        console.log(`🔄 Finsweet updated DOM, reapplying ${currentView} view`);
+        
+        // Reapply classes without animation (instant)
+        applyViewClasses(currentView);
+      }
+    });
+    
+    observer.observe(listContainer, { childList: true, subtree: false });
+    console.log('✅ Finsweet observer attached');
+  };
+  
+  observeFinsweet();
 
-  cta.addEventListener('click', (e) => {
+  // Handle clicks on button_main_wrap and its children (Clickable component)
+  const handleGridClick = (e) => {
+    console.log('🖱️ Grid button clicked');
     e.preventDefault();
-    if (list.dataset.view === 'grid') showListView(); else showGridView();
-  });
+    e.stopPropagation();
+    showGridView();
+  };
+  
+  const handleListClick = (e) => {
+    console.log('🖱️ List button clicked');
+    e.preventDefault();
+    e.stopPropagation();
+    showListView();
+  };
+  
+  gridBtn.addEventListener('click', handleGridClick, true);
+  listBtn.addEventListener('click', handleListClick, true);
+  
+  console.log('✅ Click listeners attached');
 }
 
 // ================================================================================
@@ -413,7 +462,6 @@ function initPaginationReinit() {
     btn.addEventListener('click', () => {
       // Give Webflow time to load new content
       setTimeout(() => {
-        try { initCreatorHoverPreviews(); } catch (e) { console.warn('Pagination reinit: hover previews failed', e); }
         try { initCreatorGridToggle(); } catch (e) { console.warn('Pagination reinit: grid toggle failed', e); }
       }, 350);
     });
@@ -432,7 +480,6 @@ function initPaginationReinit() {
       const hasChildListChanges = mutations.some(m => m.type === 'childList' && (m.addedNodes.length > 0 || m.removedNodes.length > 0));
       if (hasChildListChanges) {
         setTimeout(() => {
-          try { initCreatorHoverPreviews(); } catch (e) {}
           try { initCreatorGridToggle(); } catch (e) {}
         }, 100);
       }
@@ -473,8 +520,7 @@ function initAll() {
   try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed', e); }
   
   // Only init creator animations if elements exist
-  if (document.querySelector('.creators_item')) {
-    try { initCreatorHoverPreviews(); } catch (e) { console.warn('Creator hover preview init failed', e); }
+  if (document.querySelector('.index_collection')) {
     try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed', e); }
   }
 }
@@ -826,7 +872,6 @@ if (document.readyState === 'loading') {
                 }
                 
                 try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed on enter', e); }
-                try { initCreatorHoverPreviews(); } catch (e) { console.warn('Creator hover preview init failed on enter', e); }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on enter', e); }
               }
             },
@@ -850,12 +895,10 @@ if (document.readyState === 'loading') {
                 } else if (tl && tl.duration) {
                   await new Promise(resolve => setTimeout(resolve, tl.duration() * 1000 + 100));
                 }
-                try { initCreatorHoverPreviews(); } catch (e) { console.warn('Creator hover preview init failed on once', e); }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on once', e); }
               } else {
                 console.warn('⚠️ Barba once hook: no GSAP or container');
                 try { initAccordions(); } catch (e) {}
-                try { initCreatorHoverPreviews(); } catch (e) {}
                 try { initCreatorGridToggle(); } catch (e) {}
               }
             }
@@ -871,7 +914,6 @@ if (document.readyState === 'loading') {
           try { if (window.__updateNavTheme) window.__updateNavTheme(); } catch (e) {}
           try { initFinsweetFilters(); } catch (e) {}
           try { initPaginationReinit(); } catch (e) {}
-          try { initCreatorHoverPreviews(); } catch (e) {}
           try { initCreatorGridToggle(); } catch (e) {}
         }
         barba.hooks.afterEnter(() => {
