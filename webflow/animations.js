@@ -255,10 +255,13 @@ function initCreatorGridToggle() {
       if (hasChanges) {
         // Get saved view state
         const currentView = collection.dataset.currentView || 'grid';
-        console.log(`🔄 Finsweet updated DOM, reapplying ${currentView} view`);
+        console.log(`🔄 Finsweet updated DOM, reapplying ${currentView} view and hover effects`);
         
         // Reapply classes without animation (instant)
         applyViewClasses(currentView);
+        
+        // Reinitialize hover effects for new items
+        try { initImageHoverEffects(); } catch (e) { console.warn('Hover reinit failed', e); }
       }
     });
     
@@ -290,6 +293,93 @@ function initCreatorGridToggle() {
 }
 
 // ================================================================================
+// 🖱️ IMAGE HOVER EFFECTS - Subtle fade on hover
+// ================================================================================
+function initImageHoverEffects() {
+  if (!window.gsap) return;
+  
+  // Find all index items
+  const items = document.querySelectorAll('.index_item');
+  
+  items.forEach(item => {
+    // Find the image inside .u-display-contents that has .clickable_wrap as sibling
+    const clickable = item.querySelector('.clickable_wrap');
+    if (!clickable) return;
+    
+    // Find image in the same item
+    const image = item.querySelector('.u-display-contents img, .u-display-contents picture img');
+    if (!image) return;
+    
+    // Make sure the image container has overflow hidden
+    const imageContainer = image.closest('.u-display-contents');
+    if (imageContainer) {
+      imageContainer.style.overflow = 'hidden';
+    }
+    
+    // Set initial state
+    gsap.set(image, { scale: 1 });
+    
+    // Find the index_name element
+    const indexName = item.querySelector('.index_name');
+    
+    // Set initial opacity for index_name (full opacity)
+    if (indexName) {
+      gsap.set(indexName, { opacity: 1 });
+    }
+    
+    // Hover in - zoom in image + fade DOWN index_name
+    const onEnter = () => {
+      gsap.to(image, { 
+        scale: 1.05, 
+        duration: 0.4, 
+        ease: 'power3.out' 
+      });
+      
+      // Fade index_name to 30% opacity on hover (only in list view)
+      if (indexName) {
+        const collection = item.closest('.index_collection');
+        const isListView = collection && !collection.classList.contains('is-grid-view');
+        if (isListView) {
+          gsap.to(indexName, {
+            opacity: 0.3,
+            duration: 0.4,
+            ease: 'power3.out'
+          });
+        }
+      }
+    };
+    
+    // Hover out - zoom back + fade UP index_name
+    const onLeave = () => {
+      gsap.to(image, { 
+        scale: 1, 
+        duration: 0.4, 
+        ease: 'power3.out' 
+      });
+      
+      // Fade index_name back to full opacity (only in list view)
+      if (indexName) {
+        const collection = item.closest('.index_collection');
+        const isListView = collection && !collection.classList.contains('is-grid-view');
+        if (isListView) {
+          gsap.to(indexName, {
+            opacity: 1,
+            duration: 0.4,
+            ease: 'power3.out'
+          });
+        }
+      }
+    };
+    
+    // Bind to the item (entire row is hoverable)
+    item.addEventListener('mouseenter', onEnter);
+    item.addEventListener('mouseleave', onLeave);
+  });
+  
+  console.log('✅ Image hover effects initialized');
+}
+
+// ================================================================================
 // 🎯 FINSWEET CMS FILTERS - Simple check (no Barba reinit needed)
 // ================================================================================
 function initFinsweetFilters() {
@@ -297,6 +387,36 @@ function initFinsweetFilters() {
   // Just log for debugging
   if (typeof window.fsAttributes !== 'undefined') {
     console.log('✅ Finsweet is available on this page');
+  }
+  
+  // Add 'is-current' class to current pagination button
+  const updatePaginationCurrent = () => {
+    // Remove is-current from all pagination buttons
+    document
+      .querySelectorAll('[fs-list-element="page-button"]')
+      .forEach(el => el.classList.remove('is-current'));
+    
+    // Add is-current to the active one
+    document
+      .querySelectorAll('[fs-list-element="page-button"][aria-current="page"]')
+      .forEach(el => el.classList.add('is-current'));
+    
+    console.log('🔄 Updated pagination current class');
+  };
+  
+  // Run on init
+  document.addEventListener('fsAttributesInit', updatePaginationCurrent);
+  
+  // Also run whenever pagination changes
+  const paginationWrapper = document.querySelector('.w-pagination-wrapper');
+  if (paginationWrapper) {
+    const observer = new MutationObserver(updatePaginationCurrent);
+    observer.observe(paginationWrapper, { 
+      attributes: true, 
+      attributeFilter: ['aria-current'],
+      subtree: true 
+    });
+    console.log('✅ Pagination observer attached');
   }
 }
 
@@ -377,18 +497,25 @@ function initFinsweetAnimations() {
       const allItems = listContainer.querySelectorAll('.w-dyn-item');
       gsap.killTweensOf(allItems);
       
-      // Use fromTo to set and animate in one step (no flash)
-      // Delay: 0.05s pause before first item animates in
+      // Set all images inside visible items to opacity 0 FIRST (for scroll trigger)
+      visibleItems.forEach(item => {
+        const images = item.querySelectorAll('img, picture img');
+        images.forEach(img => gsap.set(img, { opacity: 0 }));
+      });
+      
+      // Fade in containers immediately (but images stay at 0)
       gsap.fromTo(visibleItems,
         { opacity: 0 },
         { 
           opacity: 1, 
           duration: 0.35, 
           ease: 'sine.out',
-          stagger: 0.02, // Reduced from 0.05 for tighter wave
-          delay: 0.05, // Tiny pause so old items disappear first
+          stagger: 0.02,
+          delay: 0.05,
           onComplete: () => {
             isAnimating = false;
+            // After containers are visible, add scroll triggers for images
+            initScrollImageFadesForFinsweet();
           }
         }
       );
@@ -417,17 +544,18 @@ function initFinsweetAnimations() {
       console.log(`🎬 Finsweet changed items: ${lastItemCount} → ${currentItemCount}`);
       lastItemCount = currentItemCount;
       
-      // Scroll to top of list (instant)
-      const scrollTarget = document.querySelector('.index_wrap') || document.querySelector('.index_collection') || listContainer;
-      if (scrollTarget) {
-        // Simple 4rem offset
-        const offset = 64; // 4rem (16px base)
-        const targetY = scrollTarget.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo(0, targetY);
-      }
+      // Wait a bit for Finsweet to update results count, then scroll
+      setTimeout(() => {
+        const scrollTarget = document.querySelector('.page_wrap');
+        if (scrollTarget) {
+          // Scroll to very top of page_wrap (0 offset)
+          const targetY = scrollTarget.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo(0, targetY);
+        }
+      }, 100);
       
       // Trigger animation
-      setTimeout(animateItems, 50);
+      setTimeout(animateItems, 150);
     }
   });
   
@@ -438,6 +566,61 @@ function initFinsweetAnimations() {
   });
   
   console.log('✅ Finsweet animations ready');
+}
+
+// ================================================================================
+// 📜 SCROLL FADE FOR FINSWEET IMAGES - Images fade on scroll
+// ================================================================================
+function initScrollImageFadesForFinsweet() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  
+  const images = document.querySelectorAll('.index_collection img, .index_collection picture img');
+  const aboveFold = [];
+  const belowFold = [];
+  
+  images.forEach((img) => {
+    // Clear the bound flag to allow re-binding
+    delete img.dataset.finsweetScrollBound;
+    
+    const rect = img.getBoundingClientRect();
+    const visibleNow = rect.top < window.innerHeight * 0.85;
+    
+    if (visibleNow) {
+      aboveFold.push(img);
+    } else {
+      belowFold.push(img);
+      // Set to 0 for scroll trigger
+      gsap.set(img, { opacity: 0 });
+    }
+  });
+  
+  console.log(`📊 Above fold: ${aboveFold.length}, Below fold: ${belowFold.length}`);
+  
+  // Animate above-fold images with stagger
+  if (aboveFold.length > 0) {
+    gsap.to(aboveFold, { 
+      opacity: 1, 
+      duration: 0.6, 
+      ease: 'sine.out',
+      stagger: 0.05
+    });
+  }
+  
+  // Add scroll triggers for below-fold images
+  belowFold.forEach((img) => {
+    img.dataset.finsweetScrollBound = 'true';
+    
+    ScrollTrigger.create({
+      trigger: img,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        gsap.to(img, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+      }
+    });
+  });
+  
+  console.log(`✅ Scroll triggers: ${aboveFold.length} immediate, ${belowFold.length} on scroll`);
 }
 
 // ================================================================================
@@ -516,12 +699,18 @@ function initAll() {
   // Initialize Finsweet Animations (smooth transitions on filter/pagination)
   try { initFinsweetAnimations(); } catch (e) { console.warn('Finsweet animations init failed', e); }
   
+  // Initialize scroll fades for Finsweet images (after items are loaded)
+  setTimeout(() => {
+    try { initScrollImageFadesForFinsweet(); } catch (e) { console.warn('Finsweet scroll fades init failed', e); }
+  }, 500);
+  
   // Initialize pagination reinit (always, not just for creators)
   try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed', e); }
   
   // Only init creator animations if elements exist
   if (document.querySelector('.index_collection')) {
     try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed', e); }
+    try { initImageHoverEffects(); } catch (e) { console.warn('Image hover effects init failed', e); }
   }
 }
 
