@@ -142,7 +142,36 @@ function initCreatorGridToggle() {
 
   const layout = collection.querySelector('.index_layout');
   const items = () => Array.from(collection.querySelectorAll('.index_item'));
-  
+
+  // Helper: robustly detect current view from DOM
+  const detectViewFromDom = () => {
+    // 1) Explicit flags on collection
+    if (collection.classList.contains('is-list-view')) return 'list';
+    if (collection.classList.contains('is-grid-view')) return 'grid';
+
+    // 2) Layout classes
+    const layoutHasFlexWrap = layout && layout.classList.contains('u-flex-vertical-wrap');
+    const layoutHasGridAutofit = layout && layout.classList.contains('u-grid-autofit');
+    if (layoutHasFlexWrap && !layoutHasGridAutofit) return 'list';
+    if (layoutHasGridAutofit && !layoutHasFlexWrap) return 'grid';
+
+    // 3) Item-level markers
+    const anyRow = collection.querySelector('.index_item.is-in-row');
+    const anyGrid = collection.querySelector('.index_item.is-in-grid');
+    if (anyRow && !anyGrid) return 'list';
+    if (anyGrid && !anyRow) return 'grid';
+
+    // 4) Fallback – prefer list as default per current design
+    return 'list';
+  };
+
+  // Detect and save initial view state from DOM
+  if (!collection.dataset.currentView) {
+    const detected = detectViewFromDom();
+    collection.dataset.currentView = detected;
+    console.log('📌 Initial view detected:', detected.toUpperCase());
+  }
+
   console.log('✅ Grid toggle initialized, buttons bound');
 
   // ============================================================================
@@ -162,7 +191,7 @@ function initCreatorGridToggle() {
     // Each item
     '.index_item': {
       grid: ['is-in-grid'],
-      list: ['is-in-row', 'u-flex-horizontal-wrap', 'u-padding-block-1', 'u-position-relative', 'u-width-full', 'u-gap-1', 'u-align-items-start']
+      list: ['is-in-row', 'u-flex-horizontal-wrap', 'u-padding-block-1', 'u-position-relative', 'u-width-full', 'u-gap-1']
     },
     // Item name/heading
     '.index_name': {
@@ -173,6 +202,15 @@ function initCreatorGridToggle() {
     '.index_decription_wrap': {
       grid: ['is-hidden'],
       list: ['u-max-width-20ch', 'u-flex-grow']
+    },
+    // Utility group wrappers
+    '.g_medium': {
+      grid: ['u-display-none'],
+      list: []
+    },
+    '.g_view': {
+      grid: ['u-display-none'],
+      list: []
     },
     // Image - remove padding in list view
     '.index_item img, .index_item picture': {
@@ -187,8 +225,13 @@ function initCreatorGridToggle() {
     // Second u-content-wrapper (text wrapper with heading)
     '.index_item > [data-wf--content-wrapper--alignment="inherit"]:nth-child(5) .u-content-wrapper': {
       grid: ['u-display-none'],
-      list: ['u-margin-trim', 'u-align-self-start', 'u-padding-left-6']
+      list: []
     }
+  };
+
+  // Extra cleanup classes to always remove for certain selectors
+  const cleanupClassesBySelector = {
+    '.index_item': ['u-align-items-start']
   };
 
   // ============================================================================
@@ -199,11 +242,19 @@ function initCreatorGridToggle() {
     
     Object.keys(classConfig).forEach(selector => {
       const config = classConfig[selector];
-      const elements = collection.querySelectorAll(selector);
+      
+      // Special handling for .index_collection (the parent container)
+      let elements;
+      if (selector === '.index_collection') {
+        elements = [collection];
+      } else {
+        elements = Array.from(collection.querySelectorAll(selector));
+      }
       
       elements.forEach(el => {
         // Remove ALL classes from both views (to avoid duplicates)
-        const allClasses = [...config.grid, ...config.list];
+        const cleanup = cleanupClassesBySelector[selector] || [];
+        const allClasses = [...config.grid, ...config.list, ...cleanup];
         el.classList.remove(...allClasses);
         
         // Add classes for current view
@@ -216,6 +267,13 @@ function initCreatorGridToggle() {
     
     console.log(`✅ ${view.toUpperCase()} view classes applied`);
   };
+
+  // Normalize initial classes now that helper is defined
+  {
+    const initialView = collection.dataset.currentView || detectViewFromDom();
+    collection.dataset.currentView = initialView;
+    applyViewClasses(initialView);
+  }
 
   const showGridView = () => {
     const elItems = items();
@@ -254,7 +312,8 @@ function initCreatorGridToggle() {
       const hasChanges = mutations.some(m => m.type === 'childList');
       if (hasChanges) {
         // Get saved view state
-        const currentView = collection.dataset.currentView || 'grid';
+        const currentView = collection.dataset.currentView || detectViewFromDom();
+        collection.dataset.currentView = currentView;
         console.log(`🔄 Finsweet updated DOM, reapplying ${currentView} view and hover effects`);
         
         // Reapply classes without animation (instant)
@@ -546,9 +605,9 @@ function initFinsweetAnimations() {
       
       // Wait a bit for Finsweet to update results count, then scroll
       setTimeout(() => {
-        const scrollTarget = document.querySelector('.page_wrap');
+        const scrollTarget = document.querySelector('.index_wrap');
         if (scrollTarget) {
-          // Scroll to very top of page_wrap (0 offset)
+          // Scroll to very top of index_wrap (0 offset)
           const targetY = scrollTarget.getBoundingClientRect().top + window.scrollY;
           window.scrollTo(0, targetY);
         }
@@ -984,48 +1043,36 @@ if (document.readyState === 'loading') {
       
       barba.init({
         prevent: ({ el, href }) => {
-          const currentUrl = window.location.href;
-          const isOnFinsweetPage = currentUrl.includes('/creator-grid-fin') || currentUrl.includes('creator-grid-fin');
-          const isGoingToFinsweetPage = href && (href.includes('/creator-grid-fin') || href.includes('creator-grid-fin'));
-          
-          // If going TO Finsweet page, prevent Barba (do full reload)
+          const isGoingToFinsweetPage = typeof href === 'string' && (href.includes('/creator-grid-fin') || href.includes('creator-grid-fin'));
+
+          // Detect Finsweet environment/controls from DOM
+          const isFinsweetEnv = !!document.querySelector('[fs-cmsfilter-element]') || !!document.querySelector('.w-pagination-wrapper');
+          const hrefHasPageParam = typeof href === 'string' && href.includes('_page=');
+
+          let isFsPageButton = false;
+          if (el) {
+            if (el.getAttribute && el.getAttribute('fs-list-element') === 'page-button') isFsPageButton = true;
+            else if (el.closest && el.closest('[fs-list-element="page-button"]')) isFsPageButton = true;
+          }
+
+          let isPrevNextBtn = false;
+          if (el) {
+            if (el.classList && (el.classList.contains('w-pagination-previous') || el.classList.contains('w-pagination-next'))) isPrevNextBtn = true;
+            else if (el.closest && (el.closest('.w-pagination-previous') || el.closest('.w-pagination-next'))) isPrevNextBtn = true;
+          }
+
+          const isFsControl = isFsPageButton || isPrevNextBtn || hrefHasPageParam;
+
           if (isGoingToFinsweetPage) {
             console.log('🚫 Barba: Preventing Finsweet page (full reload)');
             return true;
           }
-          
-          // If ON Finsweet page, only prevent pagination/filter clicks
-          if (isOnFinsweetPage) {
-            console.log('✅ On Finsweet page, checking if it\'s pagination/filter...');
-            
-            // Check if URL has pagination params
-            if (href && href.includes('_page=')) {
-              console.log('🚫 Barba: Finsweet pagination URL');
-              return true;
-            }
-            
-            // Check if it's a pagination button (not a link inside a list item)
-            if ((el.hasAttribute('fs-list-element') && el.getAttribute('fs-list-element') === 'page-button') ||
-                (el.closest('[fs-list-element="page-button"]'))) {
-              console.log('🚫 Barba: Finsweet pagination button');
-              return true;
-            }
-            
-            // Check if it's prev/next buttons
-            if (el.classList.contains('w-pagination-previous') || 
-                el.classList.contains('w-pagination-next') ||
-                el.closest('.w-pagination-previous') ||
-                el.closest('.w-pagination-next')) {
-              console.log('🚫 Barba: Prev/Next pagination');
-              return true;
-            }
-            
-            // Allow all other links (including links to leave the page)
-            console.log('✅ Allowing Barba transition');
-            return false;
+
+          if (isFinsweetEnv && isFsControl) {
+            console.log('🚫 Barba: Preventing Finsweet filter/pagination');
+            return true;
           }
-          
-          // On other pages, allow Barba
+
           return false;
         },
         transitions: [
@@ -1041,9 +1088,16 @@ if (document.readyState === 'loading') {
               }
             },
             async enter(data) {
-              window.scrollTo(0, 0);
               if (window.gsap && data.next && data.next.container) {
                 const nextRoot = data.next.container;
+                // Prefer scrolling to .index_wrap when present
+                const indexWrap = nextRoot.querySelector && nextRoot.querySelector('.index_wrap');
+                if (indexWrap) {
+                  const targetY = indexWrap.getBoundingClientRect().top + window.scrollY;
+                  window.scrollTo(0, targetY);
+                } else {
+                  window.scrollTo(0, 0);
+                }
                 const tl = revealContainerWithMediaThenText(nextRoot);
                 try { initScrollImageFades(nextRoot); } catch (e) {}
                 // Initialize accordions in new container
@@ -1062,6 +1116,8 @@ if (document.readyState === 'loading') {
                 
                 try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed on enter', e); }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on enter', e); }
+              } else {
+                window.scrollTo(0, 0);
               }
             },
             async once(data) {
