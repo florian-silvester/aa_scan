@@ -9,7 +9,8 @@ import {
   Box, 
   Badge, 
   Grid,
-  Heading
+  Heading,
+  useToast
 } from '@sanity/ui'
 import { 
   CheckmarkIcon, 
@@ -20,15 +21,18 @@ import {
   DocumentIcon,
   ImagesIcon,
   UserIcon,
-  TagIcon
+  TagIcon,
+  EarthGlobeIcon
 } from '@sanity/icons'
 
 export default function SyncToWebflowAction() {
+  const toast = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [lastSync, setLastSync] = useState(null)
   const [error, setError] = useState(null)
   const [progress, setProgress] = useState(null)
   const [syncPhases, setSyncPhases] = useState([])
+  const [currentStep, setCurrentStep] = useState(null)
   const eventSourceRef = useRef(null)
 
   // Load last sync from localStorage
@@ -55,11 +59,20 @@ export default function SyncToWebflowAction() {
     setError(null)
     setProgress(null)
     setSyncPhases([])
+    setCurrentStep(null)
+
+    // Show initial toast
+    toast.push({
+      status: 'info',
+      title: '🔄 Starting sync to Webflow...',
+      description: 'Connecting to API and preparing data',
+    })
 
     try {
-      // Try streaming first
-          console.log('Starting sync to:', 'https://aabackend-ten.vercel.app/api/sync-to-webflow')
-    const response = await fetch('https://aabackend-ten.vercel.app/api/sync-to-webflow', {
+      console.log('Starting sync to:', 'https://aabackend-ten.vercel.app/api/sync-to-webflow')
+      
+      setCurrentStep('Connecting to Webflow API...')
+      const response = await fetch('https://aabackend-ten.vercel.app/api/sync-to-webflow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,18 +103,49 @@ export default function SyncToWebflowAction() {
             if (line.startsWith('data: ')) {
               try {
                 const data = JSON.parse(line.slice(6))
+                
+                // Update progress
                 if (data.progress) {
                   setProgress(data.progress)
+                  setCurrentStep(data.progress.message || data.progress.phase)
                 }
+                
+                // Track phases
                 if (data.phase) {
                   setSyncPhases(prev => [...prev, data.phase])
+                  toast.push({
+                    status: 'info',
+                    title: `✅ ${data.phase} complete`,
+                  })
                 }
+                
+                // Handle item creation/update
+                if (data.itemCreated) {
+                  toast.push({
+                    status: 'success',
+                    title: `✅ Created: ${data.itemCreated}`,
+                    description: 'Item created in EN & DE locales',
+                    duration: 2000
+                  })
+                }
+                
+                if (data.itemUpdated) {
+                  setCurrentStep(`Updated: ${data.itemUpdated}`)
+                }
+                
+                // Handle completion
                 if (data.complete) {
                   setLastSync({
                     timestamp: new Date().toISOString(),
                     duration: data.duration,
                     totalItems: data.totalItems,
                     success: true
+                  })
+                  toast.push({
+                    status: 'success',
+                    title: '🎉 Sync complete!',
+                    description: `Synced ${data.totalItems} items in ${formatDuration(data.duration)}`,
+                    duration: 5000
                   })
                 }
               } catch (e) {
@@ -120,6 +164,12 @@ export default function SyncToWebflowAction() {
             totalItems: data.totalItems,
             success: true
           })
+          toast.push({
+            status: 'success',
+            title: '✅ Sync complete!',
+            description: `Synced ${data.totalItems} items in ${formatDuration(data.duration)}`,
+            duration: 5000
+          })
         }
       }
     } catch (err) {
@@ -130,10 +180,17 @@ export default function SyncToWebflowAction() {
         error: err.message,
         success: false
       })
+      toast.push({
+        status: 'error',
+        title: '❌ Sync failed',
+        description: err.message,
+        duration: 0 // Stay until dismissed
+      })
     } finally {
       setIsLoading(false)
       setProgress(null)
       setSyncPhases([])
+      setCurrentStep(null)
     }
   }
 
@@ -185,12 +242,24 @@ export default function SyncToWebflowAction() {
           </Card>
         )}
 
+        {/* Current Step Display */}
+        {currentStep && (
+          <Card padding={3} radius={2} tone="primary">
+            <Flex align="center" gap={2}>
+              <Spinner size={1} />
+              <Text size={1} weight="medium">
+                {currentStep}
+              </Text>
+            </Flex>
+          </Card>
+        )}
+
         {/* Progress Display */}
         {progress && (
           <Card padding={3} radius={2} tone="primary">
             <Stack space={2}>
               <Flex align="center" gap={2}>
-                <Spinner size={1} />
+                <EarthGlobeIcon />
                 <Text size={1} weight="medium">
                   {progress.phase || 'Processing...'}
                 </Text>
