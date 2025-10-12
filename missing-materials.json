@@ -1,0 +1,117 @@
+[
+  {
+    "id": "68ea75edd2f66f55fcf8fc92",
+    "slug": "enamel",
+    "name": "Enamel"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc90",
+    "slug": "ebony",
+    "name": "Ebony"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc8e",
+    "slug": "earth",
+    "name": "Earth"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc8c",
+    "slug": "crystal",
+    "name": "Crystal"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc8a",
+    "slug": "cotton",
+    "name": "Cotton"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc88",
+    "slug": "cork",
+    "name": "Cork"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc86",
+    "slug": "cordovan-leather",
+    "name": "Cordovan Leather"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc84",
+    "slug": "concrete",
+    "name": "Concrete"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc82",
+    "slug": "charcoal",
+    "name": "Charcoal"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc80",
+    "slug": "chain",
+    "name": "Chain"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc7e",
+    "slug": "ceramic",
+    "name": "Ceramic"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc7c",
+    "slug": "cashmere",
+    "name": "Cashmere"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc7a",
+    "slug": "bone",
+    "name": "Bone"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc78",
+    "slug": "birch",
+    "name": "Birch"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc76",
+    "slug": "bamboo",
+    "name": "Bamboo"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc74",
+    "slug": "amber",
+    "name": "Amber"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc72",
+    "slug": "aluminum",
+    "name": "Aluminum"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc70",
+    "slug": "alpaca",
+    "name": "Alpaca"
+  },
+  {
+    "id": "68ea75edd2f66f55fcf8fc6e",
+    "slug": "alloy",
+    "name": "Alloy"
+  },
+  {
+    "id": "68e23e1610c56332d9bb6506",
+    "slug": "platinum",
+    "name": "Platinum"
+  },
+  {
+    "id": "68e23e11f9e89c38f79ebb9d",
+    "slug": "lacquer",
+    "name": "Lacquer"
+  },
+  {
+    "id": "68e23e11f9e89c38f79ebb86",
+    "slug": "glass",
+    "name": "Glass"
+  },
+  {
+    "id": "68e23e11f9e89c38f79ebb66",
+    "slug": "coral",
+    "name": "Coral"
+  }
+]

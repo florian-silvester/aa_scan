@@ -10,6 +10,68 @@ console.log('🚀🚀🚀 ANIMATIONS.JS FILE LOADED 🚀🚀🚀');
 const ENABLE_CREATOR_ANIMATIONS = true; // Set to true to re-enable
 
 // ================================================================================
+// 🚀 SMART NAV - Hide/Show with scroll intent (only on index_wrap pages)
+// Uses Headroom.js for reliable scroll detection
+// ================================================================================
+function initSmartNav() {
+  const nav = document.querySelector('.nav_component');
+  const indexWrap = document.querySelector('.index_wrap');
+  
+  console.log('🔍 Smart Nav Debug:', {
+    navFound: !!nav,
+    indexWrapFound: !!indexWrap,
+    navClasses: nav ? nav.className : 'N/A',
+    alreadyBound: nav ? nav.dataset.smartNavBound : 'N/A'
+  });
+  
+  // Only activate on pages with .index_wrap
+  if (!nav || !indexWrap) {
+    console.log('⏭️ Smart nav: Not on index page, skipping');
+    return;
+  }
+  
+  if (nav.dataset.smartNavBound === 'true') {
+    console.log('⏭️ Smart nav already bound, skipping');
+    return;
+  }
+  nav.dataset.smartNavBound = 'true';
+  
+  if (!window.Headroom) {
+    console.warn('⚠️ Headroom.js not loaded');
+    return;
+  }
+  
+  console.log('🚀 Initializing Smart Nav (Headroom) for index_wrap section');
+  
+  // Add background class to nav_desktop_contain on index pages
+  const navDesktopContain = nav.querySelector('.nav_desktop_contain');
+  if (navDesktopContain) {
+    navDesktopContain.classList.add('u-background-1');
+    console.log('✅ Added background class to nav_desktop_contain. New classes:', navDesktopContain.className);
+  } else {
+    console.warn('⚠️ .nav_desktop_contain not found');
+  }
+  
+  const headroom = new Headroom(nav, {
+    offset: 100,        // Start hiding after scrolling down 100px
+    tolerance: {
+      up: 100,         // Need 100px scroll up to show nav (intent threshold)
+      down: 10         // Hide after 10px scroll down
+    },
+    classes: {
+      initial: "headroom",
+      pinned: "headroom--pinned",
+      unpinned: "headroom--unpinned",
+      top: "headroom--top",
+      notTop: "headroom--not-top"
+    }
+  });
+  
+  headroom.init();
+  console.log('✅ Smart Nav (Headroom) initialized');
+}
+
+// ================================================================================
 // 🎨 NAV COLOR CHANGE ON SCROLL
 // ================================================================================
 function initNavColorChange() {
@@ -737,6 +799,11 @@ console.log('📌 Adding DOMContentLoaded listener for nav color change...');
 
 function initAll() {
   console.log('🚀 Initializing all components');
+  try {
+    initSmartNav();
+  } catch (e) {
+    console.error('Smart nav failed', e);
+  }
   try {
     initNavColorChange();
   } catch (e) {
