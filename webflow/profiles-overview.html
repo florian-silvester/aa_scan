@@ -21,6 +21,18 @@
   <header data-wf--nav--nav-position="default" class="nav_component">
     <div class="w-embed">
       <style>
+/* Smart Nav Animation */
+.nav_component {
+  transition: transform 0.3s ease-in-out;
+  will-change: transform;
+}
+.nav_component.nav-hidden {
+  transform: translateY(-100%);
+}
+/* Add background on index pages */
+.nav_desktop_contain.u-background-1 {
+  background-color: var(--_theme---background);
+}
 body:has(.nav_component .w-nav-button.w--open):not(:has(.nav_desktop_wrap:not(.w-condition-invisible))) { overflow: hidden; }
 /* on smaller screens */
 @media (width < 65em) {
