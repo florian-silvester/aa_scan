@@ -1,4 +1,4 @@
-const fs = require('fs');
+ok so const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@sanity/client');
 
