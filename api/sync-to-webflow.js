@@ -45,8 +45,8 @@ if (!WEBFLOW_SITE_ID) {
 
 // Webflow locale IDs (will be resolved at runtime)
 let WEBFLOW_LOCALES = {
-  en: null,      // Primary locale ID
-  'de-DE': null  // German locale ID
+  'en-US': null,  // Primary locale ID (use en-US key for consistency)
+  'de-DE': null   // German locale ID
 }
 
 // CLI args
@@ -80,8 +80,8 @@ async function resolveWebflowLocales() {
     if (siteInfo.locales) {
       // With Advanced Localization, we can use the correct locale IDs
       if (siteInfo.locales.primary?.cmsLocaleId) {
-        WEBFLOW_LOCALES.en = siteInfo.locales.primary.cmsLocaleId
-        console.log(`  🌍 Primary locale (en): ${WEBFLOW_LOCALES.en}`)
+        WEBFLOW_LOCALES['en-US'] = siteInfo.locales.primary.cmsLocaleId
+        console.log(`  🌍 Primary locale (en-US): ${WEBFLOW_LOCALES['en-US']}`)
       }
       if (Array.isArray(siteInfo.locales.secondary)) {
         const germanLocale = siteInfo.locales.secondary.find(l => l.tag === 'de' || l.tag === 'de-DE')
@@ -1312,7 +1312,7 @@ async function syncCollection(options, progressCallback = null) {
         // Update primary (EN) locale
         const primaryFields = fieldMapper(sanityItem, 'en')
         if (!FLAG_ENGLISH_ONLY) {
-          await updateWebflowItem(collectionId, webflowItem.id, primaryFields, WEBFLOW_LOCALES.en)
+          await updateWebflowItem(collectionId, webflowItem.id, primaryFields, WEBFLOW_LOCALES['en-US'])
         }
         
         // Create/update German locale (skip if english-only)
@@ -1346,7 +1346,7 @@ async function syncCollection(options, progressCallback = null) {
       }
       
       // Update primary locale with English content
-      await updateWebflowItem(collectionId, u.webflowId, u.webflowItem.fieldData, FLAG_ENGLISH_ONLY ? null : WEBFLOW_LOCALES.en)
+      await updateWebflowItem(collectionId, u.webflowId, u.webflowItem.fieldData, FLAG_ENGLISH_ONLY ? null : WEBFLOW_LOCALES['en-US'])
       persistentHashes.set(u.key, u.hash)
       updatedItemIds.push(u.webflowId)
       
@@ -2071,6 +2071,32 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     // Preflight request
     return res.status(200).end()
+  }
+  
+  // Support GET for streaming (no preflight CORS issues)
+  if (req.method === 'GET' && (req.query?.stream === '1' || req.query?.stream === 'true')) {
+    res.setHeader('Content-Type', 'text/event-stream')
+    res.setHeader('Cache-Control', 'no-cache')
+    res.setHeader('Connection', 'keep-alive')
+    
+    const sendEvent = (data) => {
+      res.write(`data: ${JSON.stringify(data)}\n\n`)
+    }
+    
+    try {
+      console.log('🔔 Sync triggered via API (GET streaming)')
+      const result = await performCompleteSync(sendEvent, { limitPerCollection: null })
+      sendEvent({ 
+        complete: true, 
+        duration: result.duration, 
+        totalItems: result.totalSynced 
+      })
+    } catch (error) {
+      sendEvent({ type: 'error', error: error.message })
+    } finally {
+      res.end()
+    }
+    return
   }
   
   if (req.method !== 'POST') {
