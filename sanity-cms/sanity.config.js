@@ -3,17 +3,9 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
 import {media} from 'sanity-plugin-media'
+import {webflowSyncPlugin} from './plugins/webflowSyncPlugin'
 
 import MediaStatsWidget from './components/MediaStatsWidget'
-import SyncToWebflowAction from './components/SyncToWebflowAction'
-
-// Custom tool for Webflow sync
-const webflowSyncTool = {
-  name: 'webflow-sync',
-  title: 'Webflow Sync',
-  icon: () => '🔄',
-  component: SyncToWebflowAction,
-}
 
 export default defineConfig({
   name: 'default',
@@ -417,7 +409,7 @@ export default defineConfig({
     }),
     visionTool(),
     media(),
-    webflowSyncTool,
+    webflowSyncPlugin(),
   ],
 
   schema: {
