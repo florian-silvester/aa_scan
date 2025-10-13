@@ -2057,13 +2057,19 @@ async function performCompleteSync(progressCallback = null, options = {}) {
 
 // Main API handler
 module.exports = async function handler(req, res) {
-  // CORS headers - allow all necessary headers
+  // CORS headers - allow all necessary headers (echo requested headers for preflight)
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, content-type')
-  res.setHeader('Access-Control-Expose-Headers', 'Content-Type')
+  const requested = req.headers['access-control-request-headers']
+  if (requested) {
+    res.setHeader('Access-Control-Allow-Headers', requested)
+  } else {
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, content-type, Authorization')
+  }
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Type, Authorization')
   
   if (req.method === 'OPTIONS') {
+    // Preflight request
     return res.status(200).end()
   }
   
