@@ -258,7 +258,7 @@ function initCreatorGridToggle() {
     // Item name/heading
     '.index_name': {
       grid: [], // No extra classes in grid view
-      list: ['u-flex-grow', 'u-text-style-h1', 'is-first', 'u-alignment-start']
+      list: ['u-flex-grow', 'u-text-style-h2', 'is-first', 'u-alignment-start']
     },
     // Description wrapper (NOTE: it's "decription" not "description" - missing 's'!)
     '.index_decription_wrap': {
