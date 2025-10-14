@@ -6,6 +6,7 @@ import {media} from 'sanity-plugin-media'
 import {webflowSyncPlugin} from './plugins/webflowSyncPlugin'
 
 import MediaStatsWidget from './components/MediaStatsWidget'
+import {SyncDocumentAction} from './components/SyncDocumentAction'
 
 export default defineConfig({
   name: 'default',
@@ -51,45 +52,34 @@ export default defineConfig({
                     // Category filters
                     S.listItem()
                       .title('By Category')
-                      .child(
-                        S.list()
+                      .child(async () => {
+                        const client = S.context.getClient({ apiVersion: '2023-01-01' })
+                        
+                        // Get all categories
+                        const categories = await client.fetch(`
+                          *[_type == "category"] {
+                            _id,
+                            "name": title.en,
+                            "slug": slug.current
+                          } | order(name asc)
+                        `)
+                        
+                        return S.list()
                           .title('By Category')
-                          .items([
-                            S.listItem()
-                              .title('Art Jewelry')
-                              .child(S.documentList().title('Art Jewelry Profiles').filter('_type == "creator" && category->title.en == "Art Jewelry"')),
-                            S.listItem()
-                              .title('Ceramic Art')
-                              .child(S.documentList().title('Ceramic Art Profiles').filter('_type == "creator" && category->title.en == "Ceramic Art"')),
-                            S.listItem()
-                              .title('Design Jewelry')
-                              .child(S.documentList().title('Design Jewelry Profiles').filter('_type == "creator" && category->title.en == "Design Jewelry"')),
-                            S.listItem()
-                              .title('Textile | Accessories')
-                              .child(S.documentList().title('Textile | Accessories Profiles').filter('_type == "creator" && category->title.en == "Textile | Accessories"')),
-                            S.listItem()
-                              .title('Studio Glass')
-                              .child(S.documentList().title('Studio Glass Profiles').filter('_type == "creator" && category->title.en == "Studio Glass"')),
-                            S.listItem()
-                              .title('Metal Art')
-                              .child(S.documentList().title('Metal Art Profiles').filter('_type == "creator" && category->title.en == "Metal Art"')),
-                            S.listItem()
-                              .title('Lighting')
-                              .child(S.documentList().title('Lighting Profiles').filter('_type == "creator" && category->title.en == "Lighting"')),
-                            S.listItem()
-                              .title('Furniture | Objects')
-                              .child(S.documentList().title('Furniture | Objects Profiles').filter('_type == "creator" && category->title.en == "Furniture | Objects"')),
-                            S.listItem()
-                              .title('Woodwork | Paper')
-                              .child(S.documentList().title('Woodwork | Paper Profiles').filter('_type == "creator" && category->title.en == "Woodwork | Paper"')),
-                            S.listItem()
-                              .title('Rugs | Interior Textiles')
-                              .child(S.documentList().title('Rugs | Interior Textiles Profiles').filter('_type == "creator" && category->title.en == "Rugs | Interior Textiles"')),
-                            S.listItem()
-                              .title('Diverse Design Objects')
-                              .child(S.documentList().title('Diverse Design Objects Profiles').filter('_type == "creator" && category->title.en == "Diverse Design Objects"')),
-                          ])
-                      ),
+                          .items(
+                            categories.map(category => 
+                              S.listItem()
+                                .id(category._id)
+                                .title(category.name)
+                                .child(
+                                  S.documentList()
+                                    .title(`${category.name} Profiles`)
+                                    .filter('_type == "creator" && category._ref == $categoryId')
+                                    .params({ categoryId: category._id })
+                                )
+                            )
+                          )
+                      }),
                     
                     S.divider(),
                     S.documentTypeListItem('category').title('Categories'),
@@ -158,6 +148,7 @@ export default defineConfig({
                                   .items(
                                     mediums.map(medium => 
                                       S.listItem()
+                                        .id(medium._id)
                                         .title(medium.name)
                                         .child(
                                           S.documentList()
@@ -189,6 +180,7 @@ export default defineConfig({
                                   .items(
                                     materials.map(material => 
                                       S.listItem()
+                                        .id(material._id)
                                         .title(material.name)
                                         .child(
                                           S.documentList()
@@ -220,6 +212,7 @@ export default defineConfig({
                                   .items(
                                     categories.map(category => 
                                       S.listItem()
+                                        .id(category._id)
                                         .title(category.name)
                                         .child(
                                           S.documentList()
@@ -300,21 +293,27 @@ export default defineConfig({
                               .child(
                                 S.documentTypeList('location')
                                   .title('Museums')
-                                  .filter('_type == "location" && type == "museum"')
+                                  .filter('_type == $type && type == $locationType')
+                                  .params({type: 'location', locationType: 'museum'})
+                                  .apiVersion('2023-01-01')
                               ),
                             S.listItem()
                               .title('Galleries & Shops')
                               .child(
                                 S.documentTypeList('location')
                                   .title('Galleries & Shops')
-                                  .filter('_type == "location" && type == "shop-gallery"')
+                                  .filter('_type == $type && type == $locationType')
+                                  .params({type: 'location', locationType: 'shop-gallery'})
+                                  .apiVersion('2023-01-01')
                               ),
                             S.listItem()
                               .title('Studios')
                               .child(
                                 S.documentTypeList('location')
                                   .title('Studios')
-                                  .filter('_type == "location" && type == "studio"')
+                                  .filter('_type == $type && type == $locationType')
+                                  .params({type: 'location', locationType: 'studio'})
+                                  .apiVersion('2023-01-01')
                               ),
                           ])
                       ),
@@ -376,8 +375,9 @@ export default defineConfig({
                                     .child(
                                       S.documentTypeList('location')
                                         .title(`All ${country}`)
-                                        .filter('_type == "location" && country->name.en == $country')
-                                        .params({ country })
+                                        .filter('_type == $type && country->name.en == $country')
+                                        .params({ type: 'location', country })
+                                        .apiVersion('2023-01-01')
                                     ),
                                   S.divider(),
                                   ...cityArray.map((city, index) =>
@@ -414,5 +414,18 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+  },
+
+  document: {
+    actions: (prev, context) => {
+      // Add Sync to Webflow action to syncable document types
+      const syncableTypes = ['creator', 'artwork', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
+      
+      if (syncableTypes.includes(context.schemaType)) {
+        return [...prev, SyncDocumentAction]
+      }
+      
+      return prev
+    },
   },
 })

@@ -133,5 +133,36 @@ curl -s -o /dev/null -w "%{http_code}\n" \
 
 ---
 
+## 🎯 API Usage
+
+### Full Sync (All Collections):
+```bash
+curl -X POST https://art-aurea-api.vercel.app/api/sync-to-webflow
+```
+
+### Single Item Sync:
+```bash
+curl -X POST https://art-aurea-api.vercel.app/api/sync-to-webflow \
+  -H "Content-Type: application/json" \
+  -d '{
+    "syncType": "single-item",
+    "documentId": "creator-id-123",
+    "documentType": "creator",
+    "autoPublish": true
+  }'
+```
+
+**Supported document types:**
+- `creator`
+- `artwork`  
+- `category`
+- `medium`
+- `material`
+- `materialType`
+- `finish`
+- `location`
+
+---
+
 **Last Updated:** October 13, 2025
 
