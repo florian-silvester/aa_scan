@@ -18,7 +18,21 @@ export function SyncDocumentAction(props) {
       description: `Starting sync for ${type}`,
     })
 
+    // Add a timeout so the UI never gets stuck
+    const controller = new AbortController()
+    const timeoutMs = 45000
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+
+    // Inform user if it takes unusually long
+    const slowNoticeId = setTimeout(() => {
+      toast.push({
+        status: 'warning',
+        title: '⏳ Still syncing...'
+      })
+    }, 15000)
+
     try {
+      console.log('[SyncDocumentAction] POST single-item', { documentId, type })
       const response = await fetch('https://art-aurea-api.vercel.app/api/sync-to-webflow', {
         method: 'POST',
         headers: {
@@ -29,11 +43,12 @@ export function SyncDocumentAction(props) {
           documentId,
           documentType: type,
           autoPublish: true
-        })
+        }),
+        signal: controller.signal
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP ${response.status}`)
       }
 
       const result = await response.json()
@@ -49,13 +64,16 @@ export function SyncDocumentAction(props) {
       
     } catch (error) {
       console.error('Sync error:', error)
+      const isAbort = error?.name === 'AbortError'
       toast.push({
         status: 'error',
-        title: '❌ Sync failed',
-        description: error.message,
+        title: isAbort ? '❌ Sync timed out' : '❌ Sync failed',
+        description: isAbort ? `No response after ${Math.round(timeoutMs/1000)}s` : (error.message || 'Unknown error'),
         duration: 8000,
       })
     } finally {
+      clearTimeout(timeoutId)
+      clearTimeout(slowNoticeId)
       setIsLoading(false)
     }
   }, [id, type, toast])
