@@ -1398,12 +1398,13 @@ async function syncCollection(options, progressCallback = null) {
 
 // PHASE 1: Sync Material Types
 async function syncMaterialTypes(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Material Types',
     collectionId: WEBFLOW_COLLECTIONS.materialType,
     mappingKey: 'materialType',
     sanityQuery: `
-      *[_type == "materialType"] | order(sortOrder asc, name.en asc) {
+      *[_type == "materialType" ${filter}] | order(sortOrder asc, name.en asc) {
         _id,
         name,
         description,
@@ -1418,12 +1419,13 @@ async function syncMaterialTypes(limit = null, progressCallback = null) {
 
 // PHASE 2: Sync Finishes
 async function syncFinishes(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Finishes',
     collectionId: WEBFLOW_COLLECTIONS.finish,
     mappingKey: 'finish',
     sanityQuery: `
-      *[_type == "finish"] | order(name.en asc) {
+      *[_type == "finish" ${filter}] | order(name.en asc) {
         _id,
         name,
         description,
@@ -1437,12 +1439,13 @@ async function syncFinishes(limit = null, progressCallback = null) {
 
 // PHASE 3: Sync Materials (with Material Type references)
 async function syncMaterials(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Materials',
     collectionId: WEBFLOW_COLLECTIONS.material,
     mappingKey: 'material',
     sanityQuery: `
-      *[_type == "material"] | order(name.en asc) {
+      *[_type == "material" ${filter}] | order(name.en asc) {
         _id,
         name,
         description,
@@ -1464,12 +1467,13 @@ async function syncMaterials(limit = null, progressCallback = null) {
 
 // PHASE 4: Sync other collections
 async function syncMediums(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Types',
     collectionId: WEBFLOW_COLLECTIONS.medium,
     mappingKey: 'medium',
     sanityQuery: `
-      *[_type == "medium"] | order(name.en asc) {
+      *[_type == "medium" ${filter}] | order(name.en asc) {
         _id,
         name,
         description,
@@ -1482,12 +1486,13 @@ async function syncMediums(limit = null, progressCallback = null) {
 }
 
 async function syncCategories(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Mediums',
     collectionId: WEBFLOW_COLLECTIONS.category,
     mappingKey: 'category',
     sanityQuery: `
-      *[_type == "category"] | order(title.en asc) {
+      *[_type == "category" ${filter}] | order(title.en asc) {
         _id,
         title,
         description,
@@ -1500,12 +1505,13 @@ async function syncCategories(limit = null, progressCallback = null) {
 }
 
 async function syncLocations(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Locations',
     collectionId: WEBFLOW_COLLECTIONS.location,
     mappingKey: 'location',
     sanityQuery: `
-      *[_type == "location"] | order(name.en asc) {
+      *[_type == "location" ${filter}] | order(name.en asc) {
         _id,
         name,
         type,
@@ -1526,12 +1532,13 @@ async function syncLocations(limit = null, progressCallback = null) {
 }
 
 async function syncCreators(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Creators',
     collectionId: WEBFLOW_COLLECTIONS.creator,
     mappingKey: 'creator',
     sanityQuery: `
-      *[_type == "creator"] | order(name asc) {
+      *[_type == "creator" ${filter}] | order(name asc) {
         _id,
         name,
         lastName,
@@ -1661,12 +1668,13 @@ async function syncArtworks(limit = null, progressCallback = null) {
     }
   }
 
+  const filter = global.SINGLE_ITEM_FILTER || ''
   return syncCollection({
     name: 'Artworks',
     collectionId: WEBFLOW_COLLECTIONS.artwork,
     mappingKey: 'artwork',
     sanityQuery: `
-      *[_type == "artwork"] | order(name asc) {
+      *[_type == "artwork" ${filter}] | order(name asc) {
         _id,
         name,
         workTitle,
@@ -2055,6 +2063,71 @@ async function performCompleteSync(progressCallback = null, options = {}) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// SINGLE ITEM SYNC
+// ═══════════════════════════════════════════════════════════════════════════════
+async function syncSingleItem(documentId, documentType, autoPublish = true) {
+  console.log(`\n🔍 Syncing single item: ${documentType}/${documentId}`)
+  
+  // Initialize
+  WEBFLOW_COLLECTIONS = await resolveWebflowCollections()
+  await resolveWebflowLocales()
+  await loadIdMappings()
+  loadPersistentMappings()
+  
+  // Set global filter for targeted query
+  const baseId = documentId.replace('drafts.', '')
+  global.SINGLE_ITEM_FILTER = `&& (_id == "${baseId}" || _id == "drafts.${baseId}")`
+  
+  try {
+    // Map document type to sync function
+    const syncFunctions = {
+      creator: () => syncCreators(1),
+      artwork: () => syncArtworks(1),
+      category: () => syncCategories(1),
+      medium: () => syncMediums(1),
+      material: () => syncMaterials(1),
+      materialType: () => syncMaterialTypes(1),
+      finish: () => syncFinishes(1),
+      location: () => syncLocations(1)
+    }
+    
+    const syncFn = syncFunctions[documentType]
+    if (!syncFn) {
+      throw new Error(`Unsupported document type: ${documentType}`)
+    }
+    
+    // Run the sync for this single item
+    await syncFn()
+    
+    // Publish if requested
+    if (autoPublish) {
+      const collectionId = WEBFLOW_COLLECTIONS[documentType]
+      if (collectionId && ID_MAPPINGS[documentType]) {
+        const webflowId = ID_MAPPINGS[documentType][baseId]
+        if (webflowId) {
+          console.log(`📤 Publishing ${documentType}/${baseId} (${webflowId})`)
+          await publishWebflowItems(collectionId, [webflowId])
+        }
+      }
+    }
+    
+    // Save mappings
+    await saveIdMappings()
+    savePersistentMappings()
+    
+    return {
+      documentId: baseId,
+      documentType,
+      webflowId: ID_MAPPINGS[documentType]?.[baseId],
+      published: autoPublish
+    }
+  } finally {
+    // Clean up global filter
+    delete global.SINGLE_ITEM_FILTER
+  }
+}
+
 // Main API handler
 module.exports = async function handler(req, res) {
   // CORS headers - allow all necessary headers (echo requested headers for preflight)
@@ -2112,8 +2185,20 @@ module.exports = async function handler(req, res) {
       throw new Error('WEBFLOW_API_TOKEN environment variable is required')
     }
     
+    // Check for single-item sync
+    const { syncType, documentId, documentType, autoPublish, streaming, limit, limitPerCollection } = req.body || {}
+    
+    if (syncType === 'single-item' && documentId && documentType) {
+      console.log(`🔔 Single item sync: ${documentType}/${documentId}`)
+      const result = await syncSingleItem(documentId, documentType, autoPublish !== false)
+      return res.status(200).json({
+        success: true,
+        message: `Successfully synced ${documentType}`,
+        ...result
+      })
+    }
+    
     // Check if client wants streaming progress and optional limit
-    const { streaming, limit, limitPerCollection } = req.body || {}
     const limitValue = Number.isFinite(Number(limitPerCollection)) ? Number(limitPerCollection) : (Number.isFinite(Number(limit)) ? Number(limit) : (process.env.LIMIT_PER_COLLECTION ? Number(process.env.LIMIT_PER_COLLECTION) : null))
     
     if (streaming) {
