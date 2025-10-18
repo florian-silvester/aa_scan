@@ -43,15 +43,6 @@ function initSmartNav() {
   
   console.log('🚀 Initializing Smart Nav (Headroom) for index_wrap section');
   
-  // Add background class to nav_desktop_contain on index pages
-  const navDesktopContain = nav.querySelector('.nav_desktop_contain');
-  if (navDesktopContain) {
-    navDesktopContain.classList.add('u-background-1');
-    console.log('✅ Added background class to nav_desktop_contain. New classes:', navDesktopContain.className);
-  } else {
-    console.warn('⚠️ .nav_desktop_contain not found');
-  }
-  
   const headroom = new Headroom(nav, {
     offset: 100,        // Start hiding after scrolling down 100px
     tolerance: {
@@ -69,6 +60,54 @@ function initSmartNav() {
   
   headroom.init();
   console.log('✅ Smart Nav (Headroom) initialized');
+}
+
+// ================================================================================
+// 🎨 NAV BACKGROUND PER SECTION
+// ================================================================================
+function initNavBackgroundPerSection() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  
+  const navDesktopContain = document.querySelector('.nav_desktop_contain');
+  if (!navDesktopContain) {
+    console.warn('⚠️ .nav_desktop_contain not found');
+    return;
+  }
+  
+  const sections = document.querySelectorAll('[data-nav-background="on"]');
+  console.log(`🎨 Found ${sections.length} section(s) with data-nav-background="on"`);
+  
+  if (sections.length === 0) {
+    // No sections with background attribute, ensure background is removed
+    navDesktopContain.classList.remove('u-background-1');
+    return;
+  }
+  
+  sections.forEach((section) => {
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 80px', // When section reaches bottom of nav
+      end: 'bottom 80px',
+      onEnter: () => {
+        navDesktopContain.classList.add('u-background-1');
+        console.log('✅ Nav background added (entering section)');
+      },
+      onLeave: () => {
+        navDesktopContain.classList.remove('u-background-1');
+        console.log('🧹 Nav background removed (leaving section)');
+      },
+      onEnterBack: () => {
+        navDesktopContain.classList.add('u-background-1');
+        console.log('✅ Nav background added (entering back)');
+      },
+      onLeaveBack: () => {
+        navDesktopContain.classList.remove('u-background-1');
+        console.log('🧹 Nav background removed (leaving back)');
+      }
+    });
+  });
+  
+  console.log('✅ Nav background per section initialized');
 }
 
 // ================================================================================
@@ -257,7 +296,7 @@ function initCreatorGridToggle() {
     },
     // Item name/heading
     '.index_name': {
-      grid: [], // No extra classes in grid view
+      grid: ['u-text-style-h2'], // Add u-text-style-h2 for consistent styling
       list: ['u-flex-grow', 'u-text-style-h2', 'is-first', 'u-alignment-start']
     },
     // Description wrapper (NOTE: it's "decription" not "description" - missing 's'!)
@@ -711,7 +750,13 @@ function initScrollImageFadesForFinsweet() {
     } else {
       belowFold.push(img);
       // Set to 0 for scroll trigger
-      gsap.set(img, { opacity: 0 });
+      const parent = img.parentElement;
+      const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+      if (hasOverlaySibling) {
+        gsap.set(img, { opacity: 0, scale: 1.05 });
+      } else {
+        gsap.set(img, { opacity: 0 });
+      }
     }
   });
   
@@ -719,11 +764,19 @@ function initScrollImageFadesForFinsweet() {
   
   // Animate above-fold images with stagger
   if (aboveFold.length > 0) {
-    gsap.to(aboveFold, { 
-      opacity: 1, 
-      duration: 0.6, 
-      ease: 'sine.out',
-      stagger: 0.05
+    // Check if images have overlay sibling (need scale animation)
+    aboveFold.forEach(img => {
+      const parent = img.parentElement;
+      const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+      
+      if (hasOverlaySibling) {
+        gsap.fromTo(img, 
+          { opacity: 0, scale: 1.05 },
+          { opacity: 1, scale: 1, duration: 0.6, ease: 'sine.out' }
+        );
+      } else {
+        gsap.to(img, { opacity: 1, duration: 0.6, ease: 'sine.out' });
+      }
     });
   }
   
@@ -731,17 +784,78 @@ function initScrollImageFadesForFinsweet() {
   belowFold.forEach((img) => {
     img.dataset.finsweetScrollBound = 'true';
     
+    const parent = img.parentElement;
+    const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+    
     ScrollTrigger.create({
       trigger: img,
       start: 'top 85%',
       once: true,
       onEnter: () => {
-        gsap.to(img, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+        if (hasOverlaySibling) {
+          gsap.to(img, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut' });
+        } else {
+          gsap.to(img, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+        }
       }
     });
   });
   
   console.log(`✅ Scroll triggers: ${aboveFold.length} immediate, ${belowFold.length} on scroll`);
+  
+  // Watch for lazy-loaded images being added to DOM
+  if (!window._finsweetImageObserver) {
+    const collection = document.querySelector('.index_collection');
+    if (collection) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            // Check if added node is an image or contains images
+            const images = [];
+            if (node.nodeName === 'IMG') {
+              images.push(node);
+            } else if (node.querySelectorAll) {
+              images.push(...node.querySelectorAll('img'));
+            }
+            
+            // Bind ScrollTriggers to new images
+            images.forEach((img) => {
+              if (img.dataset.finsweetScrollBound) return;
+              img.dataset.finsweetScrollBound = 'true';
+              
+              const parent = img.parentElement;
+              const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+              
+              // Set initial state
+              if (hasOverlaySibling) {
+                gsap.set(img, { opacity: 0, scale: 1.05 });
+              } else {
+                gsap.set(img, { opacity: 0 });
+              }
+              
+              // Create trigger
+              ScrollTrigger.create({
+                trigger: img,
+                start: 'top 85%',
+                once: true,
+                onEnter: () => {
+                  if (hasOverlaySibling) {
+                    gsap.to(img, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut' });
+                  } else {
+                    gsap.to(img, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+                  }
+                }
+              });
+            });
+          });
+        });
+      });
+      
+      observer.observe(collection, { childList: true, subtree: true });
+      window._finsweetImageObserver = observer;
+      console.log('👀 Watching for lazy-loaded images in Finsweet collection');
+    }
+  }
 }
 
 // ================================================================================
@@ -809,6 +923,11 @@ function initAll() {
   } catch (e) {
     console.error('Nav color change failed', e);
   }
+  try {
+    initNavBackgroundPerSection();
+  } catch (e) {
+    console.error('Nav background per section failed', e);
+  }
   
   // DON'T call initAccordions or initScrollImageFades here - they're defined inside Barba IIFE
   // Barba hooks will handle them
@@ -816,8 +935,32 @@ function initAll() {
   // If this page has the hidden wrapper, run the entrance animation
   if (document.querySelector('.page_wrap.is-hidden')) {
     console.log('🎬 Finsweet page detected, applying entrance animation...');
-    try { initFinsweetPageAnimation(); } catch (e) { console.warn('Finsweet page animation failed', e); }
+    try { 
+      const animationTimeline = initFinsweetPageAnimation();
+      // Wait for animation to complete before initializing other features
+      if (animationTimeline) {
+        animationTimeline.eventCallback('onComplete', () => {
+          initFinsweetFeatures();
+        });
+      } else {
+        initFinsweetFeatures();
+      }
+    } catch (e) { 
+      console.warn('Finsweet page animation failed', e);
+      initFinsweetFeatures();
+    }
+  } else {
+    // Not a Finsweet page, init features normally
+    initFinsweetFeatures();
   }
+}
+
+// Initialize Finsweet features (called after page animation completes)
+function initFinsweetFeatures() {
+  console.log('🎨 Initializing Finsweet features after animation');
+  
+  // Initialize tabs first (before other features)
+  try { initTabs(); } catch (e) { console.warn('Tabs init failed', e); }
   
   // Initialize Finsweet Filters (always)
   try { initFinsweetFilters(); } catch (e) { console.warn('Finsweet init failed', e); }
@@ -828,7 +971,7 @@ function initAll() {
   // Initialize scroll fades for Finsweet images (after items are loaded)
   setTimeout(() => {
     try { initScrollImageFadesForFinsweet(); } catch (e) { console.warn('Finsweet scroll fades init failed', e); }
-  }, 500);
+  }, 100);
   
   // Initialize pagination reinit (always, not just for creators)
   try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed', e); }
@@ -838,6 +981,197 @@ function initAll() {
     try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed', e); }
     try { initImageHoverEffects(); } catch (e) { console.warn('Image hover effects init failed', e); }
   }
+}
+
+// ================================================================================
+// 🎯 TABS INITIALIZATION
+// ================================================================================
+function initTabs() {
+  document.querySelectorAll(".tab_wrap").forEach((tabWrap, componentIndex) => {
+    if (tabWrap.dataset.scriptInitialized) return;
+    tabWrap.dataset.scriptInitialized = "true";
+    let loopControls = tabWrap.getAttribute("data-loop-controls") === "true",
+      slideTabs = tabWrap.getAttribute("data-slide-tabs") === "true",
+      pauseOnHover = tabWrap.getAttribute("data-pause-on-hover") === "true",
+      autoplay = Number(tabWrap.getAttribute("data-autoplay-duration")) || 0,
+      duration = Number(tabWrap.getAttribute("data-duration")) || 0.3,
+      buttonList = tabWrap.querySelector(".tab_button_list"),
+      panelList = tabWrap.querySelector(".tab_content_list"),
+      previousButton = tabWrap.querySelector("[data-tab='previous'] button"),
+      nextButton = tabWrap.querySelector("[data-tab='next'] button"),
+      toggleWrap = tabWrap.querySelector("[data-tab-button='toggle']"),
+      toggleButton = tabWrap.querySelector("[data-tab-button='toggle'] button"),
+      animating = false,
+      autoplayTl;
+
+    function removeCMSList(slot) {
+      const dynList = Array.from(slot.children).find((child) => child.classList.contains("w-dyn-list"));
+      if (!dynList) return;
+      const nestedItems = dynList?.firstElementChild?.children;
+      if (!nestedItems) return;
+      const staticWrapper = [...slot.children];
+      [...nestedItems].forEach(el => el.firstElementChild && slot.appendChild(el.firstElementChild));
+      staticWrapper.forEach((el) => el.remove());
+    }
+    removeCMSList(buttonList);
+    removeCMSList(panelList);
+
+    let buttonItems = Array.from(buttonList.children);
+    let panelItems = Array.from(panelList.children);
+
+    if (!buttonList || !panelList || !buttonItems.length || !panelItems.length) {
+      console.warn("Missing elements in:", tabWrap);
+      return;
+    }
+
+    panelItems.forEach((panel, i) => {panel.style.display = "none"; panel.setAttribute("role", "tabpanel");});
+    buttonItems.forEach((button, i) => {button.setAttribute("role", "tab");});
+
+    panelList.removeAttribute("role");
+    buttonList.setAttribute("role", "tablist");
+    buttonItems.forEach((btn) => btn.setAttribute("role", "tab"));
+    panelItems.forEach((panel) => panel.setAttribute("role", "tabpanel"));
+
+    let activeIndex = 0;
+    const makeActive = (index, focus = false, animate = true, pause = true) => {
+      if (animating) return;
+      buttonItems.forEach((btn, i) => {
+        btn.classList.toggle("is-active", i === index);
+        btn.setAttribute("aria-selected", i === index ? "true" : "false");
+        btn.setAttribute("tabindex", i === index ? "0" : "-1");
+      });
+      panelItems.forEach((panel, i) => panel.classList.toggle("is-active", i === index));
+      if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+      if (nextButton) nextButton.disabled = index === buttonItems.length - 1 && !loopControls;
+      if (previousButton) previousButton.disabled = index === 0 && !loopControls;
+      if (focus) buttonItems[index].focus();
+      const previousPanel = panelItems[activeIndex];
+      const currentPanel = panelItems[index];
+      let direction = 1;
+      if (activeIndex > index) direction = -1;
+      
+      if (typeof gsap !== "undefined" && animate && activeIndex !== index) {
+        animating = true;
+        let tl = gsap.timeline({ 
+          onComplete: () => {
+            animating = false;
+          }, 
+          defaults: { ease: "sine.out" } 
+        });
+        
+        // Get media and text elements FIRST (before hiding previous panel)
+        const mediaEls = currentPanel.querySelectorAll('img, picture, video, [data-animate-media]');
+        const textEls = currentPanel.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, .button_main_wrap, [data-animate-text]');
+        
+        // Prepare current panel children (set to invisible)
+        if (mediaEls.length > 0) {
+          mediaEls.forEach(el => {
+            const parent = el.parentElement;
+            const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+            if (hasOverlaySibling) {
+              tl.set(el, { opacity: 0, scale: 1.05 }, 0);
+            } else {
+              tl.set(el, { opacity: 0 }, 0);
+            }
+          });
+        }
+        if (textEls.length > 0) {
+          tl.set(textEls, { opacity: 0, y: '1vh' }, 0);
+        }
+        
+        // Fade out previous panel
+        if (previousPanel) {
+          tl.to(previousPanel, { opacity: 0, duration: 0.2 });
+          tl.set(previousPanel, { display: "none" });
+        }
+        
+        // Show current panel (but children are still invisible)
+        tl.set(currentPanel, { display: "block", opacity: 1 });
+        
+        // Animate media first
+        if (mediaEls.length > 0) {
+          mediaEls.forEach((el, i) => {
+            const parent = el.parentElement;
+            const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+            if (hasOverlaySibling) {
+              tl.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.out' }, 0.05 + (i * 0.05));
+            } else {
+              tl.to(el, { opacity: 1, duration: 0.8, ease: 'sine.out' }, 0.05 + (i * 0.05));
+            }
+          });
+        }
+        
+        // Animate text with overlap
+        if (textEls.length > 0) {
+          tl.to(textEls, { opacity: 1, y: 0, duration: 0.6, ease: 'sine.out', stagger: 0.03 }, '-=0.2');
+        }
+      } else {
+        if (previousPanel) previousPanel.style.display = "none";
+        if (currentPanel) currentPanel.style.display = "block";
+      }
+      buttonList.scrollTo({ left: buttonItems[index].offsetLeft, behavior: 'smooth' });
+      activeIndex = index;
+    };
+
+    makeActive(0, false, false);
+
+    const updateIndex = (delta, focus = false, pause = true) => makeActive((activeIndex + delta + buttonItems.length) % buttonItems.length, focus, true, pause);
+    nextButton?.addEventListener("click", () => updateIndex(1));
+    previousButton?.addEventListener("click", () => updateIndex(-1));
+
+    buttonItems.forEach((btn, index) => {
+      let tabId = tabWrap.getAttribute("data-tab-component-id");
+      tabId = tabId ? tabId.toLowerCase().replaceAll(" ", "-") : componentIndex + 1;
+      let itemId = btn.getAttribute("data-tab-item-id");
+      itemId = itemId ? itemId.toLowerCase().replaceAll(" ", "-") : index + 1;
+
+      btn.setAttribute("id", "tab-button-" + tabId + "-" + itemId);
+      btn.setAttribute("aria-controls", "tab-panel-" + tabId + "-" + itemId);
+      panelItems[index].setAttribute("id", "tab-panel-" + tabId + "-" + itemId);
+      panelItems[index].setAttribute("aria-labelledby", btn.id);
+      
+      if (new URLSearchParams(location.search).get("tab-id") === tabId + "-" + itemId) makeActive(index), autoplay = 0, tabWrap.scrollIntoView({behavior: "smooth", block: "start"}), history.replaceState({}, "", ((u) => (u.searchParams.delete("tab-id"), u))(new URL(location.href)));
+      btn.addEventListener("click", () => makeActive(index));
+      btn.addEventListener("keydown", (e) => {
+        if (["ArrowRight", "ArrowDown"].includes(e.key)) updateIndex(1, true);
+        else if (["ArrowLeft", "ArrowUp"].includes(e.key)) updateIndex(-1, true);
+      });
+    });
+
+    if (autoplay !== 0 && typeof gsap !== "undefined") {
+      autoplayTl = gsap.timeline({ repeat: -1 }).fromTo(tabWrap, {"--progress": 0}, { 
+        onComplete: () => {
+          // Restart autoplay timeline BEFORE changing tab (so progress restarts immediately)
+          if (autoplayTl) autoplayTl.restart();
+          updateIndex(1, false, false);
+        }, 
+        "--progress": 1, 
+        ease: "none", 
+        duration: autoplay 
+      });
+      let isHovered = false, hasFocusInside = false, prefersReducedMotion = false, inView = true, canPlay = true;
+      function updateAuto() { if (prefersReducedMotion || !inView || canPlay || isHovered || hasFocusInside) autoplayTl.pause(); else autoplayTl.play(); }
+      function setButton() {
+        canPlay = !canPlay;
+        toggleButton?.setAttribute("aria-pressed", !canPlay ? "true" : "false");
+        toggleWrap?.classList.toggle("is-pressed", !canPlay);
+        if (!canPlay) isHovered = hasFocusInside = prefersReducedMotion = false;
+        updateAuto();
+      }
+      setButton();
+      toggleButton?.addEventListener("click", function () {
+        setButton();
+      });
+      function handleMotionChange(e) { prefersReducedMotion = e.matches; updateAuto(); }
+      handleMotionChange(window.matchMedia("(prefers-reduced-motion: reduce)"));
+      window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", handleMotionChange);
+      if (pauseOnHover) tabWrap.addEventListener("mouseenter", () => { isHovered = true; updateAuto() });
+      if (pauseOnHover) tabWrap.addEventListener("mouseleave", () => { hasFocusInside = false; isHovered = false; updateAuto() });
+      tabWrap.addEventListener("focusin", () => { hasFocusInside = true; updateAuto() });
+      tabWrap.addEventListener("focusout", e => { if (!e.relatedTarget || !tabWrap.contains(e.relatedTarget)) { hasFocusInside = false; updateAuto() } });
+      new IntersectionObserver(e => { inView = e[0].isIntersecting; updateAuto(); }, { threshold: 0 }).observe(tabWrap);
+    }
+  });
 }
 
 // ================================================================================
@@ -860,20 +1194,34 @@ function initFinsweetPageAnimation() {
   tl.to(pageWrap, { opacity: 1, duration: 0.25, ease: 'sine.out' }, 0);
   
   // First section: fade + upward movement (like Barba)
+  // Separate media and text for two-stage animation
   if (firstSection) {
-    const sectionChildren = firstSection.querySelectorAll('h1, h2, h3, h4, h5, h6, p, .button_main_wrap, img, picture');
-    if (sectionChildren.length > 0) {
-      tl.fromTo(sectionChildren,
-        { opacity: 0, y: '1vh' },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6, 
-          ease: 'sine.out',
-          stagger: 0.03
-        },
-        0
-      );
+    const mediaEls = firstSection.querySelectorAll('img, picture, video, [data-animate-media]');
+    const textEls = firstSection.querySelectorAll('h1, h2, h3, h4, h5, h6, p, .button_main_wrap, [data-animate-text]');
+    
+    // Prepare elements
+    tl.set(mediaEls, { opacity: 0 }, 0);
+    tl.set(textEls, { opacity: 0, y: '1vh' }, 0);
+    
+    // Media first
+    if (mediaEls.length > 0) {
+      tl.to(mediaEls, { 
+        opacity: 1, 
+        duration: 0.5, 
+        ease: 'sine.out',
+        stagger: 0.05
+      }, 0.05);
+    }
+    
+    // Text follows with overlap
+    if (textEls.length > 0) {
+      tl.to(textEls, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.6, 
+        ease: 'sine.out',
+        stagger: 0.03
+      }, '-=0.2');
     }
   }
   
@@ -891,6 +1239,7 @@ function initFinsweetPageAnimation() {
   }
   
   console.log('✅ Finsweet page entrance animation complete');
+  return tl; // Return timeline so we can wait for completion
 }
 
 // Ensure initAll only runs once
@@ -1008,8 +1357,9 @@ if (document.readyState === 'loading') {
         const scope = (root && root.querySelector && (root.querySelector('main') || root)) || document;
         const mediaEls = scope.querySelectorAll('img, picture, video, [data-animate-media]');
         
-        // Group media elements by rough vertical position (bucket by ~100px)
-        const groups = {};
+        // Group images by vertical position (grid rows)
+        const rows = {};
+        
         mediaEls.forEach((el) => {
           if (el.dataset.scrollFadeBound) return;
           
@@ -1022,27 +1372,119 @@ if (document.readyState === 'loading') {
           const rect = el.getBoundingClientRect();
           const visibleNow = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
           el.dataset.scrollFadeBound = 'true';
-          if (!visibleNow) gsap.set(el, { opacity: 0 });
           
-          // Bucket by vertical center rounded to nearest 100px
-          const bucket = Math.round((rect.top + rect.height / 2) / 100) * 100;
-          if (!groups[bucket]) groups[bucket] = [];
-          groups[bucket].push(el);
+          // Skip if already visible
+          if (visibleNow) return;
+          
+          // Set initial state for scroll trigger
+          const parent = el.parentElement;
+          const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+          if (hasOverlaySibling) {
+            gsap.set(el, { opacity: 0, scale: 1.05 });
+          } else {
+            gsap.set(el, { opacity: 0 });
+          }
+          
+          // Group by vertical position (±30px tolerance for same row)
+          const rowKey = Math.round(rect.top / 30) * 30;
+          if (!rows[rowKey]) rows[rowKey] = [];
+          rows[rowKey].push({ el, hasOverlaySibling });
         });
         
-        // For each group, create one ScrollTrigger that staggers the items
-        Object.values(groups).forEach((group) => {
-          if (group.length === 0) return;
-          // Use the first element as the trigger for the whole group
-          ScrollTrigger.create({
-            trigger: group[0],
-            start: 'top 85%',
-            once: true,
-            onEnter: () => {
-              gsap.to(group, { opacity: 1, duration: 0.8, ease: 'sine.inOut', stagger: 0.08 });
-            }
-          });
+        // Create ScrollTriggers for each row
+        Object.values(rows).forEach((row) => {
+          if (row.length === 0) return;
+          
+          // Sort by horizontal position (left to right)
+          row.sort((a, b) => a.el.getBoundingClientRect().left - b.el.getBoundingClientRect().left);
+          
+          if (row.length === 1) {
+            // Single image - no stagger needed
+            const { el, hasOverlaySibling } = row[0];
+            ScrollTrigger.create({
+              trigger: el,
+              start: 'top 85%',
+              once: true,
+              onEnter: () => {
+                if (hasOverlaySibling) {
+                  gsap.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut' });
+                } else {
+                  gsap.to(el, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+                }
+              }
+            });
+          } else {
+            // Multiple images in row - animate with stagger (grid detected)
+            ScrollTrigger.create({
+              trigger: row[0].el,
+              start: 'top 85%',
+              once: true,
+              onEnter: () => {
+                row.forEach(({ el, hasOverlaySibling }, index) => {
+                  const delay = index * 0.12; // Stagger delay
+                  if (hasOverlaySibling) {
+                    gsap.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut', delay });
+                  } else {
+                    gsap.to(el, { opacity: 1, duration: 0.8, ease: 'sine.inOut', delay });
+                  }
+                });
+              }
+            });
+          }
         });
+        
+        // Watch for lazy-loaded images being added to DOM (Webflow lazy loading)
+        if (!scope._regularImageObserver) {
+          const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              mutation.addedNodes.forEach((node) => {
+                // Check if added node is an image or contains images
+                const images = [];
+                if (node.nodeName === 'IMG') {
+                  images.push(node);
+                } else if (node.querySelectorAll) {
+                  images.push(...node.querySelectorAll('img, picture, video'));
+                }
+                
+                // Bind ScrollTriggers to new images
+                images.forEach((el) => {
+                  if (el.dataset.scrollFadeBound) return;
+                  if (el.closest('.creators_wrap')) return; // Skip Finsweet images
+                  
+                  el.dataset.scrollFadeBound = 'true';
+                  
+                  const parent = el.parentElement;
+                  const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+                  
+                  // Set initial state
+                  if (hasOverlaySibling) {
+                    gsap.set(el, { opacity: 0, scale: 1.05 });
+                  } else {
+                    gsap.set(el, { opacity: 0 });
+                  }
+                  
+                  // Create trigger
+                  ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 85%',
+                    once: true,
+                    onEnter: () => {
+                      if (hasOverlaySibling) {
+                        gsap.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut' });
+                      } else {
+                        gsap.to(el, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+                      }
+                    }
+                  });
+                });
+              });
+            });
+          });
+          
+          observer.observe(scope, { childList: true, subtree: true });
+          scope._regularImageObserver = observer;
+          console.log('👀 Watching for lazy-loaded images on regular pages');
+        }
       }
 
       // Helper: combined reveal – container fade plus media-then-text sequence
@@ -1058,7 +1500,15 @@ if (document.readyState === 'loading') {
         
         const tl = gsap.timeline();
         // Prepare inner elements first so we don't see a second fade after container appears
-        tl.set(mediaElsFiltered, { opacity: 0 }, 0);
+        mediaElsFiltered.forEach(el => {
+          const parent = el.parentElement;
+          const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+          if (hasOverlaySibling) {
+            tl.set(el, { opacity: 0, scale: 1.05 }, 0);
+          } else {
+            tl.set(el, { opacity: 0 }, 0);
+          }
+        });
         tl.set(textElsFiltered, { opacity: 0, y: '1vh' }, 0);
         // Container enters (fade only)
         tl.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'sine.inOut' }, 0);
@@ -1068,7 +1518,15 @@ if (document.readyState === 'loading') {
           return r.top < window.innerHeight * 0.9 && r.bottom > 0;
         });
         if (visibleMedia.length) {
-          tl.to(visibleMedia, { opacity: 1, duration: 0.5, ease: 'sine.inOut', stagger: 0.05 }, 0.05);
+          visibleMedia.forEach((el, index) => {
+            const parent = el.parentElement;
+            const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+            if (hasOverlaySibling) {
+              tl.to(el, { opacity: 1, scale: 1, duration: 0.5, ease: 'sine.inOut' }, 0.05 + (index * 0.05));
+            } else {
+              tl.to(el, { opacity: 1, duration: 0.5, ease: 'sine.inOut' }, 0.05 + (index * 0.05));
+            }
+          });
         }
         tl.to(textElsFiltered, { opacity: 1, y: 0, duration: 0.6, ease: 'sine.inOut', stagger: 0.03 }, '-=0.2');
         // Bind scroll fades for non-visible media after reveal
@@ -1101,7 +1559,7 @@ if (document.readyState === 'loading') {
         if (!link) return;
         
         const href = link.getAttribute('href');
-        if (href && (href.includes('/creator-grid-fin') || href.includes('creator-grid-fin'))) {
+        if (href && (href.includes('/creator-list') || href.includes('creator-list'))) {
           // Let the browser handle this normally (full page load)
           // Don't preventDefault - we want the normal navigation
           console.log('⚡ Early intercept: Finsweet page detected, allowing normal navigation');
@@ -1110,7 +1568,7 @@ if (document.readyState === 'loading') {
       
       barba.init({
         prevent: ({ el, href }) => {
-          const isGoingToFinsweetPage = typeof href === 'string' && (href.includes('/creator-grid-fin') || href.includes('creator-grid-fin'));
+          const isGoingToFinsweetPage = typeof href === 'string' && (href.includes('/creator-list') || href.includes('creator-list'));
 
           // Detect Finsweet environment/controls from DOM
           const isFinsweetEnv = !!document.querySelector('[fs-cmsfilter-element]') || !!document.querySelector('.w-pagination-wrapper');
@@ -1165,6 +1623,7 @@ if (document.readyState === 'loading') {
                 } else {
                   window.scrollTo(0, 0);
                 }
+                
                 const tl = revealContainerWithMediaThenText(nextRoot);
                 try { initScrollImageFades(nextRoot); } catch (e) {}
                 // Initialize accordions in new container
@@ -1183,6 +1642,9 @@ if (document.readyState === 'loading') {
                 
                 try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed on enter', e); }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on enter', e); }
+                
+                // Reinitialize nav background per section
+                try { initNavBackgroundPerSection(); } catch (e) { console.warn('Nav background per section init failed on enter', e); }
               } else {
                 window.scrollTo(0, 0);
               }
@@ -1191,7 +1653,7 @@ if (document.readyState === 'loading') {
               console.log('🎬 Barba ONCE hook fired');
               
               // Skip Barba animation on Finsweet page (it has its own animation)
-              const isOnFinsweetPage = window.location.href.includes('/creator-grid-fin') || window.location.href.includes('creator-grid-fin');
+              const isOnFinsweetPage = window.location.href.includes('/creator-list') || window.location.href.includes('creator-list');
               if (isOnFinsweetPage) {
                 console.log('ℹ️ Finsweet page - skipping Barba animation (already animated)');
                 return;
