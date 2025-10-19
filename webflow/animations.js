@@ -385,7 +385,10 @@ function initCreatorGridToggle() {
     gsap.to(elItems, { opacity: 0, duration: 0.15, ease: 'power1.inOut', onComplete: () => {
       applyViewClasses('grid');
       // Fade in with minimal stagger
-      gsap.to(elItems, { opacity: 1, duration: 0.25, ease: 'power1.out', stagger: 0.01 });
+      gsap.to(elItems, { opacity: 1, duration: 0.25, ease: 'power1.out', stagger: 0.01, onComplete: () => {
+        // Reapply image fade animations after view change
+        resetAndReapplyImageFades();
+      }});
     }});
   };
 
@@ -398,8 +401,38 @@ function initCreatorGridToggle() {
     gsap.to(elItems, { opacity: 0, duration: 0.15, ease: 'power1.inOut', onComplete: () => {
       applyViewClasses('list');
       // Fade in with minimal stagger
-      gsap.to(elItems, { opacity: 1, duration: 0.25, ease: 'power1.out', stagger: 0.01 });
+      gsap.to(elItems, { opacity: 1, duration: 0.25, ease: 'power1.out', stagger: 0.01, onComplete: () => {
+        // Reapply image fade animations after view change
+        resetAndReapplyImageFades();
+      }});
     }});
+  };
+  
+  // ============================================================================
+  // 🔄 RESET AND REAPPLY IMAGE FADES - For view toggle
+  // ============================================================================
+  const resetAndReapplyImageFades = () => {
+    const images = collection.querySelectorAll('img, picture img');
+    
+    // Kill existing ScrollTriggers and reset flags
+    images.forEach((img) => {
+      // Find and kill any ScrollTriggers associated with this image
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === img) {
+          trigger.kill();
+        }
+      });
+      
+      // Reset the bound flag so initScrollImageFadesForFinsweet can rebind
+      delete img.dataset.finsweetScrollBound;
+    });
+    
+    // Reapply the fade animations
+    try {
+      initScrollImageFadesForFinsweet();
+    } catch (e) {
+      console.warn('Failed to reapply image fades:', e);
+    }
   };
   
   // ============================================================================
@@ -787,6 +820,17 @@ function initScrollImageFadesForFinsweet() {
     const parent = img.parentElement;
     const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
     
+    // Listen for image load to refresh ScrollTrigger positions
+    const refreshOnLoad = () => {
+      ScrollTrigger.refresh();
+    };
+    
+    // If image is not yet loaded, wait for it
+    if (!img.complete) {
+      img.addEventListener('load', refreshOnLoad, { once: true });
+      img.addEventListener('error', refreshOnLoad, { once: true });
+    }
+    
     ScrollTrigger.create({
       trigger: img,
       start: 'top 85%',
@@ -809,6 +853,7 @@ function initScrollImageFadesForFinsweet() {
     if (collection) {
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
+          // Handle new nodes being added
           mutation.addedNodes.forEach((node) => {
             // Check if added node is an image or contains images
             const images = [];
@@ -833,6 +878,16 @@ function initScrollImageFadesForFinsweet() {
                 gsap.set(img, { opacity: 0 });
               }
               
+              // Listen for image load to refresh ScrollTrigger
+              const refreshOnLoad = () => {
+                ScrollTrigger.refresh();
+              };
+              
+              if (!img.complete) {
+                img.addEventListener('load', refreshOnLoad, { once: true });
+                img.addEventListener('error', refreshOnLoad, { once: true });
+              }
+              
               // Create trigger
               ScrollTrigger.create({
                 trigger: img,
@@ -848,10 +903,60 @@ function initScrollImageFadesForFinsweet() {
               });
             });
           });
+          
+          // Handle attribute changes (Webflow lazy loading changes src)
+          if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
+            const img = mutation.target;
+            if (img.nodeName === 'IMG' && !img.dataset.finsweetScrollBound) {
+              img.dataset.finsweetScrollBound = 'true';
+              
+              const parent = img.parentElement;
+              const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+              
+              // Set initial state
+              if (hasOverlaySibling) {
+                gsap.set(img, { opacity: 0, scale: 1.05 });
+              } else {
+                gsap.set(img, { opacity: 0 });
+              }
+              
+              // Listen for image load to refresh ScrollTrigger
+              const refreshOnLoad = () => {
+                ScrollTrigger.refresh();
+              };
+              
+              if (!img.complete) {
+                img.addEventListener('load', refreshOnLoad, { once: true });
+                img.addEventListener('error', refreshOnLoad, { once: true });
+              }
+              
+              // Create trigger
+              ScrollTrigger.create({
+                trigger: img,
+                start: 'top 85%',
+                once: true,
+                onEnter: () => {
+                  if (hasOverlaySibling) {
+                    gsap.to(img, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut' });
+                  } else {
+                    gsap.to(img, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+                  }
+                }
+              });
+            }
+            
+            // Refresh ScrollTrigger when src changes
+            ScrollTrigger.refresh();
+          }
         });
       });
       
-      observer.observe(collection, { childList: true, subtree: true });
+      observer.observe(collection, { 
+        childList: true, 
+        subtree: true, 
+        attributes: true, 
+        attributeFilter: ['src', 'srcset'] 
+      });
       window._finsweetImageObserver = observer;
       console.log('👀 Watching for lazy-loaded images in Finsweet collection');
     }
@@ -1401,6 +1506,17 @@ if (document.readyState === 'loading') {
           if (row.length === 1) {
             // Single image - no stagger needed
             const { el, hasOverlaySibling } = row[0];
+            
+            // Listen for image load to refresh ScrollTrigger
+            const refreshOnLoad = () => {
+              ScrollTrigger.refresh();
+            };
+            
+            if (el.nodeName === 'IMG' && !el.complete) {
+              el.addEventListener('load', refreshOnLoad, { once: true });
+              el.addEventListener('error', refreshOnLoad, { once: true });
+            }
+            
             ScrollTrigger.create({
               trigger: el,
               start: 'top 85%',
@@ -1415,6 +1531,17 @@ if (document.readyState === 'loading') {
             });
           } else {
             // Multiple images in row - animate with stagger (grid detected)
+            // Add load listeners for all images in the row
+            row.forEach(({ el }) => {
+              if (el.nodeName === 'IMG' && !el.complete) {
+                const refreshOnLoad = () => {
+                  ScrollTrigger.refresh();
+                };
+                el.addEventListener('load', refreshOnLoad, { once: true });
+                el.addEventListener('error', refreshOnLoad, { once: true });
+              }
+            });
+            
             ScrollTrigger.create({
               trigger: row[0].el,
               start: 'top 85%',
@@ -1437,6 +1564,7 @@ if (document.readyState === 'loading') {
         if (!scope._regularImageObserver) {
           const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
+              // Handle new nodes being added
               mutation.addedNodes.forEach((node) => {
                 // Check if added node is an image or contains images
                 const images = [];
@@ -1463,6 +1591,15 @@ if (document.readyState === 'loading') {
                     gsap.set(el, { opacity: 0 });
                   }
                   
+                  // Listen for image load to refresh ScrollTrigger
+                  if (el.nodeName === 'IMG' && !el.complete) {
+                    const refreshOnLoad = () => {
+                      ScrollTrigger.refresh();
+                    };
+                    el.addEventListener('load', refreshOnLoad, { once: true });
+                    el.addEventListener('error', refreshOnLoad, { once: true });
+                  }
+                  
                   // Create trigger
                   ScrollTrigger.create({
                     trigger: el,
@@ -1478,10 +1615,62 @@ if (document.readyState === 'loading') {
                   });
                 });
               });
+              
+              // Handle attribute changes (Webflow lazy loading changes src)
+              if (mutation.type === 'attributes' && (mutation.attributeName === 'src' || mutation.attributeName === 'srcset')) {
+                const el = mutation.target;
+                if (el.nodeName === 'IMG' && !el.dataset.scrollFadeBound && !el.closest('.creators_wrap')) {
+                  el.dataset.scrollFadeBound = 'true';
+                  
+                  const parent = el.parentElement;
+                  const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
+                  
+                  // Set initial state
+                  if (hasOverlaySibling) {
+                    gsap.set(el, { opacity: 0, scale: 1.05 });
+                  } else {
+                    gsap.set(el, { opacity: 0 });
+                  }
+                  
+                  // Listen for image load to refresh ScrollTrigger
+                  const refreshOnLoad = () => {
+                    ScrollTrigger.refresh();
+                  };
+                  
+                  if (!el.complete) {
+                    el.addEventListener('load', refreshOnLoad, { once: true });
+                    el.addEventListener('error', refreshOnLoad, { once: true });
+                  }
+                  
+                  // Create trigger
+                  ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 85%',
+                    once: true,
+                    onEnter: () => {
+                      if (hasOverlaySibling) {
+                        gsap.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: 'sine.inOut' });
+                      } else {
+                        gsap.to(el, { opacity: 1, duration: 0.8, ease: 'sine.inOut' });
+                      }
+                    }
+                  });
+                }
+                
+                // Refresh ScrollTrigger when src changes
+                if (el.nodeName === 'IMG') {
+                  ScrollTrigger.refresh();
+                }
+              }
             });
           });
           
-          observer.observe(scope, { childList: true, subtree: true });
+          observer.observe(scope, { 
+            childList: true, 
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src', 'srcset']
+          });
           scope._regularImageObserver = observer;
           console.log('👀 Watching for lazy-loaded images on regular pages');
         }
