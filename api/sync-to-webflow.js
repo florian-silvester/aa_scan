@@ -58,7 +58,7 @@ function getArg(name) {
 }
 const FLAG_QUICK = ARGS.includes('--quick')
 const FLAG_CHECK_ONLY = ARGS.includes('--check-only')
-const FLAG_PUBLISH = true // ALWAYS publish items to Webflow after sync
+const FLAG_PUBLISH = ARGS.includes('--publish')
 const ARG_ONLY = getArg('only') // e.g. --only=creator|artwork|material
 const ARG_ITEM = getArg('item') // e.g. --item=creator-id-123 (single item sync)
 const FLAG_ENGLISH_ONLY = ARGS.includes('--english-only')
@@ -494,17 +494,26 @@ function mapCreatorFields(sanityItem, locale = 'en') {
     'name': sanityItem.name || 'Untitled',
     'last-name': sanityItem.lastName || '',
     'slug': sanityItem.slug?.current || generateSlug(sanityItem.name),
-    'hero-image': sanityItem.cover?.asset?.url || null,
-    'profile-image': sanityItem.image?.asset?.url || null,
-    'studio-image': sanityItem.studioImage?.asset?.url || null,
-    'portrait-image': sanityItem.portraitImage?.asset?.url || null,
+    'hero-image': (sanityItem.cover?.asset?.url ? {
+      url: sanityItem.cover.asset.url,
+      alt: (sanityItem.cover?.alt?.en || sanityItem.cover?.alt?.de || sanityItem.name || '')
+    } : undefined),
+    'profile-image': (sanityItem.image?.asset?.url ? {
+      url: sanityItem.image.asset.url,
+      alt: (sanityItem.image?.alt?.en || sanityItem.image?.alt?.de || sanityItem.name || '')
+    } : undefined),
+    'studio-image': (sanityItem.studioImage?.asset?.url ? {
+      url: sanityItem.studioImage.asset.url,
+      alt: (sanityItem.studioImage?.alt?.en || sanityItem.studioImage?.alt?.de || sanityItem.name || '')
+    } : undefined),
+    'portrait-image': (sanityItem.portraitImage?.asset?.url ? {
+      url: sanityItem.portraitImage.asset.url,
+      alt: (sanityItem.portraitImage?.alt?.en || sanityItem.portraitImage?.alt?.de || sanityItem.name || '')
+    } : undefined),
     'website': sanityItem.website || '',
     'email': sanityItem.email || '',
     'birth-year': sanityItem.birthYear ? parseInt(sanityItem.birthYear, 10) : null,
-    'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null,
-    'locations': (sanityItem.associatedLocations || [])
-      .map(loc => loc._ref ? idMappings.location.get(loc._ref) : null)
-      .filter(Boolean)
+    'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null
   }
 
   // Locale-specific fields
@@ -525,9 +534,6 @@ function mapLocationFields(sanityItem, locale = 'en') {
     name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
     slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de),
     'location-type': mapLocationType(sanityItem.type),
-    'location-image': sanityItem.image?.asset?.url || null,
-    'country': sanityItem.country?.name?.en || sanityItem.country?.name?.de || '',
-    'city-location': sanityItem.city?.name?.en || sanityItem.city?.name?.de || '',
     website: sanityItem.website || '',
     email: sanityItem.email || ''
   }
@@ -537,8 +543,7 @@ function mapMediumFinishFields(sanityItem, locale = 'en') {
   const isGerman = locale === 'de-DE' || locale === 'de'
   return {
     name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
-    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de),
-    'sort-order': sanityItem.sortOrder || 0
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
   }
 }
 
@@ -660,23 +665,16 @@ async function updateItemGermanLocale(collectionId, itemId, sanityItem, fieldMap
       germanFields['description'] = actualItem.description?.de || ''
     }
     
-    // With Advanced Localization, use POST with id + cmsLocaleId to create/update DE locale
-    // This works whether the DE locale exists or not
-    const result = await webflowRequest(`/collections/${collectionId}/items`, {
-      method: 'POST',
+    // Use PATCH to update existing item's German locale (not POST which creates new item)
+    await webflowRequest(`/collections/${collectionId}/items/${itemId}`, {
+      method: 'PATCH',
       body: JSON.stringify({
-        items: [{
-          id: itemId,
-          cmsLocaleId: WEBFLOW_LOCALES['de-DE'],
-          fieldData: germanFields,
-          isDraft: false
-        }]
+        cmsLocaleId: WEBFLOW_LOCALES['de-DE'],
+        fieldData: germanFields
       })
     })
     
-    if (result?.items?.[0]?.cmsLocaleId === WEBFLOW_LOCALES['de-DE']) {
-      console.log(`    🇩🇪 Created/Updated German locale`)
-    }
+    console.log(`    🇩🇪 Updated German locale`)
   } catch (error) {
     console.warn(`    ⚠️  Failed to create/update German locale: ${error.message}`)
   }
@@ -693,6 +691,7 @@ async function createWebflowItems(collectionId, items, progressCallback = null) 
     
     try {
       // Step 1: Create linked item in BOTH locales using /bulk endpoint
+      // This should create ONE item with both EN and DE locales (same ID)
       const createResult = await webflowRequest(`/collections/${collectionId}/items/bulk`, {
         method: 'POST',
         body: JSON.stringify({
@@ -733,6 +732,8 @@ async function createWebflowItems(collectionId, items, progressCallback = null) 
       // (The bulk create uses EN content by default, now we patch DE)
       if (item.germanFieldData) {
         try {
+          console.log(`  🔍 German fields present: ${Object.keys(item.germanFieldData).length} fields`)
+          await sleep(800)
           await webflowRequest(`/collections/${collectionId}/items/${createdItem.id}`, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -744,6 +745,8 @@ async function createWebflowItems(collectionId, items, progressCallback = null) 
         } catch (deError) {
           console.warn(`  ⚠️  Failed to update DE locale: ${deError.message}`)
         }
+      } else {
+        console.log(`  ⚠️  No germanFieldData - DE will have EN content`)
       }
       
       // Step 3: Publish if requested
@@ -890,22 +893,6 @@ async function getWebflowItems(collectionId) {
   } catch (error) {
     console.error(`Failed to get Webflow items:`, error.message)
     return []
-  }
-}
-
-// Find single Webflow item by slug (efficient for single-item sync)
-async function findWebflowItemBySlug(collectionId, slug) {
-  try {
-    const result = await webflowRequest(
-      `/collections/${collectionId}/items?limit=1&offset=0`
-    )
-    const items = result.items || []
-    // Filter by slug client-side since Webflow API doesn't support slug filtering
-    const match = items.find(item => item.fieldData?.slug === slug)
-    return match || null
-  } catch (error) {
-    console.error(`Failed to find item by slug:`, error.message)
-    return null
   }
 }
 
@@ -1181,17 +1168,12 @@ async function syncCollection(options, progressCallback = null) {
   
   console.log(`  • Total Sanity items: ${sanityData.length}`)
   
-  // Skip expensive Webflow fetching for single-item sync
-  const isSingleItemSync = !!global.SINGLE_ITEM_FILTER
-  const existingWebflowItems = isSingleItemSync ? [] : await getWebflowItems(collectionId)
+  // Get existing Webflow items for adoption logic
+  const existingWebflowItems = await getWebflowItems(collectionId)
   const webflowBySlug = new Map()
   for (const wfItem of existingWebflowItems) {
     const slug = wfItem?.fieldData?.slug
     if (slug) webflowBySlug.set(slug, wfItem)
-  }
-  
-  if (isSingleItemSync) {
-    console.log(`  ⚡ Single-item sync mode: skipping Webflow fetch & verification`)
   }
   
   // Process items and check for duplicates
@@ -1216,8 +1198,8 @@ async function syncCollection(options, progressCallback = null) {
       continue
     }
 
-    // Verify webflowId still exists, clear if stale (skip for single-item sync)
-    if (existingId && !isSingleItemSync) {
+    // Verify webflowId still exists, clear if stale
+    if (existingId) {
       try {
         await webflowRequest(`/collections/${collectionId}/items/${existingId}`)
       } catch (error) {
@@ -1231,8 +1213,15 @@ async function syncCollection(options, progressCallback = null) {
       }
     }
 
-    // REMOVED: Slug-based adoption fallback (causes duplicates)
-    // Now using pure ID-based sync only
+    // If no ID, try to adopt by slug
+    if (!existingId && mappedFieldsForId?.slug) {
+      const adopt = webflowBySlug.get(mappedFieldsForId.slug)
+      if (adopt?.id) {
+        existingId = adopt.id
+        idMappings[mappingKey].set(item._id, existingId)
+        console.log(`  ↳ Adopted existing item by slug for ${mappingKey}:${item._id} → ${existingId}`)
+      }
+    }
 
     if (!existingId) {
       // New item - prepare for creation with both EN and DE content
@@ -1242,15 +1231,16 @@ async function syncCollection(options, progressCallback = null) {
       }
       
       // Prepare German-specific field data if item has DE locale content
-      if (fieldMapper.length > 1) {
+      if (fieldMapper && typeof fieldMapper === 'function') {
         // fieldMapper accepts (item, locale) - get German fields
         try {
-          const germanFields = fieldMapper(item, 'de')
+          const germanFields = fieldMapper(item, 'de-DE')
           if (germanFields && Object.keys(germanFields).length > 0) {
             webflowItem.germanFieldData = germanFields
+            console.log(`  🔍 Prepared ${Object.keys(germanFields).length} German fields for new item`)
           }
         } catch (e) {
-          // German mapping failed, will use EN content for DE locale
+          console.warn(`  ⚠️  German mapping failed: ${e.message}`)
         }
       }
       
@@ -1274,40 +1264,46 @@ async function syncCollection(options, progressCallback = null) {
   console.log(`  📊 ${newItems.length} new, ${updateItems.length} to update, ${existingCount} existing`)
   
   // Find and delete orphaned items (in Webflow but not in Sanity)
-  const sanityIds = new Set(sanityData.map(item => item._id))
-  const sanitySlugs = new Set(sanityData.map(item => {
-    const slug = item.slug?.current || null
-    return slug
-  }).filter(Boolean))
-  
-  const orphanedItems = existingWebflowItems.filter(wfItem => {
-    // Check if this Webflow item has a mapping to a Sanity ID
-    for (const [sanityId, webflowId] of idMappings[mappingKey]) {
-      if (webflowId === wfItem.id) {
-        return !sanityIds.has(sanityId) // Orphaned if Sanity ID doesn't exist
-      }
-    }
-    // Also check by slug - if no Sanity item has this slug, it's orphaned
-    const wfSlug = wfItem.fieldData?.slug
-    if (wfSlug && !sanitySlugs.has(wfSlug)) {
-      return true
-    }
-    return false
-  })
-  
-  if (orphanedItems.length > 0) {
-    console.log(`  🗑️  Deleting ${orphanedItems.length} orphaned items from Webflow...`)
-    const orphanedIds = orphanedItems.map(item => item.id)
-    await deleteWebflowItems(collectionId, orphanedIds)
-    // Clean up mappings
-    orphanedItems.forEach(wfItem => {
+  // SKIP ORPHAN DELETION IN SINGLE-ITEM MODE to avoid deleting everything else
+  const isSingleItemSync = !!global.SINGLE_ITEM_FILTER
+  if (!isSingleItemSync) {
+    const sanityIds = new Set(sanityData.map(item => item._id))
+    const sanitySlugs = new Set(sanityData.map(item => {
+      const slug = item.slug?.current || null
+      return slug
+    }).filter(Boolean))
+    
+    const orphanedItems = existingWebflowItems.filter(wfItem => {
+      // Check if this Webflow item has a mapping to a Sanity ID
       for (const [sanityId, webflowId] of idMappings[mappingKey]) {
         if (webflowId === wfItem.id) {
-          idMappings[mappingKey].delete(sanityId)
-          persistentHashes.delete(`${mappingKey}:${sanityId}`)
+          return !sanityIds.has(sanityId) // Orphaned if Sanity ID doesn't exist
         }
       }
+      // Also check by slug - if no Sanity item has this slug, it's orphaned
+      const wfSlug = wfItem.fieldData?.slug
+      if (wfSlug && !sanitySlugs.has(wfSlug)) {
+        return true
+      }
+      return false
     })
+    
+    if (orphanedItems.length > 0) {
+      console.log(`  🗑️  Deleting ${orphanedItems.length} orphaned items from Webflow...`)
+      const orphanedIds = orphanedItems.map(item => item.id)
+      await deleteWebflowItems(collectionId, orphanedIds)
+      // Clean up mappings
+      orphanedItems.forEach(wfItem => {
+        for (const [sanityId, webflowId] of idMappings[mappingKey]) {
+          if (webflowId === wfItem.id) {
+            idMappings[mappingKey].delete(sanityId)
+            persistentHashes.delete(`${mappingKey}:${sanityId}`)
+          }
+        }
+      })
+    }
+  } else {
+    console.log(`  ⚡ Single-item mode: skipping orphan deletion`)
   }
   
   // Create new items in Webflow (primary locale)
@@ -1324,20 +1320,7 @@ async function syncCollection(options, progressCallback = null) {
       const hash = hashObjectStable(webflowItem.fieldData)
       persistentHashes.set(`${mappingKey}:${sanityItem._id}`, hash)
       
-      // Update/create both locales for newly created items
-      if (fieldMapper && webflowItem.id) {
-        // Update primary (EN) locale
-        const primaryFields = fieldMapper(sanityItem, 'en')
-        if (!FLAG_ENGLISH_ONLY) {
-          await updateWebflowItem(collectionId, webflowItem.id, primaryFields, WEBFLOW_LOCALES['en-US'])
-        }
-        
-        // Create/update German locale (skip if english-only)
-        if (!FLAG_ENGLISH_ONLY) {
-          await sleep(800) // Delay between locale updates
-          await updateItemGermanLocale(collectionId, webflowItem.id, sanityItem, fieldMapper)
-        }
-      }
+      // Locales already created by createWebflowItems() - no need to update again here
     }
   }
   
@@ -1350,9 +1333,17 @@ async function syncCollection(options, progressCallback = null) {
   for (let i = 0; i < updateItems.length; i++) {
     const u = updateItems[i]
     try {
-      // DEBUG: Log what we're sending
-      console.log(`\n🐛 DEBUG ${u.item.name || u.item._id}:`)
-      console.log(`   Sending to Webflow:`, JSON.stringify(u.webflowItem.fieldData, null, 2))
+      // DEBUG: Check what we're sending for Tora Urup
+      if (u.item.name === 'Tora Urup') {
+        console.log(`\n🐛 DEBUG Tora Urup PRIMARY locale update:`)
+        console.log(`   fieldMapper(item, 'en') returns:`)
+        const testEn = fieldMapper(u.item, 'en')
+        console.log(`   Portrait: ${testEn['portrait-english']?.substring(0,60)}...`)
+        console.log(`   Biography: ${testEn['biography']?.substring(0,60)}...`)
+        console.log(`\n   u.webflowItem.fieldData contains:`)
+        console.log(`   Portrait: ${u.webflowItem.fieldData['portrait-english']?.substring(0,60)}...`)
+        console.log(`   Biography: ${u.webflowItem.fieldData['biography']?.substring(0,60)}...`)
+      }
       
       // Update primary locale with English content
       await updateWebflowItem(collectionId, u.webflowId, u.webflowItem.fieldData, FLAG_ENGLISH_ONLY ? null : WEBFLOW_LOCALES['en-US'])
@@ -1438,7 +1429,6 @@ async function syncFinishes(limit = null, progressCallback = null) {
         _id,
         name,
         description,
-        sortOrder,
         slug
       }
     `,
@@ -1487,7 +1477,6 @@ async function syncMediums(limit = null, progressCallback = null) {
         _id,
         name,
         description,
-        sortOrder,
         slug
       }
     `,
@@ -1526,12 +1515,6 @@ async function syncLocations(limit = null, progressCallback = null) {
         _id,
         name,
         type,
-        image{
-          asset->{
-            _id,
-            url
-          }
-        },
         address,
         city->{name},
         country->{name},
@@ -1595,7 +1578,6 @@ async function syncCreators(limit = null, progressCallback = null) {
           },
           alt
         },
-        associatedLocations[]->{_id},
         slug,
         website,
         email,
@@ -1613,10 +1595,27 @@ async function syncArtworks(limit = null, progressCallback = null) {
   // Custom artwork mapper with image handling
   const artworkCustomSync = async (item) => {
     // Simple URL-based image handling - let Webflow handle uploads
-    // Map artwork images - just URLs, Webflow doesn't accept {url, alt} objects
-    const artworkImages = (item.images || [])
-      .map(image => image.asset?.url)
-      .filter(Boolean)
+    const artworkImages = item.images?.map(image => {
+      if (!image.asset?.url) return null
+      
+      // Create enhanced alt text
+      const altText = image.alt?.en || image.alt?.de || ''
+      const artworkName = item.name || item.workTitle?.en || item.workTitle?.de
+      const creatorName = item.creator?.name
+      
+      let enhancedAltText = altText
+      if (!enhancedAltText && artworkName) {
+        const parts = []
+        if (creatorName) parts.push(creatorName)
+        if (artworkName) parts.push(artworkName)
+        enhancedAltText = parts.join(' - ')
+      }
+      
+      return {
+        url: image.asset.url,
+        alt: enhancedAltText || artworkName || 'Artwork image'
+      }
+    }).filter(Boolean) || []
     
     console.log(`  🖼️  Prepared ${artworkImages.length} images for upload via URLs`)
     
@@ -1655,8 +1654,11 @@ async function syncArtworks(limit = null, progressCallback = null) {
       return mappedId
     }).filter(Boolean) || []
     
-    // Map main image - just URL, not object
-    const mainImage = item.mainImage?.asset?.url || null
+    // NEW: map single main image if present
+    const mainImage = item.mainImage?.asset?.url ? {
+      url: item.mainImage.asset.url,
+      alt: (item.mainImage?.alt?.en || item.mainImage?.alt?.de || item.name || item.workTitle?.en || item.workTitle?.de || 'Main image')
+    } : undefined
 
     // Note: customImageSync doesn't support locale parameter yet, always returns English
     // German locale will be updated separately after creation
@@ -1674,7 +1676,7 @@ async function syncArtworks(limit = null, progressCallback = null) {
         'size-dimensions': item.size || '',
         year: item.year || '',
         price: item.price || '',
-        'main-image': mainImage,
+        ...(mainImage ? { 'main-image': mainImage } : {}),
         'artwork-images': artworkImages
       },
       _sanityItem: item // Store for German locale update
@@ -2092,11 +2094,6 @@ async function syncSingleItem(documentId, documentType, autoPublish = true) {
   const baseId = documentId.replace('drafts.', '')
   global.SINGLE_ITEM_FILTER = `&& (_id == "${baseId}" || _id == "drafts.${baseId}")`
   
-  // FORCE UPDATE: Clear hash for this item to ensure it updates
-  const hashKey = `${documentType}:${baseId}`
-  persistentHashes.delete(hashKey)
-  console.log(`  🔄 Cleared hash for ${hashKey} to force update`)
-  
   try {
     // Map document type to sync function
     const syncFunctions = {
@@ -2116,18 +2113,18 @@ async function syncSingleItem(documentId, documentType, autoPublish = true) {
     }
     
     // Run the sync for this single item
-    const syncResult = await syncFn()
-    console.log(`  ✅ Sync completed: ${syncResult} items processed`)
+    await syncFn()
     
-    // Publish if requested (FLAG_PUBLISH is now always true)
-    const collectionId = WEBFLOW_COLLECTIONS[documentType]
-    const webflowId = idMappings[documentType]?.get(baseId)
-    
-    if (webflowId && collectionId) {
-      console.log(`  📤 Publishing ${documentType}/${baseId} (${webflowId})`)
-      await publishWebflowItems(collectionId, [webflowId])
-    } else {
-      console.log(`  ⚠️  No webflowId found for ${documentType}:${baseId}`)
+    // Publish if requested
+    if (autoPublish) {
+      const collectionId = WEBFLOW_COLLECTIONS[documentType]
+      const webflowId = idMappings[documentType]?.get(baseId)
+      if (webflowId && collectionId) {
+        console.log(`  📤 Publishing ${documentType}/${baseId} (${webflowId})`)
+        await publishWebflowItems(collectionId, [webflowId])
+      } else {
+        console.log(`  ⚠️  No webflowId found for ${documentType}:${baseId}`)
+      }
     }
     
     // Save mappings
@@ -2136,9 +2133,8 @@ async function syncSingleItem(documentId, documentType, autoPublish = true) {
     return {
       documentId: baseId,
       documentType,
-      webflowId: webflowId,
-      published: true,
-      success: true
+      webflowId: idMappings[documentType]?.get(baseId),
+      published: autoPublish
     }
   } finally {
     // Clean up global filter
