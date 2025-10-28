@@ -7,6 +7,8 @@ import {webflowSyncPlugin} from './plugins/webflowSyncPlugin'
 
 import MediaStatsWidget from './components/MediaStatsWidget'
 import SyncDocumentAction from './components/SyncDocumentAction'
+import InlineSyncDialog from './components/InlineSyncDialog'
+import React from 'react'
 
 export default defineConfig({
   name: 'default',
@@ -419,4 +421,41 @@ export default defineConfig({
   document: {
     actions: (prev) => [...prev, SyncDocumentAction],
   },
+
+  // Sticky inline sync button at bottom of form
+  form: {
+    components: {
+      input: (props) => {
+        const syncable = ['creator', 'artwork', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
+        const isRoot = props.level === 0
+        const typeName = props.schemaType && props.schemaType.name
+
+        if (isRoot && typeName && syncable.includes(typeName)) {
+          return React.createElement(
+            React.Fragment,
+            null,
+            props.renderDefault(props),
+            React.createElement(
+              'div',
+              {
+                style: {
+                  position: 'sticky',
+                  bottom: 0,
+                  background: 'var(--card-bg-color)',
+                  borderTop: '1px solid var(--card-border-color)',
+                  padding: '12px 16px',
+                  zIndex: 9999
+                }
+              },
+              React.createElement(InlineSyncDialog, { 
+                typeName,
+                formProps: props
+              })
+            )
+          )
+        }
+        return props.renderDefault(props)
+      }
+    }
+  }
 })
