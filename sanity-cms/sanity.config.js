@@ -6,7 +6,7 @@ import {media} from 'sanity-plugin-media'
 import {webflowSyncPlugin} from './plugins/webflowSyncPlugin'
 
 import MediaStatsWidget from './components/MediaStatsWidget'
-import {SyncDocumentAction} from './components/SyncDocumentAction'
+import SyncDocumentAction from './components/SyncDocumentAction'
 
 export default defineConfig({
   name: 'default',
@@ -417,15 +417,6 @@ export default defineConfig({
   },
 
   document: {
-    actions: (prev, context) => {
-      // Add Sync to Webflow action to syncable document types
-      const syncableTypes = ['creator', 'artwork', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
-      
-      if (syncableTypes.includes(context.schemaType)) {
-        return [...prev, SyncDocumentAction]
-      }
-      
-      return prev
-    },
+    actions: (prev) => [...prev, SyncDocumentAction],
   },
 })
