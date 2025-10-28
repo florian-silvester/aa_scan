@@ -23,6 +23,8 @@
     "@sanity/vision": "^4.0.1",
     "@tanstack/react-table": "^8.21.3",
     "dotenv": "^16.6.1",
+    "jsdom": "^27.0.1",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.3.1",
