@@ -1,6 +1,44 @@
 
 console.log('🚀🚀🚀 ANIMATIONS.JS FILE LOADED 🚀🚀🚀');
 
+// ================================================================================
+// 🔄 HANDLE BROWSER BACK/FORWARD - MUST BE AT TOP OF FILE (before any other code)
+// ================================================================================
+console.log('🔄 Installing pageshow and popstate handlers (TOP OF FILE)');
+
+window.addEventListener('pageshow', function(event) {
+  console.log('🔄 pageshow event fired', { 
+    persisted: event.persisted, 
+    url: window.location.href,
+    timestamp: Date.now()
+  });
+  
+  // Check if page was restored from bfcache
+  if (event.persisted) {
+    console.log('🔄 Page restored from bfcache - forcing reload');
+    window.location.reload();
+  }
+}, true); // Use capture to run before other listeners
+
+window.addEventListener('popstate', function(event) {
+  console.log('🔄 popstate event fired', { 
+    state: event.state, 
+    url: window.location.href,
+    timestamp: Date.now()
+  });
+  
+  // Check URL instead of DOM (more reliable - URL changes before DOM)
+  const isFinsweetPage = window.location.href.includes('/creator-list') || 
+                         window.location.href.includes('creator-list');
+  
+  console.log('🔄 Is Finsweet page?', isFinsweetPage);
+  
+  if (isFinsweetPage) {
+    console.log('🔄 Finsweet page detected after popstate - reloading');
+    window.location.reload();
+  }
+}, true); // Use capture to run before other listeners
+
 // (Initial hide now controlled by user CSS: .page_wrap.is-hidden { opacity: 0 }
 //  We only reveal + animate when that combo class is present.)
 
