@@ -25,7 +25,7 @@ const sanity = createClient({
  * Tests location linking on 5 creators without making changes
  */
 
-const LIMIT = 5 // Number of creators to test
+const LIMIT = 20 // Number of creators to test
 
 async function scrapeProfileLocationsDryRun() {
   console.log('🧪 DRY RUN - PROFILE LOCATIONS SCRAPER\n')
