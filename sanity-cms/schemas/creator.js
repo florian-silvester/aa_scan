@@ -46,77 +46,46 @@ export default {
       },
     },
     {
-      name: 'studioImages',
-      title: 'Studio Images',
-      type: 'array',
-      of: [
+      name: 'studioImage',
+      title: 'Studio Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+        storeOriginalFilename: true,
+      },
+      fields: [
         {
-          type: 'image',
-          options: {hotspot: true},
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
           fields: [
-            {
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'caption',
-              title: 'Caption',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            }
+            {name: 'en', title: 'English', type: 'string'},
+            {name: 'de', title: 'German', type: 'string'}
           ]
         }
       ],
-      description: 'Images of the creator\'s studio/workspace',
+      description: 'Image of the creator\'s studio/workspace',
     },
     {
-      name: 'galleryImages',
-      title: 'Gallery Images',
-      type: 'array',
-      of: [
+      name: 'galleryImage',
+      title: 'Gallery Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+        storeOriginalFilename: true,
+      },
+      fields: [
         {
-          type: 'image',
-          options: {hotspot: true},
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
           fields: [
-            {
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'caption',
-              title: 'Caption',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'title',
-              title: 'Image Title',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            }
+            {name: 'en', title: 'English', type: 'string'},
+            {name: 'de', title: 'German', type: 'string'}
           ]
         }
       ],
-      description: 'Portfolio/gallery images showcasing the creator\'s work, process, or artistic environment',
+      description: 'Portfolio/gallery image showcasing the creator\'s work, process, or artistic environment',
     },
     {
       name: 'biography',

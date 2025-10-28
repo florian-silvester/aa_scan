@@ -58,7 +58,7 @@ function getArg(name) {
 }
 const FLAG_QUICK = ARGS.includes('--quick')
 const FLAG_CHECK_ONLY = ARGS.includes('--check-only')
-const FLAG_PUBLISH = ARGS.includes('--publish')
+const FLAG_PUBLISH = true // ALWAYS publish items to Webflow after sync
 const ARG_ONLY = getArg('only') // e.g. --only=creator|artwork|material
 const ARG_ITEM = getArg('item') // e.g. --item=creator-id-123 (single item sync)
 const FLAG_ENGLISH_ONLY = ARGS.includes('--english-only')
@@ -494,18 +494,17 @@ function mapCreatorFields(sanityItem, locale = 'en') {
     'name': sanityItem.name || 'Untitled',
     'last-name': sanityItem.lastName || '',
     'slug': sanityItem.slug?.current || generateSlug(sanityItem.name),
-    'hero-image': (sanityItem.cover?.asset?.url ? {
-      url: sanityItem.cover.asset.url,
-      alt: (sanityItem.cover?.alt?.en || sanityItem.cover?.alt?.de || sanityItem.name || '')
-    } : undefined),
-    'profile-image': (sanityItem.image?.asset?.url ? {
-      url: sanityItem.image.asset.url,
-      alt: (sanityItem.image?.alt?.en || sanityItem.image?.alt?.de || sanityItem.name || '')
-    } : undefined),
+    'hero-image': sanityItem.cover?.asset?.url || null,
+    'profile-image': sanityItem.image?.asset?.url || null,
+    'gallery-images': sanityItem.galleryImage?.asset?.url ? [sanityItem.galleryImage.asset.url] : [],
+    'studio-images': sanityItem.studioImage?.asset?.url ? [sanityItem.studioImage.asset.url] : [],
     'website': sanityItem.website || '',
     'email': sanityItem.email || '',
     'birth-year': sanityItem.birthYear ? parseInt(sanityItem.birthYear, 10) : null,
-    'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null
+    'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null,
+    'locations': (sanityItem.associatedLocations || [])
+      .map(loc => loc._ref ? idMappings.location.get(loc._ref) : null)
+      .filter(Boolean)
   }
 
   // Locale-specific fields
@@ -526,6 +525,9 @@ function mapLocationFields(sanityItem, locale = 'en') {
     name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
     slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de),
     'location-type': mapLocationType(sanityItem.type),
+    'location-image': sanityItem.image?.asset?.url || null,
+    'country': sanityItem.country?.name?.en || sanityItem.country?.name?.de || '',
+    'city-location': sanityItem.city?.name?.en || sanityItem.city?.name?.de || '',
     website: sanityItem.website || '',
     email: sanityItem.email || ''
   }
@@ -535,7 +537,8 @@ function mapMediumFinishFields(sanityItem, locale = 'en') {
   const isGerman = locale === 'de-DE' || locale === 'de'
   return {
     name: isGerman ? (sanityItem.name?.de || sanityItem.name?.en || 'Untitled') : (sanityItem.name?.en || sanityItem.name?.de || 'Untitled'),
-    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de)
+    slug: sanityItem.slug?.current || generateSlug(sanityItem.name?.en || sanityItem.name?.de),
+    'sort-order': sanityItem.sortOrder || 0
   }
 }
 
@@ -890,6 +893,22 @@ async function getWebflowItems(collectionId) {
   }
 }
 
+// Find single Webflow item by slug (efficient for single-item sync)
+async function findWebflowItemBySlug(collectionId, slug) {
+  try {
+    const result = await webflowRequest(
+      `/collections/${collectionId}/items?limit=1&offset=0`
+    )
+    const items = result.items || []
+    // Filter by slug client-side since Webflow API doesn't support slug filtering
+    const match = items.find(item => item.fieldData?.slug === slug)
+    return match || null
+  } catch (error) {
+    console.error(`Failed to find item by slug:`, error.message)
+    return null
+  }
+}
+
 // Clear existing items from a collection
 async function clearWebflowCollection(collectionId, collectionName) {
   console.log(`  🧹 Clearing existing ${collectionName}...`)
@@ -1162,12 +1181,17 @@ async function syncCollection(options, progressCallback = null) {
   
   console.log(`  • Total Sanity items: ${sanityData.length}`)
   
-  // Get existing Webflow items for adoption logic
-  const existingWebflowItems = await getWebflowItems(collectionId)
+  // Skip expensive Webflow fetching for single-item sync
+  const isSingleItemSync = !!global.SINGLE_ITEM_FILTER
+  const existingWebflowItems = isSingleItemSync ? [] : await getWebflowItems(collectionId)
   const webflowBySlug = new Map()
   for (const wfItem of existingWebflowItems) {
     const slug = wfItem?.fieldData?.slug
     if (slug) webflowBySlug.set(slug, wfItem)
+  }
+  
+  if (isSingleItemSync) {
+    console.log(`  ⚡ Single-item sync mode: skipping Webflow fetch & verification`)
   }
   
   // Process items and check for duplicates
@@ -1192,8 +1216,8 @@ async function syncCollection(options, progressCallback = null) {
       continue
     }
 
-    // Verify webflowId still exists, clear if stale
-    if (existingId) {
+    // Verify webflowId still exists, clear if stale (skip for single-item sync)
+    if (existingId && !isSingleItemSync) {
       try {
         await webflowRequest(`/collections/${collectionId}/items/${existingId}`)
       } catch (error) {
@@ -1207,15 +1231,8 @@ async function syncCollection(options, progressCallback = null) {
       }
     }
 
-    // If no ID, try to adopt by slug
-    if (!existingId && mappedFieldsForId?.slug) {
-      const adopt = webflowBySlug.get(mappedFieldsForId.slug)
-      if (adopt?.id) {
-        existingId = adopt.id
-        idMappings[mappingKey].set(item._id, existingId)
-        console.log(`  ↳ Adopted existing item by slug for ${mappingKey}:${item._id} → ${existingId}`)
-      }
-    }
+    // REMOVED: Slug-based adoption fallback (causes duplicates)
+    // Now using pure ID-based sync only
 
     if (!existingId) {
       // New item - prepare for creation with both EN and DE content
@@ -1333,17 +1350,9 @@ async function syncCollection(options, progressCallback = null) {
   for (let i = 0; i < updateItems.length; i++) {
     const u = updateItems[i]
     try {
-      // DEBUG: Check what we're sending for Tora Urup
-      if (u.item.name === 'Tora Urup') {
-        console.log(`\n🐛 DEBUG Tora Urup PRIMARY locale update:`)
-        console.log(`   fieldMapper(item, 'en') returns:`)
-        const testEn = fieldMapper(u.item, 'en')
-        console.log(`   Portrait: ${testEn['portrait-english']?.substring(0,60)}...`)
-        console.log(`   Biography: ${testEn['biography']?.substring(0,60)}...`)
-        console.log(`\n   u.webflowItem.fieldData contains:`)
-        console.log(`   Portrait: ${u.webflowItem.fieldData['portrait-english']?.substring(0,60)}...`)
-        console.log(`   Biography: ${u.webflowItem.fieldData['biography']?.substring(0,60)}...`)
-      }
+      // DEBUG: Log what we're sending
+      console.log(`\n🐛 DEBUG ${u.item.name || u.item._id}:`)
+      console.log(`   Sending to Webflow:`, JSON.stringify(u.webflowItem.fieldData, null, 2))
       
       // Update primary locale with English content
       await updateWebflowItem(collectionId, u.webflowId, u.webflowItem.fieldData, FLAG_ENGLISH_ONLY ? null : WEBFLOW_LOCALES['en-US'])
@@ -1429,6 +1438,7 @@ async function syncFinishes(limit = null, progressCallback = null) {
         _id,
         name,
         description,
+        sortOrder,
         slug
       }
     `,
@@ -1477,6 +1487,7 @@ async function syncMediums(limit = null, progressCallback = null) {
         _id,
         name,
         description,
+        sortOrder,
         slug
       }
     `,
@@ -1515,6 +1526,12 @@ async function syncLocations(limit = null, progressCallback = null) {
         _id,
         name,
         type,
+        image{
+          asset->{
+            _id,
+            url
+          }
+        },
         address,
         city->{name},
         country->{name},
@@ -1562,7 +1579,23 @@ async function syncCreators(limit = null, progressCallback = null) {
         portrait,
         nationality,
         specialties,
-        galleryImages,
+        galleryImage{
+          asset->{
+            _id,
+            url,
+            originalFilename
+          },
+          alt
+        },
+        studioImage{
+          asset->{
+            _id,
+            url,
+            originalFilename
+          },
+          alt
+        },
+        associatedLocations[]->{_id},
         slug,
         website,
         email,
@@ -1580,27 +1613,10 @@ async function syncArtworks(limit = null, progressCallback = null) {
   // Custom artwork mapper with image handling
   const artworkCustomSync = async (item) => {
     // Simple URL-based image handling - let Webflow handle uploads
-    const artworkImages = item.images?.map(image => {
-      if (!image.asset?.url) return null
-      
-      // Create enhanced alt text
-      const altText = image.alt?.en || image.alt?.de || ''
-      const artworkName = item.name || item.workTitle?.en || item.workTitle?.de
-      const creatorName = item.creator?.name
-      
-      let enhancedAltText = altText
-      if (!enhancedAltText && artworkName) {
-        const parts = []
-        if (creatorName) parts.push(creatorName)
-        if (artworkName) parts.push(artworkName)
-        enhancedAltText = parts.join(' - ')
-      }
-      
-      return {
-        url: image.asset.url,
-        alt: enhancedAltText || artworkName || 'Artwork image'
-      }
-    }).filter(Boolean) || []
+    // Map artwork images - just URLs, Webflow doesn't accept {url, alt} objects
+    const artworkImages = (item.images || [])
+      .map(image => image.asset?.url)
+      .filter(Boolean)
     
     console.log(`  🖼️  Prepared ${artworkImages.length} images for upload via URLs`)
     
@@ -1639,11 +1655,8 @@ async function syncArtworks(limit = null, progressCallback = null) {
       return mappedId
     }).filter(Boolean) || []
     
-    // NEW: map single main image if present
-    const mainImage = item.mainImage?.asset?.url ? {
-      url: item.mainImage.asset.url,
-      alt: (item.mainImage?.alt?.en || item.mainImage?.alt?.de || item.name || item.workTitle?.en || item.workTitle?.de || 'Main image')
-    } : undefined
+    // Map main image - just URL, not object
+    const mainImage = item.mainImage?.asset?.url || null
 
     // Note: customImageSync doesn't support locale parameter yet, always returns English
     // German locale will be updated separately after creation
@@ -1661,7 +1674,7 @@ async function syncArtworks(limit = null, progressCallback = null) {
         'size-dimensions': item.size || '',
         year: item.year || '',
         price: item.price || '',
-        ...(mainImage ? { 'main-image': mainImage } : {}),
+        'main-image': mainImage,
         'artwork-images': artworkImages
       },
       _sanityItem: item // Store for German locale update
@@ -2079,6 +2092,11 @@ async function syncSingleItem(documentId, documentType, autoPublish = true) {
   const baseId = documentId.replace('drafts.', '')
   global.SINGLE_ITEM_FILTER = `&& (_id == "${baseId}" || _id == "drafts.${baseId}")`
   
+  // FORCE UPDATE: Clear hash for this item to ensure it updates
+  const hashKey = `${documentType}:${baseId}`
+  persistentHashes.delete(hashKey)
+  console.log(`  🔄 Cleared hash for ${hashKey} to force update`)
+  
   try {
     // Map document type to sync function
     const syncFunctions = {
@@ -2098,29 +2116,29 @@ async function syncSingleItem(documentId, documentType, autoPublish = true) {
     }
     
     // Run the sync for this single item
-    await syncFn()
+    const syncResult = await syncFn()
+    console.log(`  ✅ Sync completed: ${syncResult} items processed`)
     
-    // Publish if requested
-    if (autoPublish) {
-      const collectionId = WEBFLOW_COLLECTIONS[documentType]
-      if (collectionId && ID_MAPPINGS[documentType]) {
-        const webflowId = ID_MAPPINGS[documentType][baseId]
-        if (webflowId) {
-          console.log(`📤 Publishing ${documentType}/${baseId} (${webflowId})`)
-          await publishWebflowItems(collectionId, [webflowId])
-        }
-      }
+    // Publish if requested (FLAG_PUBLISH is now always true)
+    const collectionId = WEBFLOW_COLLECTIONS[documentType]
+    const webflowId = idMappings[documentType]?.get(baseId)
+    
+    if (webflowId && collectionId) {
+      console.log(`  📤 Publishing ${documentType}/${baseId} (${webflowId})`)
+      await publishWebflowItems(collectionId, [webflowId])
+    } else {
+      console.log(`  ⚠️  No webflowId found for ${documentType}:${baseId}`)
     }
     
     // Save mappings
     await saveIdMappings()
-    savePersistentMappings()
     
     return {
       documentId: baseId,
       documentType,
-      webflowId: ID_MAPPINGS[documentType]?.[baseId],
-      published: autoPublish
+      webflowId: webflowId,
+      published: true,
+      success: true
     }
   } finally {
     // Clean up global filter
