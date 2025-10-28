@@ -46,29 +46,8 @@ export default {
       },
     },
     {
-      name: 'studioImage',
-      title: 'Studio Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-        storeOriginalFilename: true,
-      },
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'object',
-          fields: [
-            {name: 'en', title: 'English', type: 'string'},
-            {name: 'de', title: 'German', type: 'string'}
-          ]
-        }
-      ],
-      description: 'Image of the creator\'s studio/workspace',
-    },
-    {
-      name: 'galleryImage',
-      title: 'Gallery Image',
+      name: 'portraitImage',
+      title: 'Portrait Image',
       type: 'image',
       options: {
         hotspot: true,
