@@ -1538,7 +1538,7 @@ async function syncCreators(limit = null, progressCallback = null) {
     collectionId: WEBFLOW_COLLECTIONS.creator,
     mappingKey: 'creator',
     sanityQuery: `
-      *[_type == "creator" ${filter}] | order(name asc) {
+      *[_type == "creator" && !(_id in path("drafts.**")) ${filter}] | order(name asc) {
         _id,
         name,
         lastName,
@@ -1669,7 +1669,7 @@ async function syncArtworks(limit = null, progressCallback = null) {
         'work-title': item.workTitle?.en || item.workTitle?.de || '',
         description: item.description?.en || '',
         creator: creatorId,
-        category: categoryId ? [categoryId] : [],
+        ...(categoryId ? { category: [categoryId] } : {}),
         materials: materialIds,
         medium: mediumIds,
         finishes: finishIds,
