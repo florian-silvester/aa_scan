@@ -46,10 +46,11 @@ export default {
     },
     {
       name: 'images',
-      title: 'Artwork Images',
+      title: 'Artwork Images (Legacy)',
       type: 'array',
       group: 'main',
-      validation: Rule => Rule.required().min(1).error('At least one image is required'),
+      hidden: true,
+      description: 'Legacy field - use mainImage instead',
       of: [
         {
           type: 'image',
@@ -235,8 +236,8 @@ export default {
       categoryDe: 'category.title.de',
       materials: 'materials',
       year: 'year',
-      image: 'images.0.asset',
-      media: 'images.0'
+      image: 'mainImage.asset',
+      media: 'mainImage'
     },
     prepare({name, titleEn, titleDe, creator, categoryEn, categoryDe, materials, year, image, media}) {
       const displayTitle = name || titleEn || titleDe || 'Untitled Artwork'
