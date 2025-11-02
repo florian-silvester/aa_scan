@@ -1,5 +1,6 @@
 import artwork from './artwork.js'
 import article from './article.js'
+import author from './author.js'
 import category from './category.js'
 import city from './city.js'
 import country from './country.js'
@@ -9,6 +10,7 @@ import location from './location.js'
 import material from './material.js'
 import materialType from './materialType.js'
 import medium from './medium.js'
+import photographer from './photographer.js'
 import webflowSyncSettings from './webflowSyncSettings.js'
 
-export const schemaTypes = [artwork, article, category, city, country, creator, finish, location, material, materialType, medium, webflowSyncSettings] 
+export const schemaTypes = [artwork, article, author, category, city, country, creator, finish, location, material, materialType, medium, photographer, webflowSyncSettings] 

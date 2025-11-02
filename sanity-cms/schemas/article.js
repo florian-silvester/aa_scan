@@ -4,67 +4,20 @@ export default {
   type: 'document',
   groups: [
     {name: 'metadata', title: 'Metadata'},
-    {name: 'content', title: 'Content'},
+    {name: 'hero', title: 'Hero Section'},
+    {name: 'section1', title: 'Section 1'},
+    {name: 'section2', title: 'Section 2'},
+    {name: 'section3', title: 'Section 3'},
+    {name: 'section4', title: 'Section 4'},
+    {name: 'final', title: 'Final Section'},
   ],
   fields: [
+    // METADATA
     {
-      name: 'featureImage',
-      title: 'Feature Image',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'object',
-          fields: [
-            {
-              name: 'en',
-              title: 'English',
-              type: 'string'
-            },
-            {
-              name: 'de',
-              title: 'German',
-              type: 'string'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: 'coverImage',
-      title: 'Cover Image/Video',
-      type: 'file',
-      options: {
-        accept: '.jpg,.jpeg,.png,.gif,.webp,.mp4,.mov,.avi,.mkv,.webm'
-      },
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text / Video Description',
-          type: 'object',
-          fields: [
-            {
-              name: 'en',
-              title: 'English',
-              type: 'string'
-            },
-            {
-              name: 'de',
-              title: 'German',
-              type: 'string'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: 'title',
-      title: 'Title',
+      name: 'name',
+      title: 'Name',
       type: 'object',
+      group: 'metadata',
       validation: Rule => Rule.required(),
       fields: [
         {
@@ -81,27 +34,119 @@ export default {
       ]
     },
     {
-      name: 'author',
-      title: 'Author',
-      type: 'string'
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      group: 'metadata',
+      options: {
+        source: 'name.en',
+        maxLength: 96
+      },
+      validation: Rule => Rule.required()
     },
     {
-      name: 'maker',
+      name: 'date',
+      title: 'Publication Date',
+      type: 'datetime',
+      group: 'metadata'
+    },
+    {
+      name: 'featuredCreator',
       title: 'Featured Creator',
       type: 'reference',
+      group: 'metadata',
       to: [{type: 'creator'}],
       description: 'The creator/artist featured in this article'
     },
     {
-      name: 'date',
-      title: 'Date',
-      type: 'date'
+      name: 'authors',
+      title: 'Author(s)',
+      type: 'array',
+      group: 'metadata',
+      of: [{type: 'reference', to: [{type: 'author'}]}],
+      description: 'Article authors'
     },
     {
-      name: 'introduction',
+      name: 'photographers',
+      title: 'Photographer(s)',
+      type: 'array',
+      group: 'metadata',
+      of: [{type: 'reference', to: [{type: 'photographer'}]}],
+      description: 'Photographers'
+    },
+    {
+      name: 'materials',
+      title: 'Materials',
+      type: 'array',
+      group: 'metadata',
+      of: [{type: 'reference', to: [{type: 'material'}]}],
+      description: 'Select relevant materials for this article'
+    },
+    {
+      name: 'medium',
+      title: 'Medium',
+      type: 'array',
+      group: 'metadata',
+      of: [{type: 'reference', to: [{type: 'medium'}]}],
+      description: 'Select relevant mediums for this article'
+    },
+    {
+      name: 'finishes',
+      title: 'Finishes',
+      type: 'array',
+      group: 'metadata',
+      of: [{type: 'reference', to: [{type: 'finish'}]}],
+      description: 'Select relevant finishes for this article'
+    },
+
+    // HERO SECTION
+    {
+      name: 'heroHeadline',
+      title: 'Hero Headline',
+      type: 'object',
+      group: 'hero',
+      description: 'Main headline (supports rich text)',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [{type: 'block'}]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [{type: 'block'}]
+        }
+      ]
+    },
+    {
+      name: 'heroImage',
+      title: 'Hero Image',
+      type: 'image',
+      group: 'hero',
+      options: {
+        hotspot: true
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
+          fields: [
+            {name: 'en', title: 'English', type: 'string'},
+            {name: 'de', title: 'German', type: 'string'}
+          ]
+        }
+      ]
+    },
+    {
+      name: 'intro',
       title: 'Introduction',
       type: 'object',
-      group: 'content',
+      group: 'hero',
+      description: 'Introduction text (rich text)',
       fields: [
         {
           name: 'en',
@@ -117,37 +162,17 @@ export default {
         }
       ]
     },
+
+    // SECTION 1
     {
-      name: 'fullText',
-      title: 'Full Text',
-      type: 'object',
-      group: 'content',
-      fields: [
-        {
-          name: 'en',
-          title: 'English',
-          type: 'array',
-          of: [{type: 'block'}]
-        },
-        {
-          name: 'de',
-          title: 'German',
-          type: 'array',
-          of: [{type: 'block'}]
-        }
-      ]
-    },
-    {
-      name: 'images',
-      title: 'Images',
+      name: 'section1Images',
+      title: 'Section 1 Images',
       type: 'array',
-      description: 'Select images from the media library for this article',
+      group: 'section1',
       of: [
         {
           type: 'image',
-          options: {
-            hotspot: true
-          },
+          options: {hotspot: true},
           fields: [
             {
               name: 'alt',
@@ -162,6 +187,7 @@ export default {
               name: 'caption',
               title: 'Caption',
               type: 'object',
+              description: 'Will be combined with alt text in Webflow',
               fields: [
                 {name: 'en', title: 'English', type: 'string'},
                 {name: 'de', title: 'German', type: 'string'}
@@ -170,111 +196,284 @@ export default {
           ]
         }
       ],
+      options: {layout: 'grid'}
+    },
+    {
+      name: 'section1Layout',
+      title: 'Section 1 Layout',
+      type: 'string',
+      group: 'section1',
       options: {
-        layout: 'grid',
+        list: [
+          {title: 'Full', value: 'Full'},
+          {title: 'Main', value: 'Main'},
+          {title: 'Small', value: 'Small'}
+        ]
       }
     },
     {
-      name: 'medium',
-      title: 'Medium',
+      name: 'section1Text',
+      title: 'Section 1 Text',
+      type: 'object',
+      group: 'section1',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [{type: 'block'}]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [{type: 'block'}]
+        }
+      ]
+    },
+
+    // SECTION 2
+    {
+      name: 'section2Images',
+      title: 'Section 2 Images',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'medium'}]}],
-      description: 'Select relevant mediums for this article'
+      group: 'section2',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'object',
+              description: 'Will be combined with alt text in Webflow',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            }
+          ]
+        }
+      ],
+      options: {layout: 'grid'}
     },
     {
-      name: 'materials',
-      title: 'Materials',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'material'}]}],
-      description: 'Select relevant materials for this article'
-    },
-    {
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{type: 'category'}],
-      description: 'Select the primary category for this article'
-    },
-    {
-      name: 'finishes',
-      title: 'Finishes',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'finish'}]}],
-      description: 'Select relevant finishes for this article'
-    },
-    {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
+      name: 'section2Layout',
+      title: 'Section 2 Layout',
+      type: 'string',
+      group: 'section2',
       options: {
-        source: 'title.en',
-        maxLength: 96
-      },
-      validation: Rule => Rule.required()
+        list: [
+          {title: 'Full', value: 'Full'},
+          {title: 'Main', value: 'Main'},
+          {title: 'Small', value: 'Small'}
+        ]
+      }
     },
-    // LEGACY FIELDS - will be removed after migration
     {
-      name: 'titleEn',
-      title: 'Title (English) - LEGACY',
+      name: 'section2Text',
+      title: 'Section 2 Text',
+      type: 'object',
+      group: 'section2',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [{type: 'block'}]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [{type: 'block'}]
+        }
+      ]
+    },
+
+    // SECTION 3
+    {
+      name: 'section3Images',
+      title: 'Section 3 Images',
+      type: 'array',
+      group: 'section3',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'object',
+              description: 'Will be combined with alt text in Webflow',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            }
+          ]
+        }
+      ],
+      options: {layout: 'grid'}
+    },
+    {
+      name: 'section3Layout',
+      title: 'Section 3 Layout',
       type: 'string',
-      hidden: true,
-      description: 'Legacy field - use Title object instead'
+      group: 'section3',
+      options: {
+        list: [
+          {title: 'Full', value: 'Full'},
+          {title: 'Main', value: 'Main'},
+          {title: 'Small', value: 'Small'}
+        ]
+      }
     },
     {
-      name: 'titleDe',
-      title: 'Title (German) - LEGACY',
+      name: 'section3Text',
+      title: 'Section 3 Text',
+      type: 'object',
+      group: 'section3',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [{type: 'block'}]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [{type: 'block'}]
+        }
+      ]
+    },
+
+    // SECTION 4
+    {
+      name: 'section4Images',
+      title: 'Section 4 Images',
+      type: 'array',
+      group: 'section4',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'object',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'object',
+              description: 'Will be combined with alt text in Webflow',
+              fields: [
+                {name: 'en', title: 'English', type: 'string'},
+                {name: 'de', title: 'German', type: 'string'}
+              ]
+            }
+          ]
+        }
+      ],
+      options: {layout: 'grid'}
+    },
+    {
+      name: 'section4Layout',
+      title: 'Section 4 Layout',
       type: 'string',
-      hidden: true,
-      description: 'Legacy field - use Title object instead'
+      group: 'section4',
+      options: {
+        list: [
+          {title: 'Full', value: 'Full'},
+          {title: 'Main', value: 'Main'},
+          {title: 'Small', value: 'Small'}
+        ]
+      }
     },
     {
-      name: 'introductionEn',
-      title: 'Introduction (English) - LEGACY',
-      type: 'array',
-      of: [{type: 'block'}],
-      hidden: true,
-      description: 'Legacy field - use Introduction object instead'
+      name: 'section4Text',
+      title: 'Section 4 Text',
+      type: 'object',
+      group: 'section4',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [{type: 'block'}]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [{type: 'block'}]
+        }
+      ]
     },
+
+    // FINAL SECTION
     {
-      name: 'introductionDe',
-      title: 'Introduction (German) - LEGACY',
-      type: 'array',
-      of: [{type: 'block'}],
-      hidden: true,
-      description: 'Legacy field - use Introduction object instead'
-    },
-    {
-      name: 'fullTextEn',
-      title: 'Full Text (English) - LEGACY',
-      type: 'array',
-      of: [{type: 'block'}],
-      hidden: true,
-      description: 'Legacy field - use Full Text object instead'
-    },
-    {
-      name: 'fullTextDe',
-      title: 'Full Text (German) - LEGACY',
-      type: 'array',
-      of: [{type: 'block'}],
-      hidden: true,
-      description: 'Legacy field - use Full Text object instead'
+      name: 'sectionFinalImage1',
+      title: 'Final Section Image',
+      type: 'image',
+      group: 'final',
+      options: {hotspot: true},
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'object',
+          fields: [
+            {name: 'en', title: 'English', type: 'string'},
+            {name: 'de', title: 'German', type: 'string'}
+          ]
+        }
+      ]
     }
   ],
   preview: {
     select: {
-      titleEn: 'title.en',
-      titleDe: 'title.de',
-      author: 'author',
-      maker: 'maker.name',
+      nameEn: 'name.en',
+      nameDe: 'name.de',
+      authors: 'authors',
+      creator: 'featuredCreator.name',
       date: 'date',
-      media: 'images.0.asset'
+      media: 'heroImage'
     },
     prepare(selection) {
-      const { titleEn, titleDe, author, maker, date, media } = selection
-      const displayTitle = titleEn || titleDe || 'Untitled'
-      const byLine = [author, maker].filter(Boolean).join(' • ')
+      const { nameEn, nameDe, authors, creator, date, media } = selection
+      const displayName = nameEn || nameDe || 'Untitled'
+      const byLine = [authors?.[0], creator].filter(Boolean).join(' • ')
       return {
-        title: displayTitle,
+        title: displayName,
         subtitle: byLine || 'No author/creator',
         description: date ? new Date(date).toLocaleDateString() : 'No date',
         media: media

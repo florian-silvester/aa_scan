@@ -58,7 +58,7 @@ function getArg(name) {
 }
 const FLAG_QUICK = ARGS.includes('--quick')
 const FLAG_CHECK_ONLY = ARGS.includes('--check-only')
-const FLAG_PUBLISH = ARGS.includes('--publish')
+const FLAG_PUBLISH = true // ALWAYS publish items to Webflow after sync
 const ARG_ONLY = getArg('only') // e.g. --only=creator|artwork|material
 const ARG_ITEM = getArg('item') // e.g. --item=creator-id-123 (single item sync)
 const FLAG_ENGLISH_ONLY = ARGS.includes('--english-only')
@@ -132,7 +132,10 @@ async function resolveWebflowCollections() {
     category: pick('medium', 'mediums', 'category', 'categories'), // Sanity category (Medium) → Webflow Medium
     location: pick('locations', 'location'),
     creator: pick('creators', 'creator', 'profiles', 'profile'),
-    artwork: pick('artworks', 'artwork', 'works', 'work')
+    artwork: pick('artworks', 'artwork', 'works', 'work'),
+    article: pick('articles', 'article'),
+    author: pick('authors', 'author'),
+    photographer: pick('photographers', 'photographer')
   }
 
   // Validate presence
@@ -152,7 +155,10 @@ const idMappings = {
   category: new Map(),
   location: new Map(),
   creator: new Map(),
-  artwork: new Map()
+  artwork: new Map(),
+  article: new Map(),
+  author: new Map(),
+  photographer: new Map()
 }
 
 // Persistent ID mappings system (like asset mappings)
@@ -284,6 +290,9 @@ async function rebuildIdMappings() {
   const collections = [
     { key: 'creator', id: WEBFLOW_COLLECTIONS.creator, sanityType: 'creator' },
     { key: 'artwork', id: WEBFLOW_COLLECTIONS.artwork, sanityType: 'artwork' },
+    { key: 'article', id: WEBFLOW_COLLECTIONS.article, sanityType: 'article' },
+    { key: 'author', id: WEBFLOW_COLLECTIONS.author, sanityType: 'author' },
+    { key: 'photographer', id: WEBFLOW_COLLECTIONS.photographer, sanityType: 'photographer' },
     { key: 'category', id: WEBFLOW_COLLECTIONS.category, sanityType: 'category' },
     { key: 'material', id: WEBFLOW_COLLECTIONS.material, sanityType: 'material' },
     { key: 'medium', id: WEBFLOW_COLLECTIONS.medium, sanityType: 'medium' },
@@ -372,7 +381,18 @@ async function saveAssetMappings() {
   }
 }
 
-// Check if image metadata has changed
+// Clean up size/dimensions field - remove leading commas, normalize spacing
+function cleanSizeField(size) {
+  if (!size || typeof size !== 'string') return ''
+  
+  return size
+    .trim()
+    .replace(/^,\s*/, '') // Remove leading comma
+    .replace(/,\s*$/, '') // Remove trailing comma
+    .replace(/\s*,\s*/g, ', ') // Normalize comma spacing
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim()
+}
 function hasImageMetadataChanged(sanityImage, trackedAsset) {
   const currentAltText = sanityImage.alt?.en || sanityImage.alt?.de || ''
   const currentFilename = sanityImage.asset?.originalFilename || ''
@@ -513,7 +533,10 @@ function mapCreatorFields(sanityItem, locale = 'en') {
     'website': sanityItem.website || '',
     'email': sanityItem.email || '',
     'birth-year': sanityItem.birthYear ? parseInt(sanityItem.birthYear, 10) : null,
-    'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null
+    'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null,
+    'locations': (sanityItem.associatedLocations || [])
+      .map(loc => loc._ref ? idMappings.location.get(loc._ref) : null)
+      .filter(Boolean)
   }
 
   // Locale-specific fields
@@ -692,12 +715,24 @@ async function createWebflowItems(collectionId, items, progressCallback = null) 
     try {
       // Step 1: Create linked item in BOTH locales using /bulk endpoint
       // This should create ONE item with both EN and DE locales (same ID)
+      // Filter out undefined values from fieldData to prevent validation errors
+      const cleanFieldData = Object.fromEntries(
+        Object.entries(item.fieldData).filter(([_, v]) => v !== undefined)
+      )
+      
+      if (i < 3) {
+        console.log(`  🧪 Payload sample (${i + 1}):`) 
+        console.log(`    raw keys: ${Object.keys(item.fieldData).join(', ')}`)
+        console.log(`    clean keys: ${Object.keys(cleanFieldData).join(', ')}`)
+        console.log('    clean fieldData:', JSON.stringify(cleanFieldData, null, 2))
+      }
+
       const createResult = await webflowRequest(`/collections/${collectionId}/items/bulk`, {
         method: 'POST',
         body: JSON.stringify({
           cmsLocaleIds: [WEBFLOW_LOCALES['en-US'], WEBFLOW_LOCALES['de-DE']],
           isDraft: !FLAG_PUBLISH,
-          fieldData: item.fieldData
+          fieldData: cleanFieldData
         })
       })
       
@@ -1625,11 +1660,6 @@ async function syncArtworks(limit = null, progressCallback = null) {
       console.warn(`  ⚠️  Creator reference not found for artwork '${item.name}': ${item.creator._id}`)
     }
     
-    const categoryId = item.category?._id ? idMappings.category.get(item.category._id) || null : null
-    if (item.category?._id && !categoryId) {
-      console.warn(`  ⚠️  Category reference not found for artwork '${item.name}': ${item.category._id}`)
-    }
-    
     const materialIds = item.materials?.map(mat => {
       const mappedId = idMappings.material.get(mat._id)
       if (!mappedId) {
@@ -1669,11 +1699,10 @@ async function syncArtworks(limit = null, progressCallback = null) {
         'work-title': item.workTitle?.en || item.workTitle?.de || '',
         description: item.description?.en || '',
         creator: creatorId,
-        ...(categoryId ? { category: [categoryId] } : {}),
         materials: materialIds,
         medium: mediumIds,
         finishes: finishIds,
-        'size-dimensions': item.size || '',
+        'size-dimensions': cleanSizeField(item.size || ''),
         year: item.year || '',
         price: item.price || '',
         ...(mainImage ? { 'main-image': mainImage } : {}),
@@ -1761,9 +1790,9 @@ async function syncArtworksForCreators(creatorIds = []) {
       console.warn(`  ⚠️  Creator reference not found for artwork '${item.name}': ${item.creator._id}`)
     }
 
-    const categoryId = item.category?._id ? idMappings.category.get(item.category._id) || null : null
-    if (item.category?._id && !categoryId) {
-      console.warn(`  ⚠️  Category reference not found for artwork '${item.name}': ${item.category._id}`)
+    // DEBUG: Log what we're actually sending for first 3 items
+    if (item.name) {
+      console.log(`  🔍 '${item.name.substring(0, 30)}': creator=${creatorId}`)
     }
 
     const materialIds = item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || []
@@ -1779,11 +1808,10 @@ async function syncArtworksForCreators(creatorIds = []) {
         'work-title-german': item.workTitle?.de || '',
         'description-english': item.description?.en || '',
         'description-german': item.description?.de || '',
-        creator: creatorId,
-        category: categoryId ? [categoryId] : [],
-        materials: materialIds,
-        medium: mediumIds,
-        finishes: finishIds,
+        ...(creatorId ? { creator: creatorId } : {}),
+        ...(materialIds.length > 0 ? { materials: materialIds } : {}),
+        ...(mediumIds.length > 0 ? { medium: mediumIds } : {}),
+        ...(finishIds.length > 0 ? { finishes: finishIds } : {}),
         'size-dimensions': item.size || '',
         year: item.year || '',
         price: item.price || '',
@@ -1829,6 +1857,255 @@ async function syncArtworksForCreators(creatorIds = []) {
     customImageSync: artworkCustomSync,
     limit: null
   })
+}
+
+// Helper function to combine alt text and caption for Webflow multi-image fields
+function combineAltAndCaption(altText, caption) {
+  if (altText && caption) {
+    return `${altText} | ${caption}`
+  }
+  return altText || caption || ''
+}
+
+// PHASE 7: Sync Authors
+async function syncAuthors(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
+  return syncCollection({
+    name: 'Authors',
+    collectionId: WEBFLOW_COLLECTIONS.author,
+    mappingKey: 'author',
+    sanityQuery: `
+      *[_type == "author" ${filter}] | order(name.en asc) {
+        _id,
+        name,
+        bio,
+        slug
+      }
+    `,
+    fieldMapper: (item, locale = 'en') => {
+      const isGerman = locale === 'de-DE' || locale === 'de'
+      return {
+        name: isGerman ? (item.name?.de || item.name?.en || 'Untitled') : (item.name?.en || item.name?.de || 'Untitled'),
+        slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+        bio: convertSanityBlocksToWebflowRichText(isGerman ? item.bio?.de : item.bio?.en)
+      }
+    },
+    limit
+  }, progressCallback)
+}
+
+// PHASE 8: Sync Photographers
+async function syncPhotographers(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
+  return syncCollection({
+    name: 'Photographers',
+    collectionId: WEBFLOW_COLLECTIONS.photographer,
+    mappingKey: 'photographer',
+    sanityQuery: `
+      *[_type == "photographer" ${filter}] | order(name.en asc) {
+        _id,
+        name,
+        bio,
+        slug
+      }
+    `,
+    fieldMapper: (item, locale = 'en') => {
+      const isGerman = locale === 'de-DE' || locale === 'de'
+      return {
+        name: isGerman ? (item.name?.de || item.name?.en || 'Untitled') : (item.name?.en || item.name?.de || 'Untitled'),
+        slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+        bio: convertSanityBlocksToWebflowRichText(isGerman ? item.bio?.de : item.bio?.en)
+      }
+    },
+    limit
+  }, progressCallback)
+}
+
+// PHASE 9: Sync Articles
+async function syncArticles(limit = null, progressCallback = null) {
+  const filter = global.SINGLE_ITEM_FILTER || ''
+  
+  // Custom article mapper with image handling
+  const articleCustomSync = async (item) => {
+    // Helper to prepare images with alt + caption
+    const prepareImages = (images, locale = 'en') => {
+      if (!images || !Array.isArray(images)) return []
+      
+      return images.map(img => {
+        if (!img.asset?.url) return null
+        
+        const alt = img.alt?.[locale] || img.alt?.en || ''
+        const caption = img.caption?.[locale] || img.caption?.en || ''
+        
+        return {
+          url: img.asset.url,
+          alt: combineAltAndCaption(alt, caption)
+        }
+      }).filter(Boolean)
+    }
+    
+    // Helper to prepare single image
+    const prepareSingleImage = (image, locale = 'en') => {
+      if (!image?.asset?.url) return undefined
+      return {
+        url: image.asset.url,
+        alt: image.alt?.[locale] || image.alt?.en || ''
+      }
+    }
+    
+    // Map references
+    const creatorId = item.featuredCreator?._id ? idMappings.creator.get(item.featuredCreator._id) || null : null
+    const materialIds = item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || []
+    const mediumIds = item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || []
+    const finishIds = item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || []
+    const authorIds = item.authors?.map(auth => idMappings.author.get(auth._id)).filter(Boolean) || []
+    const photographerIds = item.photographers?.map(phot => idMappings.photographer.get(phot._id)).filter(Boolean) || []
+    
+    // Map layout options to Webflow option IDs (each section has unique IDs)
+    const layoutOptionMaps = {
+      section1: {
+        'Full': '4a3ffd42437c7994a25dadc0f20a390d',
+        'Main': '426941337c92fd490afa6c4d1983e7fc',
+        'Small': 'fb19cfd3138f58994c68a524ba22198d'
+      },
+      section2: {
+        'Full': '82ddba882ec08cf517470df91d995f18',
+        'Main': '18d480ec08d93d73ab052ef2bae27503',
+        'Small': '0a08cd13f1006d1f88178a5392fca321'
+      },
+      section3: {
+        'Full': '043a28f333019108a864de30d9cc206d',
+        'Main': '675ea57ff8d5850d22ab806b75f06f93',
+        'Small': 'ee466bd2505b42d0c7d88f636eaca235'
+      },
+      section4: {
+        'Full': 'e44367c5ea5238e71c203182aa6c1b80',
+        'Main': '73cc0adf63e794f6430a3659552d2845',
+        'Small': '1ac0040d0c43519fa376a7c7f611b878'
+      }
+    }
+    
+    // English fieldData
+    const englishFields = {
+      name: item.name?.en || item.name?.de || 'Untitled',
+      slug: item.slug?.current || generateSlug(item.name?.en || item.name?.de),
+      date: item.date || null,
+      'featured-creator': creatorId,
+      materials: materialIds,
+      'medium-2': mediumIds,
+      finishes: finishIds,
+      'author-s': authorIds,
+      'photographer-s': photographerIds,
+      'hero-headline': convertSanityBlocksToWebflowRichText(item.heroHeadline?.en),
+      'hero-image-2': prepareSingleImage(item.heroImage, 'en'),
+      intro: convertSanityBlocksToWebflowRichText(item.intro?.en),
+      'section-1-images-2': prepareImages(item.section1Images, 'en'),
+      'section-1-layout-3': layoutOptionMaps.section1[item.section1Layout] || null,
+      'section-1-text-2': convertSanityBlocksToWebflowRichText(item.section1Text?.en),
+      'section-2-images-2': prepareImages(item.section2Images, 'en'),
+      'section-2-layout-3': layoutOptionMaps.section2[item.section2Layout] || null,
+      'section-2-text-2': convertSanityBlocksToWebflowRichText(item.section2Text?.en),
+      'section-3-images-2': prepareImages(item.section3Images, 'en'),
+      'section-3-layout-3': layoutOptionMaps.section3[item.section3Layout] || null,
+      'section-3-text-2': convertSanityBlocksToWebflowRichText(item.section3Text?.en),
+      'section-4-images-2': prepareImages(item.section4Images, 'en'),
+      'section-4-layout-3': layoutOptionMaps.section4[item.section4Layout] || null,
+      'section-4-text-2': convertSanityBlocksToWebflowRichText(item.section4Text?.en),
+      'section-final-image-1': prepareSingleImage(item.sectionFinalImage1, 'en')
+    }
+    
+    // German fieldData (for separate locale update)
+    const germanFields = {
+      name: item.name?.de || item.name?.en || 'Untitled',
+      'hero-headline': convertSanityBlocksToWebflowRichText(item.heroHeadline?.de),
+      'hero-image-2': prepareSingleImage(item.heroImage, 'de'),
+      intro: convertSanityBlocksToWebflowRichText(item.intro?.de),
+      'section-1-images-2': prepareImages(item.section1Images, 'de'),
+      'section-1-text-2': convertSanityBlocksToWebflowRichText(item.section1Text?.de),
+      'section-2-images-2': prepareImages(item.section2Images, 'de'),
+      'section-2-text-2': convertSanityBlocksToWebflowRichText(item.section2Text?.de),
+      'section-3-images-2': prepareImages(item.section3Images, 'de'),
+      'section-3-text-2': convertSanityBlocksToWebflowRichText(item.section3Text?.de),
+      'section-4-images-2': prepareImages(item.section4Images, 'de'),
+      'section-4-text-2': convertSanityBlocksToWebflowRichText(item.section4Text?.de),
+      'section-final-image-1': prepareSingleImage(item.sectionFinalImage1, 'de')
+    }
+    
+    // Filter out undefined values
+    Object.keys(englishFields).forEach(key => {
+      if (englishFields[key] === undefined) delete englishFields[key]
+    })
+    Object.keys(germanFields).forEach(key => {
+      if (germanFields[key] === undefined) delete germanFields[key]
+    })
+    
+    return {
+      fieldData: englishFields,
+      germanFieldData: germanFields,
+      _sanityItem: item
+    }
+  }
+  
+  return syncCollection({
+    name: 'Articles',
+    collectionId: WEBFLOW_COLLECTIONS.article,
+    mappingKey: 'article',
+    sanityQuery: `
+      *[_type == "article" ${filter}] | order(date desc) {
+        _id,
+        name,
+        slug,
+        date,
+        featuredCreator->{_id},
+        authors[]->{_id},
+        photographers[]->{_id},
+        materials[]->{_id},
+        medium[]->{_id},
+        finishes[]->{_id},
+        heroHeadline,
+        heroImage{
+          asset->{_id, url, originalFilename},
+          alt
+        },
+        intro,
+        section1Images[]{
+          asset->{_id, url, originalFilename},
+          alt,
+          caption
+        },
+        section1Layout,
+        section1Text,
+        section2Images[]{
+          asset->{_id, url, originalFilename},
+          alt,
+          caption
+        },
+        section2Layout,
+        section2Text,
+        section3Images[]{
+          asset->{_id, url, originalFilename},
+          alt,
+          caption
+        },
+        section3Layout,
+        section3Text,
+        section4Images[]{
+          asset->{_id, url, originalFilename},
+          alt,
+          caption
+        },
+        section4Layout,
+        section4Text,
+        sectionFinalImage1{
+          asset->{_id, url, originalFilename},
+          alt
+        }
+      }
+    `,
+    fieldMapper: null,
+    customImageSync: articleCustomSync,
+    limit
+  }, progressCallback)
 }
 
 // PHASE 4: Populate Creator Works (Reverse Linkage)
@@ -1967,25 +2244,27 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     console.log('✅ Smart sync enabled - no duplicates will be created')
     
     // Phase 1: Foundation data (no dependencies)
-    updateProgress('Phase 1', 'Starting foundation data sync...', 0, 4)
+    updateProgress('Phase 1', 'Starting foundation data sync...', 0, 6)
     console.log('\n📋 PHASE 1: Foundation Data')
     
     const phase1All = [
       { name: 'Material Types', key: 'materialType', func: syncMaterialTypes },
       { name: 'Finishes', key: 'finish', func: syncFinishes },
       { name: 'Mediums', key: 'category', func: syncCategories },
-      { name: 'Locations', key: 'location', func: syncLocations }
+      { name: 'Locations', key: 'location', func: syncLocations },
+      { name: 'Authors', key: 'author', func: syncAuthors },
+      { name: 'Photographers', key: 'photographer', func: syncPhotographers }
     ]
     const syncFunctions = (only ? phase1All.filter(p => p.key === only || normalize(p.name) === normalize(only)) : phase1All)
     
     for (let i = 0; i < syncFunctions.length; i++) {
       const { name, func } = syncFunctions[i]
       try {
-        updateProgress('Phase 1', `Syncing ${name}...`, i + 1, 4)
+        updateProgress('Phase 1', `Syncing ${name}...`, i + 1, 6)
         totalSynced += await func(limitPerCollection, progressCallback)
       } catch (error) {
         console.error(`❌ Failed to sync ${name}: ${error.message}`)
-        updateProgress('Phase 1', `Failed to sync ${name}: ${error.message}`, i + 1, 4)
+        updateProgress('Phase 1', `Failed to sync ${name}: ${error.message}`, i + 1, 6)
         // Continue with other collections instead of failing completely
       }
     }
@@ -2018,16 +2297,23 @@ async function performCompleteSync(progressCallback = null, options = {}) {
     emitPhaseComplete('Reference Data')
     
     // Phase 3: Complex data (with multiple dependencies)
-    updateProgress('Phase 3', 'Starting artwork sync...', 0, 1)
+    updateProgress('Phase 3', 'Starting complex content sync...', 0, 2)
     console.log('\n🎨 PHASE 3: Complex Data')
     
-    if (!only || only === 'artwork' || normalize(only) === 'artworks') {
+    const phase3All = [
+      { name: 'Artworks', key: 'artwork', func: syncArtworks },
+      { name: 'Articles', key: 'article', func: syncArticles }
+    ]
+    const syncFunctions3 = (only ? phase3All.filter(p => p.key === only || normalize(p.name) === normalize(only)) : phase3All)
+    
+    for (let i = 0; i < syncFunctions3.length; i++) {
+      const { name, func } = syncFunctions3[i]
       try {
-        updateProgress('Phase 3', 'Syncing Artworks with Images...', 1, 1)
-        totalSynced += await syncArtworks(limitPerCollection, progressCallback)
+        updateProgress('Phase 3', `Syncing ${name} with Images...`, i + 1, 2)
+        totalSynced += await func(limitPerCollection, progressCallback)
       } catch (error) {
-        console.error(`❌ Failed to sync Artworks:`, error)
-        updateProgress('Phase 3', `Failed to sync Artworks: ${error.message}`, 1, 1)
+        console.error(`❌ Failed to sync ${name}:`, error)
+        updateProgress('Phase 3', `Failed to sync ${name}: ${error.message}`, i + 1, 2)
       }
     }
     
@@ -2099,6 +2385,9 @@ async function syncSingleItem(documentId, documentType, autoPublish = true) {
     const syncFunctions = {
       creator: () => syncCreators(1),
       artwork: () => syncArtworks(1),
+      article: () => syncArticles(1),
+      author: () => syncAuthors(1),
+      photographer: () => syncPhotographers(1),
       category: () => syncCategories(1),
       medium: () => syncMediums(1),
       material: () => syncMaterials(1),
