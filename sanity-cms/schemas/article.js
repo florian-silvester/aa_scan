@@ -5,17 +5,89 @@ export default {
   groups: [
     {name: 'metadata', title: 'Metadata'},
     {name: 'hero', title: 'Hero Section'},
-    {name: 'section1', title: 'Section 1'},
-    {name: 'section2', title: 'Section 2'},
-    {name: 'section3', title: 'Section 3'},
-    {name: 'section4', title: 'Section 4'},
-    {name: 'final', title: 'Final Section'},
+    {name: 'images', title: 'Images'},
+    {name: 'final', title: 'Connections'},
+    {name: 'publication', title: 'Publication Info'},
+  ],
+  fieldsets: [
+    {
+      name: 'publicationDetails',
+      title: 'Publication Details',
+      options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'craftProperties',
+      title: 'Craft Properties',
+      options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'imageSet1',
+      title: 'Image Set 1',
+      options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'imageSet2',
+      title: 'Image Set 2',
+      options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'imageSet3',
+      title: 'Image Set 3',
+      options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'imageSet4',
+      title: 'Image Set 4',
+      options: {collapsible: true, collapsed: false}
+    }
   ],
   fields: [
     // METADATA
     {
-      name: 'name',
-      title: 'Name',
+      name: 'featuredCreator',
+      title: 'Featured Creator',
+      type: 'reference',
+      group: 'metadata',
+      to: [{type: 'creator'}],
+      description: 'The creator/artist featured in this article',
+      initialValue: async (value, context) => {
+        const {document, getClient} = context
+        const creatorName = document?.creatorName
+        
+        if (!creatorName) return undefined
+        
+        // Extract last word (likely surname)
+        const nameParts = creatorName.trim().split(/\s+/)
+        const lastName = nameParts[nameParts.length - 1]
+        
+        if (!lastName) return undefined
+        
+        // Search for creator matching this name
+        const client = getClient({apiVersion: '2023-01-01'})
+        const query = `*[_type == "creator" && (
+          name match $searchTerm ||
+          slug.current match $slugTerm
+        )][0]._id`
+        
+        const creatorId = await client.fetch(query, {
+          searchTerm: `*${lastName}*`,
+          slugTerm: `*${lastName.toLowerCase()}*`
+        })
+        
+        return creatorId ? {_type: 'reference', _ref: creatorId} : undefined
+      }
+    },
+    {
+      name: 'creatorName',
+      title: 'Creator Name',
+      type: 'string',
+      group: 'metadata',
+      validation: Rule => Rule.required(),
+      description: 'Creator name (one language, typically German)'
+    },
+    {
+      name: 'title',
+      title: 'Article Title',
       type: 'object',
       group: 'metadata',
       validation: Rule => Rule.required(),
@@ -29,7 +101,8 @@ export default {
         {
           name: 'de',
           title: 'German',
-          type: 'string'
+          type: 'string',
+          validation: Rule => Rule.required()
         }
       ]
     },
@@ -37,90 +110,19 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      group: 'metadata',
+      group: 'publication',
       options: {
-        source: 'name.en',
+        source: (doc) => {
+          const creator = doc.creatorName || ''
+          const title = doc.title?.en || doc.title?.de || ''
+          return `${creator} ${title}`.trim()
+        },
         maxLength: 96
       },
       validation: Rule => Rule.required()
     },
-    {
-      name: 'date',
-      title: 'Publication Date',
-      type: 'datetime',
-      group: 'metadata'
-    },
-    {
-      name: 'featuredCreator',
-      title: 'Featured Creator',
-      type: 'reference',
-      group: 'metadata',
-      to: [{type: 'creator'}],
-      description: 'The creator/artist featured in this article'
-    },
-    {
-      name: 'authors',
-      title: 'Author(s)',
-      type: 'array',
-      group: 'metadata',
-      of: [{type: 'reference', to: [{type: 'author'}]}],
-      description: 'Article authors'
-    },
-    {
-      name: 'photographers',
-      title: 'Photographer(s)',
-      type: 'array',
-      group: 'metadata',
-      of: [{type: 'reference', to: [{type: 'photographer'}]}],
-      description: 'Photographers'
-    },
-    {
-      name: 'materials',
-      title: 'Materials',
-      type: 'array',
-      group: 'metadata',
-      of: [{type: 'reference', to: [{type: 'material'}]}],
-      description: 'Select relevant materials for this article'
-    },
-    {
-      name: 'medium',
-      title: 'Medium',
-      type: 'array',
-      group: 'metadata',
-      of: [{type: 'reference', to: [{type: 'medium'}]}],
-      description: 'Select relevant mediums for this article'
-    },
-    {
-      name: 'finishes',
-      title: 'Finishes',
-      type: 'array',
-      group: 'metadata',
-      of: [{type: 'reference', to: [{type: 'finish'}]}],
-      description: 'Select relevant finishes for this article'
-    },
 
-    // HERO SECTION
-    {
-      name: 'heroHeadline',
-      title: 'Hero Headline',
-      type: 'object',
-      group: 'hero',
-      description: 'Main headline (supports rich text)',
-      fields: [
-        {
-          name: 'en',
-          title: 'English',
-          type: 'array',
-          of: [{type: 'block'}]
-        },
-        {
-          name: 'de',
-          title: 'German',
-          type: 'array',
-          of: [{type: 'block'}]
-        }
-      ]
-    },
+    // HERO IMAGE
     {
       name: 'heroImage',
       title: 'Hero Image',
@@ -128,37 +130,95 @@ export default {
       group: 'hero',
       options: {
         hotspot: true
-      },
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'object',
-          fields: [
-            {name: 'en', title: 'English', type: 'string'},
-            {name: 'de', title: 'German', type: 'string'}
-          ]
-        }
-      ]
+      }
     },
+
+    // INTRO (separate from fullText)
     {
       name: 'intro',
       title: 'Introduction',
       type: 'object',
       group: 'hero',
-      description: 'Introduction text (rich text)',
+      description: 'Article introduction (separate from main text)',
       fields: [
         {
           name: 'en',
           title: 'English',
           type: 'array',
-          of: [{type: 'block'}]
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
         },
         {
           name: 'de',
           title: 'German',
           type: 'array',
-          of: [{type: 'block'}]
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+
+    // FULL TEXT (body only - no headlines or intro)
+    {
+      name: 'fullText',
+      title: 'Full Article Text',
+      type: 'object',
+      group: 'hero',
+      description: 'Article body text. Insert Image Group blocks where images should appear.',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ]
+            },
+            {type: 'imageMarker'}
+          ]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ]
+            },
+            {type: 'imageMarker'}
+          ]
         }
       ]
     },
@@ -168,32 +228,12 @@ export default {
       name: 'section1Images',
       title: 'Section 1 Images',
       type: 'array',
-      group: 'section1',
+      group: 'images',
+      fieldset: 'imageSet1',
       of: [
         {
           type: 'image',
-          options: {hotspot: true},
-          fields: [
-            {
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'caption',
-              title: 'Caption',
-              type: 'object',
-              description: 'Will be combined with alt text in Webflow',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            }
-          ]
+          options: {hotspot: true}
         }
       ],
       options: {layout: 'grid'}
@@ -202,34 +242,17 @@ export default {
       name: 'section1Layout',
       title: 'Section 1 Layout',
       type: 'string',
-      group: 'section1',
+      group: 'images',
+      fieldset: 'imageSet1',
       options: {
         list: [
           {title: 'Full', value: 'Full'},
           {title: 'Main', value: 'Main'},
-          {title: 'Small', value: 'Small'}
+          {title: 'Small', value: 'Small'},
+          {title: 'Sticky left', value: 'Sticky left'},
+          {title: 'Sticky right', value: 'Sticky right'}
         ]
       }
-    },
-    {
-      name: 'section1Text',
-      title: 'Section 1 Text',
-      type: 'object',
-      group: 'section1',
-      fields: [
-        {
-          name: 'en',
-          title: 'English',
-          type: 'array',
-          of: [{type: 'block'}]
-        },
-        {
-          name: 'de',
-          title: 'German',
-          type: 'array',
-          of: [{type: 'block'}]
-        }
-      ]
     },
 
     // SECTION 2
@@ -237,32 +260,12 @@ export default {
       name: 'section2Images',
       title: 'Section 2 Images',
       type: 'array',
-      group: 'section2',
+      group: 'images',
+      fieldset: 'imageSet2',
       of: [
         {
           type: 'image',
-          options: {hotspot: true},
-          fields: [
-            {
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'caption',
-              title: 'Caption',
-              type: 'object',
-              description: 'Will be combined with alt text in Webflow',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            }
-          ]
+          options: {hotspot: true}
         }
       ],
       options: {layout: 'grid'}
@@ -271,34 +274,17 @@ export default {
       name: 'section2Layout',
       title: 'Section 2 Layout',
       type: 'string',
-      group: 'section2',
+      group: 'images',
+      fieldset: 'imageSet2',
       options: {
         list: [
           {title: 'Full', value: 'Full'},
           {title: 'Main', value: 'Main'},
-          {title: 'Small', value: 'Small'}
+          {title: 'Small', value: 'Small'},
+          {title: 'Sticky left', value: 'Sticky left'},
+          {title: 'Sticky right', value: 'Sticky right'}
         ]
       }
-    },
-    {
-      name: 'section2Text',
-      title: 'Section 2 Text',
-      type: 'object',
-      group: 'section2',
-      fields: [
-        {
-          name: 'en',
-          title: 'English',
-          type: 'array',
-          of: [{type: 'block'}]
-        },
-        {
-          name: 'de',
-          title: 'German',
-          type: 'array',
-          of: [{type: 'block'}]
-        }
-      ]
     },
 
     // SECTION 3
@@ -306,32 +292,12 @@ export default {
       name: 'section3Images',
       title: 'Section 3 Images',
       type: 'array',
-      group: 'section3',
+      group: 'images',
+      fieldset: 'imageSet3',
       of: [
         {
           type: 'image',
-          options: {hotspot: true},
-          fields: [
-            {
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'caption',
-              title: 'Caption',
-              type: 'object',
-              description: 'Will be combined with alt text in Webflow',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            }
-          ]
+          options: {hotspot: true}
         }
       ],
       options: {layout: 'grid'}
@@ -340,34 +306,17 @@ export default {
       name: 'section3Layout',
       title: 'Section 3 Layout',
       type: 'string',
-      group: 'section3',
+      group: 'images',
+      fieldset: 'imageSet3',
       options: {
         list: [
           {title: 'Full', value: 'Full'},
           {title: 'Main', value: 'Main'},
-          {title: 'Small', value: 'Small'}
+          {title: 'Small', value: 'Small'},
+          {title: 'Sticky left', value: 'Sticky left'},
+          {title: 'Sticky right', value: 'Sticky right'}
         ]
       }
-    },
-    {
-      name: 'section3Text',
-      title: 'Section 3 Text',
-      type: 'object',
-      group: 'section3',
-      fields: [
-        {
-          name: 'en',
-          title: 'English',
-          type: 'array',
-          of: [{type: 'block'}]
-        },
-        {
-          name: 'de',
-          title: 'German',
-          type: 'array',
-          of: [{type: 'block'}]
-        }
-      ]
     },
 
     // SECTION 4
@@ -375,32 +324,12 @@ export default {
       name: 'section4Images',
       title: 'Section 4 Images',
       type: 'array',
-      group: 'section4',
+      group: 'images',
+      fieldset: 'imageSet4',
       of: [
         {
           type: 'image',
-          options: {hotspot: true},
-          fields: [
-            {
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'object',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            },
-            {
-              name: 'caption',
-              title: 'Caption',
-              type: 'object',
-              description: 'Will be combined with alt text in Webflow',
-              fields: [
-                {name: 'en', title: 'English', type: 'string'},
-                {name: 'de', title: 'German', type: 'string'}
-              ]
-            }
-          ]
+          options: {hotspot: true}
         }
       ],
       options: {layout: 'grid'}
@@ -409,34 +338,17 @@ export default {
       name: 'section4Layout',
       title: 'Section 4 Layout',
       type: 'string',
-      group: 'section4',
+      group: 'images',
+      fieldset: 'imageSet4',
       options: {
         list: [
           {title: 'Full', value: 'Full'},
           {title: 'Main', value: 'Main'},
-          {title: 'Small', value: 'Small'}
+          {title: 'Small', value: 'Small'},
+          {title: 'Sticky left', value: 'Sticky left'},
+          {title: 'Sticky right', value: 'Sticky right'}
         ]
       }
-    },
-    {
-      name: 'section4Text',
-      title: 'Section 4 Text',
-      type: 'object',
-      group: 'section4',
-      fields: [
-        {
-          name: 'en',
-          title: 'English',
-          type: 'array',
-          of: [{type: 'block'}]
-        },
-        {
-          name: 'de',
-          title: 'German',
-          type: 'array',
-          of: [{type: 'block'}]
-        }
-      ]
     },
 
     // FINAL SECTION
@@ -445,36 +357,90 @@ export default {
       title: 'Final Section Image',
       type: 'image',
       group: 'final',
-      options: {hotspot: true},
-      fields: [
-        {
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'object',
-          fields: [
-            {name: 'en', title: 'English', type: 'string'},
-            {name: 'de', title: 'German', type: 'string'}
-          ]
-        }
-      ]
+      options: {hotspot: true}
+    },
+
+    // CRAFT PROPERTIES (Connections)
+    {
+      name: 'materials',
+      title: 'Materials',
+      type: 'array',
+      group: 'final',
+      fieldset: 'craftProperties',
+      of: [{type: 'reference', to: [{type: 'material'}]}],
+      description: 'Select relevant materials for this article'
+    },
+    {
+      name: 'medium',
+      title: 'Medium',
+      type: 'array',
+      group: 'final',
+      fieldset: 'craftProperties',
+      of: [{type: 'reference', to: [{type: 'medium'}]}],
+      description: 'Select relevant mediums for this article'
+    },
+    {
+      name: 'finishes',
+      title: 'Finishes',
+      type: 'array',
+      group: 'final',
+      fieldset: 'craftProperties',
+      of: [{type: 'reference', to: [{type: 'finish'}]}],
+      description: 'Select relevant finishes for this article'
+    },
+    
+    // PUBLICATION INFO (separate group after Connections)
+    {
+      name: 'date',
+      title: 'Publication Date',
+      type: 'datetime',
+      group: 'publication',
+      fieldset: 'publicationDetails'
+    },
+    {
+      name: 'issue',
+      title: 'Issue',
+      type: 'string',
+      group: 'publication',
+      fieldset: 'publicationDetails',
+      description: 'Magazine issue (e.g., "AA57", "2024/05")'
+    },
+    {
+      name: 'authors',
+      title: 'Author(s)',
+      type: 'array',
+      group: 'publication',
+      fieldset: 'publicationDetails',
+      of: [{type: 'reference', to: [{type: 'author'}]}],
+      description: 'Article authors'
+    },
+    {
+      name: 'photographers',
+      title: 'Photographer(s)',
+      type: 'array',
+      group: 'publication',
+      fieldset: 'publicationDetails',
+      of: [{type: 'reference', to: [{type: 'photographer'}]}],
+      description: 'Photographers'
     }
   ],
   preview: {
     select: {
-      nameEn: 'name.en',
-      nameDe: 'name.de',
+      creatorName: 'creatorName',
+      titleEn: 'title.en',
+      titleDe: 'title.de',
       authors: 'authors',
-      creator: 'featuredCreator.name',
       date: 'date',
       media: 'heroImage'
     },
     prepare(selection) {
-      const { nameEn, nameDe, authors, creator, date, media } = selection
-      const displayName = nameEn || nameDe || 'Untitled'
-      const byLine = [authors?.[0], creator].filter(Boolean).join(' • ')
+      const { creatorName, titleEn, titleDe, authors, date, media } = selection
+      const title = titleEn || titleDe || 'Untitled'
+      const displayName = creatorName || 'No Creator'
+      const byLine = authors?.[0] || ''
       return {
         title: displayName,
-        subtitle: byLine || 'No author/creator',
+        subtitle: title,
         description: date ? new Date(date).toLocaleDateString() : 'No date',
         media: media
       }
