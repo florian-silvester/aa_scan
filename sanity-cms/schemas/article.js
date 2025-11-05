@@ -254,6 +254,55 @@ export default {
         ]
       }
     },
+    {
+      name: 'section1Captions',
+      title: 'Section 1 Captions',
+      type: 'object',
+      group: 'images',
+      fieldset: 'imageSet1',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
 
     // SECTION 2
     {
@@ -285,6 +334,55 @@ export default {
           {title: 'Sticky right', value: 'Sticky right'}
         ]
       }
+    },
+    {
+      name: 'section2Captions',
+      title: 'Section 2 Captions',
+      type: 'object',
+      group: 'images',
+      fieldset: 'imageSet2',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        }
+      ]
     },
 
     // SECTION 3
@@ -318,6 +416,55 @@ export default {
         ]
       }
     },
+    {
+      name: 'section3Captions',
+      title: 'Section 3 Captions',
+      type: 'object',
+      group: 'images',
+      fieldset: 'imageSet3',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
 
     // SECTION 4
     {
@@ -349,6 +496,55 @@ export default {
           {title: 'Sticky right', value: 'Sticky right'}
         ]
       }
+    },
+    {
+      name: 'section4Captions',
+      title: 'Section 4 Captions',
+      type: 'object',
+      group: 'images',
+      fieldset: 'imageSet4',
+      fields: [
+        {
+          name: 'en',
+          title: 'English',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: 'de',
+          title: 'German',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [
+                {title: 'Normal', value: 'normal'}
+              ],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Strong', value: 'strong'},
+                  {title: 'Emphasis', value: 'em'}
+                ]
+              }
+            }
+          ]
+        }
+      ]
     },
 
     // FINAL SECTION

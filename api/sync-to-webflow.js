@@ -1323,7 +1323,10 @@ async function syncCollection(options, progressCallback = null) {
       const key = `${mappingKey}:${item._id}`
       const prev = persistentHashes.get(key)
       
-      if (prev !== hash || global.FORCE_UPDATE) {
+      // Check both global and env var for force update
+      const forceUpdate = global.FORCE_UPDATE || process.env.FORCE_UPDATE === 'true'
+      
+      if (prev !== hash || forceUpdate) {
         updateItems.push({ item, webflowId: existingId, webflowItem, hash, key })
       } else {
         existingCount++
@@ -2087,17 +2090,21 @@ async function syncArticles(limit = null, progressCallback = null) {
       'hero-image-2': prepareSingleImage(item.heroImage, 'en'),
       intro: extractTextFromBlocks(item.intro?.en || item.intro?.de),
       'section-1-images-2': prepareImages(item.section1Images, 'en'),
-      'section-1-layout-3': layoutOptionMaps.section1[item.section1Layout] || null,
+      'section-1-layout-3': layoutOptionMaps.section1[item.section1Layout] || layoutOptionMaps.section1['Main'],
       'section-1-text-2': extractTextFromBlocks(enSections[0]),
+      'section-1-captions-2': extractTextFromBlocks(item.section1Captions?.en),
       'section-2-images-2': prepareImages(item.section2Images, 'en'),
-      'section-2-layout-3': layoutOptionMaps.section2[item.section2Layout] || null,
+      'section-2-layout-3': layoutOptionMaps.section2[item.section2Layout] || layoutOptionMaps.section2['Main'],
       'section-2-text-2': extractTextFromBlocks(enSections[1]),
+      'section-2-captions-2': extractTextFromBlocks(item.section2Captions?.en),
       'section-3-images-2': prepareImages(item.section3Images, 'en'),
-      'section-3-layout-3': layoutOptionMaps.section3[item.section3Layout] || null,
+      'section-3-layout-3': layoutOptionMaps.section3[item.section3Layout] || layoutOptionMaps.section3['Main'],
       'section-3-text-2': extractTextFromBlocks(enSections[2]),
+      'section-3-captions-2': extractTextFromBlocks(item.section3Captions?.en),
       'section-4-images-2': prepareImages(item.section4Images, 'en'),
-      'section-4-layout-3': layoutOptionMaps.section4[item.section4Layout] || null,
+      'section-4-layout-3': layoutOptionMaps.section4[item.section4Layout] || layoutOptionMaps.section4['Main'],
       'section-4-text-2': extractTextFromBlocks(enSections[3]),
+      'section-4-captions-2': extractTextFromBlocks(item.section4Captions?.en),
       'section-final-image-1': prepareSingleImage(item.sectionFinalImage1, 'en')
     }
     
@@ -2109,12 +2116,16 @@ async function syncArticles(limit = null, progressCallback = null) {
       intro: extractTextFromBlocks(item.intro?.de || item.intro?.en),
       'section-1-images-2': prepareImages(item.section1Images, 'de'),
       'section-1-text-2': extractTextFromBlocks(deSections[0]),
+      'section-1-captions-2': extractTextFromBlocks(item.section1Captions?.de),
       'section-2-images-2': prepareImages(item.section2Images, 'de'),
       'section-2-text-2': extractTextFromBlocks(deSections[1]),
+      'section-2-captions-2': extractTextFromBlocks(item.section2Captions?.de),
       'section-3-images-2': prepareImages(item.section3Images, 'de'),
       'section-3-text-2': extractTextFromBlocks(deSections[2]),
+      'section-3-captions-2': extractTextFromBlocks(item.section3Captions?.de),
       'section-4-images-2': prepareImages(item.section4Images, 'de'),
       'section-4-text-2': extractTextFromBlocks(deSections[3]),
+      'section-4-captions-2': extractTextFromBlocks(item.section4Captions?.de),
       'section-final-image-1': prepareSingleImage(item.sectionFinalImage1, 'de')
     }
     
@@ -2144,7 +2155,7 @@ async function syncArticles(limit = null, progressCallback = null) {
     collectionId: WEBFLOW_COLLECTIONS.article,
     mappingKey: 'article',
     sanityQuery: `
-      *[_type == "article" ${filter}] | order(date desc) {
+      *[_type == "article" && !(_id in path("drafts.**")) ${filter}] | order(date desc) {
         _id,
         creatorName,
         title,
@@ -2166,18 +2177,22 @@ async function syncArticles(limit = null, progressCallback = null) {
           asset->{_id, url, originalFilename, altText, alt, metadata}
         },
         section1Layout,
+        section1Captions,
         section2Images[]{
           asset->{_id, url, originalFilename, altText, alt, metadata}
         },
         section2Layout,
+        section2Captions,
         section3Images[]{
           asset->{_id, url, originalFilename, altText, alt, metadata}
         },
         section3Layout,
+        section3Captions,
         section4Images[]{
           asset->{_id, url, originalFilename, altText, alt, metadata}
         },
         section4Layout,
+        section4Captions,
         sectionFinalImage1{
           asset->{_id, url, originalFilename, altText, alt, metadata}
         }
