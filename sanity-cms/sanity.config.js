@@ -426,7 +426,7 @@ export default defineConfig({
   form: {
     components: {
       input: (props) => {
-        const syncable = ['creator', 'artwork', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
+        const syncable = ['creator', 'artwork', 'article', 'author', 'photographer', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
         const isRoot = props.level === 0
         const typeName = props.schemaType && props.schemaType.name
 

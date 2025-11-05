@@ -3,7 +3,7 @@ import { SyncIcon } from '@sanity/icons'
 export default function SyncDocumentAction(props) {
   const { id, schemaType, draft, published } = props
 
-  const syncableTypes = ['creator', 'artwork', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
+  const syncableTypes = ['creator', 'artwork', 'article', 'author', 'photographer', 'category', 'medium', 'material', 'materialType', 'finish', 'location']
   const sanityType = schemaType?.name
 
   // Only show for supported types
