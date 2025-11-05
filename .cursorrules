@@ -1,0 +1,49 @@
+# Cursor Rules for Art Aurea Project
+
+## CRITICAL: Read PROJECT_SETUP.md First
+
+**Before making ANY changes or answering questions about this project, you MUST read:**
+- `PROJECT_SETUP.md` - Complete project architecture, workflows, and setup instructions
+
+This file contains essential information about:
+- Repository structure (aa_scan vs art-aurea-api)
+- Sync script workflow (single source of truth)
+- Deployment processes
+- Supported document types
+- Troubleshooting guides
+
+## Project Structure
+
+- **Main repo**: `aa_scan` - Contains Sanity schemas, sync script (source of truth), and scripts
+- **API repo**: `art-aurea-api` - Uses symlink locally, copies file for Vercel deployment
+- **Sync script**: `api/sync-to-webflow.js` - Single source of truth in `aa_scan`
+
+## Key Workflows
+
+### When editing sync script:
+1. Edit in `aa_scan/api/sync-to-webflow.js`
+2. Test locally (symlink works automatically)
+3. Commit to `aa_scan`
+4. Run `npm run sync-script` in `art-aurea-api` to copy
+5. Commit & push to `art-aurea-api` for Vercel deployment
+
+### When editing Sanity schemas:
+1. Edit in `aa_scan/sanity-cms/schemas/`
+2. Commit & push to `aa_scan`
+3. Vercel auto-deploys Sanity Studio
+
+## Important Reminders
+
+- Only **published** documents sync to Webflow (drafts are excluded)
+- Single-item sync supports: creator, artwork, article, author, photographer, category, medium, material, materialType, finish, location
+- Articles exclude drafts automatically: `!(_id in path("drafts.**"))`
+- Force update available via `FORCE_UPDATE=true` env var
+- Default layouts: Missing section layouts default to "Main"
+
+## Before Making Changes
+
+1. **Read PROJECT_SETUP.md** to understand the architecture
+2. **Check existing patterns** - Don't create new patterns without checking existing code
+3. **Consider both repos** - If changing sync script, remember to sync to art-aurea-api
+4. **Test locally** - Use symlink for instant testing before deploying
+

@@ -214,6 +214,27 @@ node your-script.js
 - Should be: `https://art-aurea-api.vercel.app/api/sync-to-webflow`
 - NOT: `https://aabackend-ten.vercel.app` (old/wrong)
 
+## Article Sync Features
+
+### Draft Exclusion
+- Articles automatically exclude drafts: `!(_id in path("drafts.**"))`
+- Only **published** articles sync to Webflow
+- Unpublishing an article in Sanity removes it from Webflow on next full sync (orphan detection)
+
+### Force Update
+- Use `FORCE_UPDATE=true` to bypass hash check and force update all articles
+- Useful for refreshing images or forcing complete resync
+- Example: `FORCE_UPDATE=true node api/sync-to-webflow.js --only=article`
+
+### Default Layouts
+- Missing section layouts default to "Main" layout
+- Prevents Webflow validation errors for required layout fields
+
+### Orphan Cleanup
+- Full sync (not single-item) automatically detects and deletes orphaned articles
+- Orphaned = exists in Webflow but not in published Sanity articles
+- Run full sync periodically to clean up unpublished articles
+
 ## Key Learnings
 
 1. **Webflow's API doesn't support direct locale linking** via simple POST/PATCH
@@ -221,6 +242,8 @@ node your-script.js
 3. **CSV import is one-time only** - not suitable for ongoing sync
 4. **Vercel has 5-minute timeout** for serverless functions - single-item sync avoids this
 5. **Items must be published in both locales together** using new API format
+6. **Drafts never sync** - only published documents appear in Webflow
+7. **Orphan cleanup requires full sync** - single-item sync skips orphan detection
 
 ## Data Flow
 
