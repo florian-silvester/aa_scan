@@ -2186,6 +2186,7 @@ async function syncArticles(limit = null, progressCallback = null) {
       name: titleEN,
       slug: item.slug?.current || generateSlug(`${creatorNameStr} ${titleEN}`),
       date: item.date || null,
+      'creator-name': creatorNameStr, // Creator Name field
       'featured-creator': creatorId,
       materials: materialIds,
       'medium-2': mediumIds,
