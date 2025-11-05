@@ -30,9 +30,17 @@ This project has THREE separate deployments:
 - **GitHub**: `florian-silvester/aa_scan`
 - **Contains**:
   - `sanity-cms/` - Sanity Studio source code
-  - `api/` - Sync API source code
+  - `api/` - Sync API source code (source of truth)
   - `scripts/` - Local utility scripts
   - `webflow/` - Webflow site exports
+
+### API Repo: `art-aurea-api`
+- **Location**: `/Users/florian.ludwig/Documents/art-aurea-api`
+- **GitHub**: `florian-silvester/art-aurea-api`
+- **Contains**:
+  - `api/sync-to-webflow.js` - **Symlinked from `aa_scan`** (local dev) or **copied** (Vercel deployment)
+  - `sync-script-from-aa-scan.sh` - Script to sync sync script from `aa_scan`
+- **Note**: This repo exists separately because Vercel needs the actual file (can't follow symlinks during builds)
 
 ### Vercel Deployments
 
@@ -78,6 +86,9 @@ curl -X POST https://art-aurea-api.vercel.app/api/sync-to-webflow \
 **Supported document types:**
 - `creator`
 - `artwork`
+- `article`
+- `author`
+- `photographer`
 - `category`
 - `medium`
 - `material`
@@ -114,6 +125,10 @@ git add . && git commit -m "..." && git push
 ```
 
 ### For API Changes
+
+**Single Source of Truth**: The sync script (`api/sync-to-webflow.js`) lives in `aa_scan` and is the single source of truth.
+
+**Local Development**:
 ```bash
 cd /Users/florian.ludwig/Documents/aa_scan
 # Edit api/sync-to-webflow.js
@@ -121,12 +136,34 @@ cd /Users/florian.ludwig/Documents/aa_scan
 # Test locally (optional):
 node api/sync-to-webflow.js --only=creator --limit=1
 
-# Deploy:
+# Commit to aa_scan:
 git add api/sync-to-webflow.js
 git commit -m "API updates"
 git push origin main
+```
+
+**Deploying to Vercel (art-aurea-api)**:
+Since `art-aurea-api` uses a symlink locally but Vercel can't follow symlinks, you need to copy the file before deploying:
+
+```bash
+cd /Users/florian.ludwig/Documents/art-aurea-api
+
+# Copy latest sync script from aa_scan:
+npm run sync-script
+
+# Commit and push:
+git add api/sync-to-webflow.js
+git commit -m "Update sync script from aa_scan"
+git push origin main
 # Vercel auto-deploys API within 30-60 seconds
 ```
+
+**Workflow Summary**:
+1. **Edit** sync script in `aa_scan` (single source of truth)
+2. **Test locally** - symlink in `art-aurea-api` allows instant testing
+3. **Commit to `aa_scan`** - push changes to main repo
+4. **Sync to `art-aurea-api`** - run `npm run sync-script` to copy file
+5. **Deploy** - commit & push to `art-aurea-api` for Vercel deployment
 
 ### For Local Scripts (one-off tasks)
 ```bash
