@@ -435,41 +435,81 @@ async function updateImageMetadata(webflowAssetId, altText) {
   }
 }
 
-// Convert Sanity block content to Webflow's Rich Text JSON format
+// Convert Sanity block content to Webflow's Rich Text HTML format
 function convertSanityBlocksToWebflowRichText(blocks) {
   if (!blocks || !Array.isArray(blocks)) return null
-
-  const content = blocks.map(block => {
+  
+  const htmlElements = blocks.map(block => {
     if (block._type === 'block' && block.children) {
-      const paragraphContent = block.children.map(child => {
-        const marks = child.marks?.map(mark => {
-          if (mark === 'strong') return { type: 'bold' }
-          if (mark === 'em') return { type: 'italic' }
-          if (mark.startsWith('link-')) return { type: 'link', attrs: { href: mark.substring(5) } }
-          return { type: mark }
-        }).filter(Boolean)
-
-        return {
-          type: 'text',
-          text: child.text || '',
-          ...(marks && marks.length > 0 && { marks })
-        }
-      })
+      let paragraphContent = ''
       
-      return {
-        type: 'paragraph',
-        content: paragraphContent
+      // Process each text span
+      for (const child of block.children) {
+        let text = child.text || ''
+        
+        // Apply formatting marks
+        if (child.marks && child.marks.length > 0) {
+          // Track which marks to apply
+          const marks = {
+            strong: false,      // Bold
+            em: false,          // Italic
+            underline: false,   // Underline
+            strike: false,      // Strike-through
+            link: null          // Link URL
+          }
+          
+          // Parse all marks
+          for (const mark of child.marks) {
+            if (mark === 'strong') marks.strong = true
+            else if (mark === 'em') marks.em = true
+            else if (mark === 'underline') marks.underline = true
+            else if (mark === 'strike-through') marks.strike = true
+            else if (typeof mark === 'object' && mark._type === 'link') {
+              marks.link = mark.href
+            }
+          }
+          
+          // Apply marks in proper nesting order (inside-out)
+          if (marks.link) text = `<a href="${marks.link}">${text}</a>`
+          if (marks.strong) text = `<strong>${text}</strong>`
+          if (marks.em) text = `<em>${text}</em>`
+          if (marks.underline) text = `<u>${text}</u>`
+          if (marks.strike) text = `<s>${text}</s>`
+        }
+        
+        paragraphContent += text
+      }
+      
+      // Wrap in appropriate block element based on style
+      const style = block.style || 'normal'
+      switch (style) {
+        case 'h1': return `<h1>${paragraphContent}</h1>`
+        case 'h2': return `<h2>${paragraphContent}</h2>`
+        case 'h3': return `<h3>${paragraphContent}</h3>`
+        case 'h4': return `<h4>${paragraphContent}</h4>`
+        case 'blockquote': return `<blockquote>${paragraphContent}</blockquote>`
+        default: return `<p>${paragraphContent}</p>`
+      }
+    } 
+    // Handle list items
+    else if (block._type === 'block' && block.listItem) {
+      let listContent = ''
+      for (const child of block.children || []) {
+        listContent += child.text || ''
+      }
+      
+      if (block.listItem === 'bullet') {
+        return `<ul><li>${listContent}</li></ul>`
+      } else if (block.listItem === 'number') {
+        return `<ol><li>${listContent}</li></ol>`
       }
     }
     return null
   }).filter(Boolean)
-
-  if (content.length === 0) return null
   
-  return {
-    type: 'doc',
-    content: content
-  }
+  if (htmlElements.length === 0) return null
+  
+  return htmlElements.join('')
 }
 
 // Extract plain text from Sanity rich text blocks (for non-rich-text fields)
@@ -2236,18 +2276,19 @@ async function syncArticles(limit = null, progressCallback = null) {
       }
     }
     
-    // Build hero headline: Creator Name + Title
+    // Get creator name and titles
     const creatorNameStr = item.creatorName || item.featuredCreator?.name || ''
     const titleEN = item.title?.en || item.title?.de || 'Untitled'
     const titleDE = item.title?.de || item.title?.en || 'Untitled'
-    const heroHeadlineEN = creatorNameStr ? `${creatorNameStr} – ${titleEN}` : titleEN
-    const heroHeadlineDE = creatorNameStr ? `${creatorNameStr} – ${titleDE}` : titleDE
+    const heroHeadlineEN = titleEN // Just the title, no creator name
+    const heroHeadlineDE = titleDE // Just the title, no creator name
     
     // English fieldData
     const englishFields = {
       name: titleEN,
       slug: item.slug?.current || generateSlug(`${creatorNameStr} ${titleEN}`),
       date: item.date || null,
+      issue: item.issue || '',
       'creator-name': creatorNameStr, // Creator Name field
       'featured-creator': creatorId,
       materials: materialIds,
@@ -2257,45 +2298,46 @@ async function syncArticles(limit = null, progressCallback = null) {
       'photographer-s': photographerIds,
       'hero-headline': heroHeadlineEN,
       'hero-image-2': prepareSingleImage(item.heroImage, 'en'),
-      intro: extractTextFromBlocks(item.intro?.en || item.intro?.de),
+      intro: convertSanityBlocksToWebflowRichText(item.intro?.en || item.intro?.de),
       'section-1-images-2': prepareImages(item.section1Images, 'en'),
       'section-1-layout-3': layoutOptionMaps.section1[item.section1Layout] || layoutOptionMaps.section1['Main'],
-      'section-1-text-2': extractTextFromBlocks(enSections[0]),
-      'section-1-captions-2': extractTextFromBlocks(item.section1Captions?.en),
+      'section-1-text-2': convertSanityBlocksToWebflowRichText(enSections[0]),
+      'section-1-captions-2': convertSanityBlocksToWebflowRichText(item.section1Captions?.en),
       'section-2-images-2': prepareImages(item.section2Images, 'en'),
       'section-2-layout-3': layoutOptionMaps.section2[item.section2Layout] || layoutOptionMaps.section2['Main'],
-      'section-2-text-2': extractTextFromBlocks(enSections[1]),
-      'section-2-captions-2': extractTextFromBlocks(item.section2Captions?.en),
+      'section-2-text-2': convertSanityBlocksToWebflowRichText(enSections[1]),
+      'section-2-captions-2': convertSanityBlocksToWebflowRichText(item.section2Captions?.en),
       'section-3-images-2': prepareImages(item.section3Images, 'en'),
       'section-3-layout-3': layoutOptionMaps.section3[item.section3Layout] || layoutOptionMaps.section3['Main'],
-      'section-3-text-2': extractTextFromBlocks(enSections[2]),
-      'section-3-captions-2': extractTextFromBlocks(item.section3Captions?.en),
+      'section-3-text-2': convertSanityBlocksToWebflowRichText(enSections[2]),
+      'section-3-captions-2': convertSanityBlocksToWebflowRichText(item.section3Captions?.en),
       'section-4-images-2': prepareImages(item.section4Images, 'en'),
       'section-4-layout-3': layoutOptionMaps.section4[item.section4Layout] || layoutOptionMaps.section4['Main'],
-      'section-4-text-2': extractTextFromBlocks(enSections[3]),
-      'section-4-captions-2': extractTextFromBlocks(item.section4Captions?.en),
+      'section-4-text-2': convertSanityBlocksToWebflowRichText(enSections[3]),
+      'section-4-captions-2': convertSanityBlocksToWebflowRichText(item.section4Captions?.en),
       'section-final-image-1': prepareSingleImage(item.sectionFinalImage1, 'en')
     }
     
     // German fieldData (for separate locale update)
     const germanFields = {
       name: titleDE,
+      issue: item.issue || '', // Same for both locales
       'creator-name': creatorNameStr, // Creator Name field (same for both locales)
       'hero-headline': heroHeadlineDE,
       'hero-image-2': prepareSingleImage(item.heroImage, 'de'),
-      intro: extractTextFromBlocks(item.intro?.de || item.intro?.en),
+      intro: convertSanityBlocksToWebflowRichText(item.intro?.de || item.intro?.en),
       'section-1-images-2': prepareImages(item.section1Images, 'de'),
-      'section-1-text-2': extractTextFromBlocks(deSections[0]),
-      'section-1-captions-2': extractTextFromBlocks(item.section1Captions?.de),
+      'section-1-text-2': convertSanityBlocksToWebflowRichText(deSections[0]),
+      'section-1-captions-2': convertSanityBlocksToWebflowRichText(item.section1Captions?.de),
       'section-2-images-2': prepareImages(item.section2Images, 'de'),
-      'section-2-text-2': extractTextFromBlocks(deSections[1]),
-      'section-2-captions-2': extractTextFromBlocks(item.section2Captions?.de),
+      'section-2-text-2': convertSanityBlocksToWebflowRichText(deSections[1]),
+      'section-2-captions-2': convertSanityBlocksToWebflowRichText(item.section2Captions?.de),
       'section-3-images-2': prepareImages(item.section3Images, 'de'),
-      'section-3-text-2': extractTextFromBlocks(deSections[2]),
-      'section-3-captions-2': extractTextFromBlocks(item.section3Captions?.de),
+      'section-3-text-2': convertSanityBlocksToWebflowRichText(deSections[2]),
+      'section-3-captions-2': convertSanityBlocksToWebflowRichText(item.section3Captions?.de),
       'section-4-images-2': prepareImages(item.section4Images, 'de'),
-      'section-4-text-2': extractTextFromBlocks(deSections[3]),
-      'section-4-captions-2': extractTextFromBlocks(item.section4Captions?.de),
+      'section-4-text-2': convertSanityBlocksToWebflowRichText(deSections[3]),
+      'section-4-captions-2': convertSanityBlocksToWebflowRichText(item.section4Captions?.de),
       'section-final-image-1': prepareSingleImage(item.sectionFinalImage1, 'de')
     }
     
