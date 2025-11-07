@@ -1,0 +1,1400 @@
+[
+  {
+    "profileUrl": "https://artaurea.de/profiles/urup-tora/",
+    "creatorName": "Tora Urup",
+    "images": [
+      {
+        "index": 1,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo_.Stuart-McIntyre.jpg",
+        "filename": "2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo_.Stuart-McIntyre.jpg",
+        "caption": "Objekt mit rauchgrünen und klaren Schichten, 2014. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo_.Stuart-McIntyre.jpg",
+          "cleaned": "2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo-.Stuart-McIntyre",
+          "parts": [
+            "2.Smokegrey",
+            "and",
+            "clear",
+            "layers.h10x",
+            "w31",
+            "cm.TU2014.Photo",
+            ".Stuart",
+            "McIntyre"
+          ],
+          "firstWord": "2.smokegrey",
+          "lastWord": "mcintyre"
+        },
+        "parsedCaption": {
+          "text": "Objekt mit rauchgrünen und klaren Schichten, 2014. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+          "title": "Objekt mit rauchgrünen und klaren Schichten, 2014",
+          "year": "2014",
+          "dimensions": "H 10 x Ø 31 cm",
+          "normalized": "objekt mit rauchgrunen und klaren schichten 2014"
+        }
+      },
+      {
+        "index": 2,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre.jpg",
+        "filename": "Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre.jpg",
+        "caption": "Matter Zylinder mit azurblauer schwebender Schale, 2014. Glas, H 12 x Ø 17 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre.jpg",
+          "cleaned": "Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre",
+          "parts": [
+            "Tora",
+            "Urup",
+            "Mat",
+            "Cylinder",
+            "with",
+            "floating",
+            "azureblue",
+            "bowl",
+            "2014.",
+            "Glass",
+            "H",
+            "12",
+            "x",
+            "W",
+            "17",
+            "cm.",
+            "Photo",
+            "Stuart",
+            "McIntyre"
+          ],
+          "firstWord": "tora",
+          "lastWord": "mcintyre"
+        },
+        "parsedCaption": {
+          "text": "Matter Zylinder mit azurblauer schwebender Schale, 2014. Glas, H 12 x Ø 17 cm. Photo Stuart McIntyre",
+          "title": "Matter Zylinder mit azurblauer schwebender Schale, 2014",
+          "year": "2014",
+          "dimensions": "H 12 x Ø 17 cm",
+          "normalized": "matter zylinder mit azurblauer schwebender schale 2014"
+        }
+      },
+      {
+        "index": 3,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre.jpg",
+        "filename": "Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre.jpg",
+        "caption": "<em>Schale zwischen Erde und Himmel</em>, 2015. Glas, H 5 x Ø 28 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre.jpg",
+          "cleaned": "Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre",
+          "parts": [
+            "Tora",
+            "Urup",
+            "Dish",
+            "between",
+            "Earth",
+            "and",
+            "Sky",
+            "2015.",
+            "Glass.",
+            "H",
+            "5",
+            "x",
+            "W",
+            "28.",
+            "Photo",
+            "Stuart",
+            "McIntyre"
+          ],
+          "firstWord": "tora",
+          "lastWord": "mcintyre"
+        },
+        "parsedCaption": {
+          "text": "Schale zwischen Erde und Himmel, 2015. Glas, H 5 x Ø 28 cm. Photo Stuart McIntyre",
+          "title": "Schale zwischen Erde und Himmel, 2015",
+          "year": "2015",
+          "dimensions": "H 5 x Ø 28 cm",
+          "normalized": "schale zwischen erde und himmel 2015"
+        }
+      },
+      {
+        "index": 4,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-multiple-white-opaline-clear-layers.jpg",
+        "filename": "tora-urup-multiple-white-opaline-clear-layers.jpg",
+        "caption": "Schale mit multiplen, weiß-opalin-klaren Schichten. Glas, H 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-multiple-white-opaline-clear-layers.jpg",
+          "cleaned": "tora-urup-multiple-white-opaline-clear-layers",
+          "parts": [
+            "tora",
+            "urup",
+            "multiple",
+            "white",
+            "opaline",
+            "clear",
+            "layers"
+          ],
+          "firstWord": "tora",
+          "lastWord": "layers"
+        },
+        "parsedCaption": {
+          "text": "Schale mit multiplen, weiß-opalin-klaren Schichten. Glas, H 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+          "title": "Schale mit multiplen, weiß-opalin-klaren Schichten",
+          "year": null,
+          "dimensions": "H 11,5 x Ø 30 cm",
+          "normalized": "schale mit multiplen weiss opalin klaren schichten"
+        }
+      },
+      {
+        "index": 5,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre.jpg",
+        "filename": "Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre.jpg",
+        "caption": "Zylinder mit schwebender cyangrauer Schale, 2014. Glas, H 15 x Ø 20 cm. Photo Stuart McIntre",
+        "parsedFilename": {
+          "original": "Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre.jpg",
+          "cleaned": "Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre",
+          "parts": [
+            "Tora",
+            "Urup",
+            "Cylinder",
+            "with",
+            "floating",
+            "Cyangrey",
+            "bowl",
+            "2014.",
+            "Glass",
+            "H",
+            "15",
+            "x",
+            "W",
+            "20",
+            "cm.",
+            "Photo",
+            "Stuart",
+            "McIntyre"
+          ],
+          "firstWord": "tora",
+          "lastWord": "mcintyre"
+        },
+        "parsedCaption": {
+          "text": "Zylinder mit schwebender cyangrauer Schale, 2014. Glas, H 15 x Ø 20 cm. Photo Stuart McIntre",
+          "title": "Zylinder mit schwebender cyangrauer Schale, 2014",
+          "year": "2014",
+          "dimensions": "H 15 x Ø 20 cm",
+          "normalized": "zylinder mit schwebender cyangrauer schale 2014"
+        }
+      },
+      {
+        "index": 6,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre.jpg",
+        "filename": "2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre.jpg",
+        "caption": "Objekt mit blauen und klaren Schichten, 2015. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre.jpg",
+          "cleaned": "2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre",
+          "parts": [
+            "2.Blue",
+            "clear",
+            "layers.h10x",
+            "w",
+            "31",
+            "cm",
+            "©Tora",
+            "Urup",
+            "2015.",
+            "Photo",
+            "Stuart",
+            "McIntyre"
+          ],
+          "firstWord": "2.blue",
+          "lastWord": "mcintyre"
+        },
+        "parsedCaption": {
+          "text": "Objekt mit blauen und klaren Schichten, 2015. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+          "title": "Objekt mit blauen und klaren Schichten, 2015",
+          "year": "2015",
+          "dimensions": "H 10 x Ø 31 cm",
+          "normalized": "objekt mit blauen und klaren schichten 2015"
+        }
+      },
+      {
+        "index": 7,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+        "filename": "tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+        "caption": "Schale mit multiplen weißen und klaren Schichten, Glas. 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+          "cleaned": "tora-urup-bowl-multiple-white-and-clear-layers",
+          "parts": [
+            "tora",
+            "urup",
+            "bowl",
+            "multiple",
+            "white",
+            "and",
+            "clear",
+            "layers"
+          ],
+          "firstWord": "tora",
+          "lastWord": "layers"
+        },
+        "parsedCaption": {
+          "text": "Schale mit multiplen weißen und klaren Schichten, Glas. 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+          "title": "Schale mit multiplen weißen und klaren Schichten, Glas. 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+          "year": null,
+          "dimensions": "Ø 30 cm",
+          "normalized": "schale mit multiplen weissen und klaren schichten glas 11 5 x 30 cm photo stuart mcintyre"
+        }
+      },
+      {
+        "index": 8,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowl-warm-grey-azureblue.jpg",
+        "filename": "tora-urup-bowl-warm-grey-azureblue.jpg",
+        "caption": "Warmgraue und azurblaue Schale. Glas, 11 x Ø 26 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-bowl-warm-grey-azureblue.jpg",
+          "cleaned": "tora-urup-bowl-warm-grey-azureblue",
+          "parts": [
+            "tora",
+            "urup",
+            "bowl",
+            "warm",
+            "grey",
+            "azureblue"
+          ],
+          "firstWord": "tora",
+          "lastWord": "azureblue"
+        },
+        "parsedCaption": {
+          "text": "Warmgraue und azurblaue Schale. Glas, 11 x Ø 26 cm. Photo Stuart McIntyre",
+          "title": "Warmgraue und azurblaue Schale",
+          "year": null,
+          "dimensions": "Ø 26 cm",
+          "normalized": "warmgraue und azurblaue schale"
+        }
+      },
+      {
+        "index": 9,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowl-warmgrey.jpg",
+        "filename": "tora-urup-bowl-warmgrey.jpg",
+        "caption": "Warmgraue Schale. Glas, 11 x Ø 26 cm. Photo Hans Hansen",
+        "parsedFilename": {
+          "original": "tora-urup-bowl-warmgrey.jpg",
+          "cleaned": "tora-urup-bowl-warmgrey",
+          "parts": [
+            "tora",
+            "urup",
+            "bowl",
+            "warmgrey"
+          ],
+          "firstWord": "tora",
+          "lastWord": "warmgrey"
+        },
+        "parsedCaption": {
+          "text": "Warmgraue Schale. Glas, 11 x Ø 26 cm. Photo Hans Hansen",
+          "title": "Warmgraue Schale",
+          "year": null,
+          "dimensions": "Ø 26 cm",
+          "normalized": "warmgraue schale"
+        }
+      },
+      {
+        "index": 10,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-cylinder-floating-sand-colored-bowl1.jpg",
+        "filename": "tora-urup-cylinder-floating-sand-colored-bowl1.jpg",
+        "caption": "Zylinder mit schwebender und sandfarbener Schale. Glas, 12 x Ø 24,5 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-cylinder-floating-sand-colored-bowl1.jpg",
+          "cleaned": "tora-urup-cylinder-floating-sand-colored-bowl1",
+          "parts": [
+            "tora",
+            "urup",
+            "cylinder",
+            "floating",
+            "sand",
+            "colored",
+            "bowl1"
+          ],
+          "firstWord": "tora",
+          "lastWord": "bowl1"
+        },
+        "parsedCaption": {
+          "text": "Zylinder mit schwebender und sandfarbener Schale. Glas, 12 x Ø 24,5 cm. Photo Stuart McIntyre",
+          "title": "Zylinder mit schwebender und sandfarbener Schale",
+          "year": null,
+          "dimensions": "Ø 24,5 cm",
+          "normalized": "zylinder mit schwebender und sandfarbener schale"
+        }
+      },
+      {
+        "index": 11,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-cylinder-floating-jade-green-bowl1.jpg",
+        "filename": "tora-urup-cylinder-floating-jade-green-bowl1.jpg",
+        "caption": "Zylinder mit schwebender jadegrüner Schale. Glas, 12 x Ø 22,5 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-cylinder-floating-jade-green-bowl1.jpg",
+          "cleaned": "tora-urup-cylinder-floating-jade-green-bowl1",
+          "parts": [
+            "tora",
+            "urup",
+            "cylinder",
+            "floating",
+            "jade",
+            "green",
+            "bowl1"
+          ],
+          "firstWord": "tora",
+          "lastWord": "bowl1"
+        },
+        "parsedCaption": {
+          "text": "Zylinder mit schwebender jadegrüner Schale. Glas, 12 x Ø 22,5 cm. Photo Stuart McIntyre",
+          "title": "Zylinder mit schwebender jadegrüner Schale",
+          "year": null,
+          "dimensions": "Ø 22,5 cm",
+          "normalized": "zylinder mit schwebender jadegruner schale"
+        }
+      },
+      {
+        "index": 12,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-cylinder-floating-grey-bowl.jpg",
+        "filename": "tora-urup-cylinder-floating-grey-bowl.jpg",
+        "caption": "Zylinder mit schwebender grauer Schale. Glas, 13 x Ø 17 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-cylinder-floating-grey-bowl.jpg",
+          "cleaned": "tora-urup-cylinder-floating-grey-bowl",
+          "parts": [
+            "tora",
+            "urup",
+            "cylinder",
+            "floating",
+            "grey",
+            "bowl"
+          ],
+          "firstWord": "tora",
+          "lastWord": "bowl"
+        },
+        "parsedCaption": {
+          "text": "Zylinder mit schwebender grauer Schale. Glas, 13 x Ø 17 cm. Photo Stuart McIntyre",
+          "title": "Zylinder mit schwebender grauer Schale",
+          "year": null,
+          "dimensions": "Ø 17 cm",
+          "normalized": "zylinder mit schwebender grauer schale"
+        }
+      },
+      {
+        "index": 13,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+        "filename": "tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+        "caption": "Zylinder mit schwebender sonnengelber Schale. 12 x Ø 17 cm. Photo Stuart McIntyre",
+        "parsedFilename": {
+          "original": "tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+          "cleaned": "tora-urup-mat-cylinder-with-floating-sun-yellow-bowl",
+          "parts": [
+            "tora",
+            "urup",
+            "mat",
+            "cylinder",
+            "with",
+            "floating",
+            "sun",
+            "yellow",
+            "bowl"
+          ],
+          "firstWord": "tora",
+          "lastWord": "bowl"
+        },
+        "parsedCaption": {
+          "text": "Zylinder mit schwebender sonnengelber Schale. 12 x Ø 17 cm. Photo Stuart McIntyre",
+          "title": "Zylinder mit schwebender sonnengelber Schale. 12 x Ø 17 cm. Photo Stuart McIntyre",
+          "year": null,
+          "dimensions": "Ø 17 cm",
+          "normalized": "zylinder mit schwebender sonnengelber schale 12 x 17 cm photo stuart mcintyre"
+        }
+      },
+      {
+        "index": 14,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-opal-vase.jpg",
+        "filename": "tora-urup-opal-vase.jpg",
+        "caption": "Vasen <em>Opal</em>. Preis auf Anfrage. Photo Hans Hansen",
+        "parsedFilename": {
+          "original": "tora-urup-opal-vase.jpg",
+          "cleaned": "tora-urup-opal-vase",
+          "parts": [
+            "tora",
+            "urup",
+            "opal",
+            "vase"
+          ],
+          "firstWord": "tora",
+          "lastWord": "vase"
+        },
+        "parsedCaption": {
+          "text": "Vasen Opal. Preis auf Anfrage. Photo Hans Hansen",
+          "title": "Vasen Opal. Preis auf Anfrage. Photo Hans Hansen",
+          "year": null,
+          "dimensions": null,
+          "normalized": "vasen opal preis auf anfrage photo hans hansen"
+        }
+      },
+      {
+        "index": 15,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowls-tumblers.jpg",
+        "filename": "tora-urup-bowls-tumblers.jpg",
+        "caption": "<em>Series of 5 tumblers</em> Glasschüsseln. 25–45 Euro pro Stück. Photo Hans Hansen",
+        "parsedFilename": {
+          "original": "tora-urup-bowls-tumblers.jpg",
+          "cleaned": "tora-urup-bowls-tumblers",
+          "parts": [
+            "tora",
+            "urup",
+            "bowls",
+            "tumblers"
+          ],
+          "firstWord": "tora",
+          "lastWord": "tumblers"
+        },
+        "parsedCaption": {
+          "text": "Series of 5 tumblers Glasschüsseln. 25–45 Euro pro Stück. Photo Hans Hansen",
+          "title": "Series of 5 tumblers Glasschüsseln. 25–45 Euro pro Stück. Photo Hans Hansen",
+          "year": null,
+          "dimensions": null,
+          "normalized": "series of 5 tumblers glasschusseln 25 45 euro pro stuck photo hans hansen"
+        }
+      },
+      {
+        "index": 16,
+        "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-series-of-5-tumblers.jpg",
+        "filename": "tora-urup-series-of-5-tumblers.jpg",
+        "caption": "<em>Series of 5 tumblers</em>. Glas. Größe 8–36 cl. 25–30 Euro pro Stück. Preis auf Anfrage. Photo Hans Hansen",
+        "parsedFilename": {
+          "original": "tora-urup-series-of-5-tumblers.jpg",
+          "cleaned": "tora-urup-series-of-5-tumblers",
+          "parts": [
+            "tora",
+            "urup",
+            "series",
+            "of",
+            "5",
+            "tumblers"
+          ],
+          "firstWord": "tora",
+          "lastWord": "tumblers"
+        },
+        "parsedCaption": {
+          "text": "Series of 5 tumblers. Glas. Größe 8–36 cl. 25–30 Euro pro Stück. Preis auf Anfrage. Photo Hans Hansen",
+          "title": "Series of 5 tumblers",
+          "year": null,
+          "dimensions": null,
+          "normalized": "series of 5 tumblers"
+        }
+      }
+    ],
+    "sanityCreator": {
+      "_id": "5Nnn2PqcEKG4dqRP9h4UlW",
+      "name": "Tora Urup",
+      "profileUrl": null,
+      "slug": {
+        "_type": "slug",
+        "current": "tora-urup"
+      }
+    },
+    "artworks": [],
+    "creatorMedia": [
+      {
+        "_id": "image-02382fc7f26572f38e0035c235f1b002257b6136-1920x1300-jpg",
+        "originalFilename": "25239_tora-urup-cylinder-floating-sand-colored-bowl-3.jpg",
+        "size": 165541,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/02382fc7f26572f38e0035c235f1b002257b6136-1920x1300.jpg"
+      },
+      {
+        "_id": "image-098344124f0a166c333270e1ee9561a5b2af014b-1920x1260-jpg",
+        "originalFilename": "5168_tora-urup-multiple-white-opaline-clear-layers.jpg",
+        "size": 345098,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/098344124f0a166c333270e1ee9561a5b2af014b-1920x1260.jpg"
+      },
+      {
+        "_id": "image-40803881776f61b3a4fdc522a8c2aed670ae73af-1920x1300-jpg",
+        "originalFilename": "25233_2-blue-clear-layers-h10x-w-31-cm-tora-urup-2015-photo-stuart-mcintyre.jpg",
+        "size": 227783,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/40803881776f61b3a4fdc522a8c2aed670ae73af-1920x1300.jpg"
+      },
+      {
+        "_id": "image-4de420e129bd3f547de8cbda496f8228d3c59f15-1920x1276-jpg",
+        "originalFilename": "51934_bergmeister_kunstschmiede_toranlage_novartis_basel.jpg",
+        "size": 688426,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/4de420e129bd3f547de8cbda496f8228d3c59f15-1920x1276.jpg"
+      },
+      {
+        "_id": "image-4e0ce0952bf2a124acd0e98fb03b1825357863b1-1920x1260-jpg",
+        "originalFilename": "5162_tora-urup-cylinder-floating-sand-colored-bowl.jpg",
+        "size": 244841,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/4e0ce0952bf2a124acd0e98fb03b1825357863b1-1920x1260.jpg"
+      },
+      {
+        "_id": "image-50b333d4ca55bf8cf918d5d7d69bc2be0646f936-1920x1300-jpg",
+        "originalFilename": "25166_tora-urup-cylinder-with-floating-cyangrey-bowl-2014-glass-h-15-x-w-20-cm-photo-stuart-mcintyre.jpg",
+        "size": 95734,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/50b333d4ca55bf8cf918d5d7d69bc2be0646f936-1920x1300.jpg"
+      },
+      {
+        "_id": "image-53149b4e15c8c2566fbbfa7aae8d8cf08524fcd3-1920x1300-jpg",
+        "originalFilename": "25237_tora-urup-cylinder-floating-jade-green-bowl-2.jpg",
+        "size": 209909,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/53149b4e15c8c2566fbbfa7aae8d8cf08524fcd3-1920x1300.jpg"
+      },
+      {
+        "_id": "image-631175067776a0ecb1c234512ab14860a2f01796-1920x1260-jpg",
+        "originalFilename": "5170_tora-urup-bowl-warm-grey-azureblue.jpg",
+        "size": 223865,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/631175067776a0ecb1c234512ab14860a2f01796-1920x1260.jpg"
+      },
+      {
+        "_id": "image-687e3058c6442c31e5c034cafda3710b668c4209-1920x1260-jpg",
+        "originalFilename": "4976_tora-urup-bowl-multible-white.jpg",
+        "size": 250023,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/687e3058c6442c31e5c034cafda3710b668c4209-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7cde625a5bf81a9451a509869a8c27c408986868-1920x1260-jpg",
+        "originalFilename": "5445_tora-urup-bowls-tumblers.jpg",
+        "size": 225951,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7cde625a5bf81a9451a509869a8c27c408986868-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7daa16f2006fea8a122bcd1a45bd8ea578f35500-1920x1260-jpg",
+        "originalFilename": "5160_tora-urup-cylinder-floating-jade-green-bowl.jpg",
+        "size": 268569,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7daa16f2006fea8a122bcd1a45bd8ea578f35500-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7fc51cef9d5c03b8147d8abf35ea6a0e14507704-1920x1260-jpg",
+        "originalFilename": "5166_tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+        "size": 294241,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7fc51cef9d5c03b8147d8abf35ea6a0e14507704-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7fcb01221a22c4736658455c6e1a67f31fc34b75-1920x1300-jpg",
+        "originalFilename": "54367_neues-museum-glaskunst_tora-urup.jpg",
+        "size": 38679,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7fcb01221a22c4736658455c6e1a67f31fc34b75-1920x1300.jpg"
+      },
+      {
+        "_id": "image-82f6572d9f366b4d18e64d840e3f84b535312c4b-1920x1300-jpg",
+        "originalFilename": "56526_elisa-stuetzle-siegsmund_keramik_kunsthandwerk_staatspreis_fotorameshamruth.jpg",
+        "size": 223721,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/82f6572d9f366b4d18e64d840e3f84b535312c4b-1920x1300.jpg"
+      },
+      {
+        "_id": "image-84ad62ffe3e61141dbbb4f5a645489f026864f08-933x933-jpg",
+        "originalFilename": "5443_tora-urup-copenhagen-denmark.jpg",
+        "size": 244979,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/84ad62ffe3e61141dbbb4f5a645489f026864f08-933x933.jpg"
+      },
+      {
+        "_id": "image-8f6eb8bd24db8f6660b6fcbf259066b7a95895cb-1920x1260-jpg",
+        "originalFilename": "4984_tora-urup-series-of-5-tumblers.jpg",
+        "size": 153804,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/8f6eb8bd24db8f6660b6fcbf259066b7a95895cb-1920x1260.jpg"
+      },
+      {
+        "_id": "image-94bc67b0d94456be6ff242ea682190b8bd7d1552-1920x1260-jpg",
+        "originalFilename": "5158_tora-urup-cylinder-floating-grey-bowl.jpg",
+        "size": 175835,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/94bc67b0d94456be6ff242ea682190b8bd7d1552-1920x1260.jpg"
+      },
+      {
+        "_id": "image-a710e4e7c35797fbb7469d06b9849d8a096edbf7-1920x1300-jpg",
+        "originalFilename": "25172_tora-urup-smokegrey-and-clear-layers-object-2014-glass-h-10-x-w-31-cm-photo-stuart-mcintyre.jpg",
+        "size": 127068,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/a710e4e7c35797fbb7469d06b9849d8a096edbf7-1920x1300.jpg"
+      },
+      {
+        "_id": "image-b5df019cbfd0ad1baeb93765d079245cd16c06a6-1920x1300-jpg",
+        "originalFilename": "25170_tora-urup-mat-cylinder-with-floating-azureblue-bowl-2014-glass-h-12-x-w-17-cm-photo-stuart-mcintyre.jpg",
+        "size": 94731,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/b5df019cbfd0ad1baeb93765d079245cd16c06a6-1920x1300.jpg"
+      },
+      {
+        "_id": "image-b731093d0ae16d64e4cd647654237bda3b75f1a8-1920x1260-jpg",
+        "originalFilename": "4982_tora-urup-opal-vase.jpg",
+        "size": 160631,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/b731093d0ae16d64e4cd647654237bda3b75f1a8-1920x1260.jpg"
+      },
+      {
+        "_id": "image-c5b910074fcbc16c8ebe16c148f5586e0bca5236-1920x1440-jpg",
+        "originalFilename": "52052_hanshansen_toraurup.jpg",
+        "size": 171979,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/c5b910074fcbc16c8ebe16c148f5586e0bca5236-1920x1440.jpg"
+      },
+      {
+        "_id": "image-ce0dcb1f918fe95f9e2675ec214faa4cf5d40502-4210x4210-jpg",
+        "originalFilename": "AA56_CC_DOMINGOS_TOTORAtest.jpg",
+        "size": 943875,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/ce0dcb1f918fe95f9e2675ec214faa4cf5d40502-4210x4210.jpg"
+      },
+      {
+        "_id": "image-d373e0d728296fbd0b19b0a1f0d18d65df716ed3-1920x1300-jpg",
+        "originalFilename": "25164_tora-urup-blue-and-clear-layers-object-2015-glass-h10-x-w-31-cm-photo-stuart-mcintyre.jpg",
+        "size": 169290,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/d373e0d728296fbd0b19b0a1f0d18d65df716ed3-1920x1300.jpg"
+      },
+      {
+        "_id": "image-d92b1898eed39cfaed90827326eca41b6c371b33-1920x1260-jpg",
+        "originalFilename": "4978_tora-urup-bowl-warmgrey.jpg",
+        "size": 141273,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/d92b1898eed39cfaed90827326eca41b6c371b33-1920x1260.jpg"
+      },
+      {
+        "_id": "image-daf9dae645995aec4b1700c6652ea8e20a7fda19-1920x1300-jpg",
+        "originalFilename": "25168_tora-urup-dish-between-earth-and-sky-2015-glass-h-5-x-w-28-photo-stuart-mcintyre.jpg",
+        "size": 389661,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/daf9dae645995aec4b1700c6652ea8e20a7fda19-1920x1300.jpg"
+      },
+      {
+        "_id": "image-dc6ffe5b4dbe768f5a78d191e27be9cbc328692f-1920x1260-jpg",
+        "originalFilename": "4980_tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+        "size": 157398,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/dc6ffe5b4dbe768f5a78d191e27be9cbc328692f-1920x1260.jpg"
+      },
+      {
+        "_id": "image-f3a8e80d78b6c01e46085c23262947dd63c1bf36-1705x1705-jpg",
+        "originalFilename": "25172_tora-urup-smokegrey-and-clear-layers-object-2014-glass-h-10-x-w-31-cm-photo-stuart-mcintyretest.jpg",
+        "size": 189578,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/f3a8e80d78b6c01e46085c23262947dd63c1bf36-1705x1705.jpg"
+      }
+    ],
+    "orphanedMedia": [
+      {
+        "_id": "image-02382fc7f26572f38e0035c235f1b002257b6136-1920x1300-jpg",
+        "originalFilename": "25239_tora-urup-cylinder-floating-sand-colored-bowl-3.jpg",
+        "size": 165541,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/02382fc7f26572f38e0035c235f1b002257b6136-1920x1300.jpg"
+      },
+      {
+        "_id": "image-098344124f0a166c333270e1ee9561a5b2af014b-1920x1260-jpg",
+        "originalFilename": "5168_tora-urup-multiple-white-opaline-clear-layers.jpg",
+        "size": 345098,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/098344124f0a166c333270e1ee9561a5b2af014b-1920x1260.jpg"
+      },
+      {
+        "_id": "image-40803881776f61b3a4fdc522a8c2aed670ae73af-1920x1300-jpg",
+        "originalFilename": "25233_2-blue-clear-layers-h10x-w-31-cm-tora-urup-2015-photo-stuart-mcintyre.jpg",
+        "size": 227783,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/40803881776f61b3a4fdc522a8c2aed670ae73af-1920x1300.jpg"
+      },
+      {
+        "_id": "image-4de420e129bd3f547de8cbda496f8228d3c59f15-1920x1276-jpg",
+        "originalFilename": "51934_bergmeister_kunstschmiede_toranlage_novartis_basel.jpg",
+        "size": 688426,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/4de420e129bd3f547de8cbda496f8228d3c59f15-1920x1276.jpg"
+      },
+      {
+        "_id": "image-4e0ce0952bf2a124acd0e98fb03b1825357863b1-1920x1260-jpg",
+        "originalFilename": "5162_tora-urup-cylinder-floating-sand-colored-bowl.jpg",
+        "size": 244841,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/4e0ce0952bf2a124acd0e98fb03b1825357863b1-1920x1260.jpg"
+      },
+      {
+        "_id": "image-50b333d4ca55bf8cf918d5d7d69bc2be0646f936-1920x1300-jpg",
+        "originalFilename": "25166_tora-urup-cylinder-with-floating-cyangrey-bowl-2014-glass-h-15-x-w-20-cm-photo-stuart-mcintyre.jpg",
+        "size": 95734,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/50b333d4ca55bf8cf918d5d7d69bc2be0646f936-1920x1300.jpg"
+      },
+      {
+        "_id": "image-53149b4e15c8c2566fbbfa7aae8d8cf08524fcd3-1920x1300-jpg",
+        "originalFilename": "25237_tora-urup-cylinder-floating-jade-green-bowl-2.jpg",
+        "size": 209909,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/53149b4e15c8c2566fbbfa7aae8d8cf08524fcd3-1920x1300.jpg"
+      },
+      {
+        "_id": "image-631175067776a0ecb1c234512ab14860a2f01796-1920x1260-jpg",
+        "originalFilename": "5170_tora-urup-bowl-warm-grey-azureblue.jpg",
+        "size": 223865,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/631175067776a0ecb1c234512ab14860a2f01796-1920x1260.jpg"
+      },
+      {
+        "_id": "image-687e3058c6442c31e5c034cafda3710b668c4209-1920x1260-jpg",
+        "originalFilename": "4976_tora-urup-bowl-multible-white.jpg",
+        "size": 250023,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/687e3058c6442c31e5c034cafda3710b668c4209-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7cde625a5bf81a9451a509869a8c27c408986868-1920x1260-jpg",
+        "originalFilename": "5445_tora-urup-bowls-tumblers.jpg",
+        "size": 225951,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7cde625a5bf81a9451a509869a8c27c408986868-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7daa16f2006fea8a122bcd1a45bd8ea578f35500-1920x1260-jpg",
+        "originalFilename": "5160_tora-urup-cylinder-floating-jade-green-bowl.jpg",
+        "size": 268569,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7daa16f2006fea8a122bcd1a45bd8ea578f35500-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7fc51cef9d5c03b8147d8abf35ea6a0e14507704-1920x1260-jpg",
+        "originalFilename": "5166_tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+        "size": 294241,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7fc51cef9d5c03b8147d8abf35ea6a0e14507704-1920x1260.jpg"
+      },
+      {
+        "_id": "image-7fcb01221a22c4736658455c6e1a67f31fc34b75-1920x1300-jpg",
+        "originalFilename": "54367_neues-museum-glaskunst_tora-urup.jpg",
+        "size": 38679,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/7fcb01221a22c4736658455c6e1a67f31fc34b75-1920x1300.jpg"
+      },
+      {
+        "_id": "image-82f6572d9f366b4d18e64d840e3f84b535312c4b-1920x1300-jpg",
+        "originalFilename": "56526_elisa-stuetzle-siegsmund_keramik_kunsthandwerk_staatspreis_fotorameshamruth.jpg",
+        "size": 223721,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/82f6572d9f366b4d18e64d840e3f84b535312c4b-1920x1300.jpg"
+      },
+      {
+        "_id": "image-84ad62ffe3e61141dbbb4f5a645489f026864f08-933x933-jpg",
+        "originalFilename": "5443_tora-urup-copenhagen-denmark.jpg",
+        "size": 244979,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/84ad62ffe3e61141dbbb4f5a645489f026864f08-933x933.jpg"
+      },
+      {
+        "_id": "image-8f6eb8bd24db8f6660b6fcbf259066b7a95895cb-1920x1260-jpg",
+        "originalFilename": "4984_tora-urup-series-of-5-tumblers.jpg",
+        "size": 153804,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/8f6eb8bd24db8f6660b6fcbf259066b7a95895cb-1920x1260.jpg"
+      },
+      {
+        "_id": "image-94bc67b0d94456be6ff242ea682190b8bd7d1552-1920x1260-jpg",
+        "originalFilename": "5158_tora-urup-cylinder-floating-grey-bowl.jpg",
+        "size": 175835,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/94bc67b0d94456be6ff242ea682190b8bd7d1552-1920x1260.jpg"
+      },
+      {
+        "_id": "image-a710e4e7c35797fbb7469d06b9849d8a096edbf7-1920x1300-jpg",
+        "originalFilename": "25172_tora-urup-smokegrey-and-clear-layers-object-2014-glass-h-10-x-w-31-cm-photo-stuart-mcintyre.jpg",
+        "size": 127068,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/a710e4e7c35797fbb7469d06b9849d8a096edbf7-1920x1300.jpg"
+      },
+      {
+        "_id": "image-b5df019cbfd0ad1baeb93765d079245cd16c06a6-1920x1300-jpg",
+        "originalFilename": "25170_tora-urup-mat-cylinder-with-floating-azureblue-bowl-2014-glass-h-12-x-w-17-cm-photo-stuart-mcintyre.jpg",
+        "size": 94731,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/b5df019cbfd0ad1baeb93765d079245cd16c06a6-1920x1300.jpg"
+      },
+      {
+        "_id": "image-b731093d0ae16d64e4cd647654237bda3b75f1a8-1920x1260-jpg",
+        "originalFilename": "4982_tora-urup-opal-vase.jpg",
+        "size": 160631,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/b731093d0ae16d64e4cd647654237bda3b75f1a8-1920x1260.jpg"
+      },
+      {
+        "_id": "image-c5b910074fcbc16c8ebe16c148f5586e0bca5236-1920x1440-jpg",
+        "originalFilename": "52052_hanshansen_toraurup.jpg",
+        "size": 171979,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/c5b910074fcbc16c8ebe16c148f5586e0bca5236-1920x1440.jpg"
+      },
+      {
+        "_id": "image-ce0dcb1f918fe95f9e2675ec214faa4cf5d40502-4210x4210-jpg",
+        "originalFilename": "AA56_CC_DOMINGOS_TOTORAtest.jpg",
+        "size": 943875,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/ce0dcb1f918fe95f9e2675ec214faa4cf5d40502-4210x4210.jpg"
+      },
+      {
+        "_id": "image-d373e0d728296fbd0b19b0a1f0d18d65df716ed3-1920x1300-jpg",
+        "originalFilename": "25164_tora-urup-blue-and-clear-layers-object-2015-glass-h10-x-w-31-cm-photo-stuart-mcintyre.jpg",
+        "size": 169290,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/d373e0d728296fbd0b19b0a1f0d18d65df716ed3-1920x1300.jpg"
+      },
+      {
+        "_id": "image-d92b1898eed39cfaed90827326eca41b6c371b33-1920x1260-jpg",
+        "originalFilename": "4978_tora-urup-bowl-warmgrey.jpg",
+        "size": 141273,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/d92b1898eed39cfaed90827326eca41b6c371b33-1920x1260.jpg"
+      },
+      {
+        "_id": "image-daf9dae645995aec4b1700c6652ea8e20a7fda19-1920x1300-jpg",
+        "originalFilename": "25168_tora-urup-dish-between-earth-and-sky-2015-glass-h-5-x-w-28-photo-stuart-mcintyre.jpg",
+        "size": 389661,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/daf9dae645995aec4b1700c6652ea8e20a7fda19-1920x1300.jpg"
+      },
+      {
+        "_id": "image-dc6ffe5b4dbe768f5a78d191e27be9cbc328692f-1920x1260-jpg",
+        "originalFilename": "4980_tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+        "size": 157398,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/dc6ffe5b4dbe768f5a78d191e27be9cbc328692f-1920x1260.jpg"
+      },
+      {
+        "_id": "image-f3a8e80d78b6c01e46085c23262947dd63c1bf36-1705x1705-jpg",
+        "originalFilename": "25172_tora-urup-smokegrey-and-clear-layers-object-2014-glass-h-10-x-w-31-cm-photo-stuart-mcintyretest.jpg",
+        "size": 189578,
+        "url": "https://cdn.sanity.io/images/b8bczekj/production/f3a8e80d78b6c01e46085c23262947dd63c1bf36-1705x1705.jpg"
+      }
+    ],
+    "matches": [
+      {
+        "profileImage": {
+          "index": 1,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo_.Stuart-McIntyre.jpg",
+          "filename": "2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo_.Stuart-McIntyre.jpg",
+          "caption": "Objekt mit rauchgrünen und klaren Schichten, 2014. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo_.Stuart-McIntyre.jpg",
+            "cleaned": "2.Smokegrey-and-clear-layers.h10x-w31-cm.TU2014.Photo-.Stuart-McIntyre",
+            "parts": [
+              "2.Smokegrey",
+              "and",
+              "clear",
+              "layers.h10x",
+              "w31",
+              "cm.TU2014.Photo",
+              ".Stuart",
+              "McIntyre"
+            ],
+            "firstWord": "2.smokegrey",
+            "lastWord": "mcintyre"
+          },
+          "parsedCaption": {
+            "text": "Objekt mit rauchgrünen und klaren Schichten, 2014. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+            "title": "Objekt mit rauchgrünen und klaren Schichten, 2014",
+            "year": "2014",
+            "dimensions": "H 10 x Ø 31 cm",
+            "normalized": "objekt mit rauchgrunen und klaren schichten 2014"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 2,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre.jpg",
+          "filename": "Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre.jpg",
+          "caption": "Matter Zylinder mit azurblauer schwebender Schale, 2014. Glas, H 12 x Ø 17 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre.jpg",
+            "cleaned": "Tora-Urup-Mat-Cylinder-with-floating-azureblue-bowl-2014.-Glass-H-12-x-W-17-cm.-Photo-Stuart-McIntyre",
+            "parts": [
+              "Tora",
+              "Urup",
+              "Mat",
+              "Cylinder",
+              "with",
+              "floating",
+              "azureblue",
+              "bowl",
+              "2014.",
+              "Glass",
+              "H",
+              "12",
+              "x",
+              "W",
+              "17",
+              "cm.",
+              "Photo",
+              "Stuart",
+              "McIntyre"
+            ],
+            "firstWord": "tora",
+            "lastWord": "mcintyre"
+          },
+          "parsedCaption": {
+            "text": "Matter Zylinder mit azurblauer schwebender Schale, 2014. Glas, H 12 x Ø 17 cm. Photo Stuart McIntyre",
+            "title": "Matter Zylinder mit azurblauer schwebender Schale, 2014",
+            "year": "2014",
+            "dimensions": "H 12 x Ø 17 cm",
+            "normalized": "matter zylinder mit azurblauer schwebender schale 2014"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 3,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre.jpg",
+          "filename": "Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre.jpg",
+          "caption": "<em>Schale zwischen Erde und Himmel</em>, 2015. Glas, H 5 x Ø 28 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre.jpg",
+            "cleaned": "Tora-Urup-Dish-between-Earth-and-Sky-2015.-Glass.-H-5-x-W-28.-Photo-Stuart-McIntyre",
+            "parts": [
+              "Tora",
+              "Urup",
+              "Dish",
+              "between",
+              "Earth",
+              "and",
+              "Sky",
+              "2015.",
+              "Glass.",
+              "H",
+              "5",
+              "x",
+              "W",
+              "28.",
+              "Photo",
+              "Stuart",
+              "McIntyre"
+            ],
+            "firstWord": "tora",
+            "lastWord": "mcintyre"
+          },
+          "parsedCaption": {
+            "text": "Schale zwischen Erde und Himmel, 2015. Glas, H 5 x Ø 28 cm. Photo Stuart McIntyre",
+            "title": "Schale zwischen Erde und Himmel, 2015",
+            "year": "2015",
+            "dimensions": "H 5 x Ø 28 cm",
+            "normalized": "schale zwischen erde und himmel 2015"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 4,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-multiple-white-opaline-clear-layers.jpg",
+          "filename": "tora-urup-multiple-white-opaline-clear-layers.jpg",
+          "caption": "Schale mit multiplen, weiß-opalin-klaren Schichten. Glas, H 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-multiple-white-opaline-clear-layers.jpg",
+            "cleaned": "tora-urup-multiple-white-opaline-clear-layers",
+            "parts": [
+              "tora",
+              "urup",
+              "multiple",
+              "white",
+              "opaline",
+              "clear",
+              "layers"
+            ],
+            "firstWord": "tora",
+            "lastWord": "layers"
+          },
+          "parsedCaption": {
+            "text": "Schale mit multiplen, weiß-opalin-klaren Schichten. Glas, H 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+            "title": "Schale mit multiplen, weiß-opalin-klaren Schichten",
+            "year": null,
+            "dimensions": "H 11,5 x Ø 30 cm",
+            "normalized": "schale mit multiplen weiss opalin klaren schichten"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 5,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre.jpg",
+          "filename": "Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre.jpg",
+          "caption": "Zylinder mit schwebender cyangrauer Schale, 2014. Glas, H 15 x Ø 20 cm. Photo Stuart McIntre",
+          "parsedFilename": {
+            "original": "Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre.jpg",
+            "cleaned": "Tora-Urup-Cylinder-with-floating-Cyangrey-bowl-2014.-Glass-H-15-x-W-20-cm.-Photo-Stuart-McIntyre",
+            "parts": [
+              "Tora",
+              "Urup",
+              "Cylinder",
+              "with",
+              "floating",
+              "Cyangrey",
+              "bowl",
+              "2014.",
+              "Glass",
+              "H",
+              "15",
+              "x",
+              "W",
+              "20",
+              "cm.",
+              "Photo",
+              "Stuart",
+              "McIntyre"
+            ],
+            "firstWord": "tora",
+            "lastWord": "mcintyre"
+          },
+          "parsedCaption": {
+            "text": "Zylinder mit schwebender cyangrauer Schale, 2014. Glas, H 15 x Ø 20 cm. Photo Stuart McIntre",
+            "title": "Zylinder mit schwebender cyangrauer Schale, 2014",
+            "year": "2014",
+            "dimensions": "H 15 x Ø 20 cm",
+            "normalized": "zylinder mit schwebender cyangrauer schale 2014"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 6,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre.jpg",
+          "filename": "2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre.jpg",
+          "caption": "Objekt mit blauen und klaren Schichten, 2015. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre.jpg",
+            "cleaned": "2.Blue-clear-layers.h10x-w-31-cm-©Tora-Urup-2015.-Photo-Stuart-McIntyre",
+            "parts": [
+              "2.Blue",
+              "clear",
+              "layers.h10x",
+              "w",
+              "31",
+              "cm",
+              "©Tora",
+              "Urup",
+              "2015.",
+              "Photo",
+              "Stuart",
+              "McIntyre"
+            ],
+            "firstWord": "2.blue",
+            "lastWord": "mcintyre"
+          },
+          "parsedCaption": {
+            "text": "Objekt mit blauen und klaren Schichten, 2015. Glas, H 10 x Ø 31 cm. Photo Stuart McIntyre",
+            "title": "Objekt mit blauen und klaren Schichten, 2015",
+            "year": "2015",
+            "dimensions": "H 10 x Ø 31 cm",
+            "normalized": "objekt mit blauen und klaren schichten 2015"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 7,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+          "filename": "tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+          "caption": "Schale mit multiplen weißen und klaren Schichten, Glas. 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-bowl-multiple-white-and-clear-layers.jpg",
+            "cleaned": "tora-urup-bowl-multiple-white-and-clear-layers",
+            "parts": [
+              "tora",
+              "urup",
+              "bowl",
+              "multiple",
+              "white",
+              "and",
+              "clear",
+              "layers"
+            ],
+            "firstWord": "tora",
+            "lastWord": "layers"
+          },
+          "parsedCaption": {
+            "text": "Schale mit multiplen weißen und klaren Schichten, Glas. 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+            "title": "Schale mit multiplen weißen und klaren Schichten, Glas. 11,5 x Ø 30 cm. Photo Stuart McIntyre",
+            "year": null,
+            "dimensions": "Ø 30 cm",
+            "normalized": "schale mit multiplen weissen und klaren schichten glas 11 5 x 30 cm photo stuart mcintyre"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 8,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowl-warm-grey-azureblue.jpg",
+          "filename": "tora-urup-bowl-warm-grey-azureblue.jpg",
+          "caption": "Warmgraue und azurblaue Schale. Glas, 11 x Ø 26 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-bowl-warm-grey-azureblue.jpg",
+            "cleaned": "tora-urup-bowl-warm-grey-azureblue",
+            "parts": [
+              "tora",
+              "urup",
+              "bowl",
+              "warm",
+              "grey",
+              "azureblue"
+            ],
+            "firstWord": "tora",
+            "lastWord": "azureblue"
+          },
+          "parsedCaption": {
+            "text": "Warmgraue und azurblaue Schale. Glas, 11 x Ø 26 cm. Photo Stuart McIntyre",
+            "title": "Warmgraue und azurblaue Schale",
+            "year": null,
+            "dimensions": "Ø 26 cm",
+            "normalized": "warmgraue und azurblaue schale"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 9,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowl-warmgrey.jpg",
+          "filename": "tora-urup-bowl-warmgrey.jpg",
+          "caption": "Warmgraue Schale. Glas, 11 x Ø 26 cm. Photo Hans Hansen",
+          "parsedFilename": {
+            "original": "tora-urup-bowl-warmgrey.jpg",
+            "cleaned": "tora-urup-bowl-warmgrey",
+            "parts": [
+              "tora",
+              "urup",
+              "bowl",
+              "warmgrey"
+            ],
+            "firstWord": "tora",
+            "lastWord": "warmgrey"
+          },
+          "parsedCaption": {
+            "text": "Warmgraue Schale. Glas, 11 x Ø 26 cm. Photo Hans Hansen",
+            "title": "Warmgraue Schale",
+            "year": null,
+            "dimensions": "Ø 26 cm",
+            "normalized": "warmgraue schale"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 10,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-cylinder-floating-sand-colored-bowl1.jpg",
+          "filename": "tora-urup-cylinder-floating-sand-colored-bowl1.jpg",
+          "caption": "Zylinder mit schwebender und sandfarbener Schale. Glas, 12 x Ø 24,5 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-cylinder-floating-sand-colored-bowl1.jpg",
+            "cleaned": "tora-urup-cylinder-floating-sand-colored-bowl1",
+            "parts": [
+              "tora",
+              "urup",
+              "cylinder",
+              "floating",
+              "sand",
+              "colored",
+              "bowl1"
+            ],
+            "firstWord": "tora",
+            "lastWord": "bowl1"
+          },
+          "parsedCaption": {
+            "text": "Zylinder mit schwebender und sandfarbener Schale. Glas, 12 x Ø 24,5 cm. Photo Stuart McIntyre",
+            "title": "Zylinder mit schwebender und sandfarbener Schale",
+            "year": null,
+            "dimensions": "Ø 24,5 cm",
+            "normalized": "zylinder mit schwebender und sandfarbener schale"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 11,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-cylinder-floating-jade-green-bowl1.jpg",
+          "filename": "tora-urup-cylinder-floating-jade-green-bowl1.jpg",
+          "caption": "Zylinder mit schwebender jadegrüner Schale. Glas, 12 x Ø 22,5 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-cylinder-floating-jade-green-bowl1.jpg",
+            "cleaned": "tora-urup-cylinder-floating-jade-green-bowl1",
+            "parts": [
+              "tora",
+              "urup",
+              "cylinder",
+              "floating",
+              "jade",
+              "green",
+              "bowl1"
+            ],
+            "firstWord": "tora",
+            "lastWord": "bowl1"
+          },
+          "parsedCaption": {
+            "text": "Zylinder mit schwebender jadegrüner Schale. Glas, 12 x Ø 22,5 cm. Photo Stuart McIntyre",
+            "title": "Zylinder mit schwebender jadegrüner Schale",
+            "year": null,
+            "dimensions": "Ø 22,5 cm",
+            "normalized": "zylinder mit schwebender jadegruner schale"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 12,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-cylinder-floating-grey-bowl.jpg",
+          "filename": "tora-urup-cylinder-floating-grey-bowl.jpg",
+          "caption": "Zylinder mit schwebender grauer Schale. Glas, 13 x Ø 17 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-cylinder-floating-grey-bowl.jpg",
+            "cleaned": "tora-urup-cylinder-floating-grey-bowl",
+            "parts": [
+              "tora",
+              "urup",
+              "cylinder",
+              "floating",
+              "grey",
+              "bowl"
+            ],
+            "firstWord": "tora",
+            "lastWord": "bowl"
+          },
+          "parsedCaption": {
+            "text": "Zylinder mit schwebender grauer Schale. Glas, 13 x Ø 17 cm. Photo Stuart McIntyre",
+            "title": "Zylinder mit schwebender grauer Schale",
+            "year": null,
+            "dimensions": "Ø 17 cm",
+            "normalized": "zylinder mit schwebender grauer schale"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 13,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+          "filename": "tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+          "caption": "Zylinder mit schwebender sonnengelber Schale. 12 x Ø 17 cm. Photo Stuart McIntyre",
+          "parsedFilename": {
+            "original": "tora-urup-mat-cylinder-with-floating-sun-yellow-bowl.jpg",
+            "cleaned": "tora-urup-mat-cylinder-with-floating-sun-yellow-bowl",
+            "parts": [
+              "tora",
+              "urup",
+              "mat",
+              "cylinder",
+              "with",
+              "floating",
+              "sun",
+              "yellow",
+              "bowl"
+            ],
+            "firstWord": "tora",
+            "lastWord": "bowl"
+          },
+          "parsedCaption": {
+            "text": "Zylinder mit schwebender sonnengelber Schale. 12 x Ø 17 cm. Photo Stuart McIntyre",
+            "title": "Zylinder mit schwebender sonnengelber Schale. 12 x Ø 17 cm. Photo Stuart McIntyre",
+            "year": null,
+            "dimensions": "Ø 17 cm",
+            "normalized": "zylinder mit schwebender sonnengelber schale 12 x 17 cm photo stuart mcintyre"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 14,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-opal-vase.jpg",
+          "filename": "tora-urup-opal-vase.jpg",
+          "caption": "Vasen <em>Opal</em>. Preis auf Anfrage. Photo Hans Hansen",
+          "parsedFilename": {
+            "original": "tora-urup-opal-vase.jpg",
+            "cleaned": "tora-urup-opal-vase",
+            "parts": [
+              "tora",
+              "urup",
+              "opal",
+              "vase"
+            ],
+            "firstWord": "tora",
+            "lastWord": "vase"
+          },
+          "parsedCaption": {
+            "text": "Vasen Opal. Preis auf Anfrage. Photo Hans Hansen",
+            "title": "Vasen Opal. Preis auf Anfrage. Photo Hans Hansen",
+            "year": null,
+            "dimensions": null,
+            "normalized": "vasen opal preis auf anfrage photo hans hansen"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 15,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-bowls-tumblers.jpg",
+          "filename": "tora-urup-bowls-tumblers.jpg",
+          "caption": "<em>Series of 5 tumblers</em> Glasschüsseln. 25–45 Euro pro Stück. Photo Hans Hansen",
+          "parsedFilename": {
+            "original": "tora-urup-bowls-tumblers.jpg",
+            "cleaned": "tora-urup-bowls-tumblers",
+            "parts": [
+              "tora",
+              "urup",
+              "bowls",
+              "tumblers"
+            ],
+            "firstWord": "tora",
+            "lastWord": "tumblers"
+          },
+          "parsedCaption": {
+            "text": "Series of 5 tumblers Glasschüsseln. 25–45 Euro pro Stück. Photo Hans Hansen",
+            "title": "Series of 5 tumblers Glasschüsseln. 25–45 Euro pro Stück. Photo Hans Hansen",
+            "year": null,
+            "dimensions": null,
+            "normalized": "series of 5 tumblers glasschusseln 25 45 euro pro stuck photo hans hansen"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      },
+      {
+        "profileImage": {
+          "index": 16,
+          "imageUrl": "https://artaurea.de/wp-content/uploads/2014/06/tora-urup-series-of-5-tumblers.jpg",
+          "filename": "tora-urup-series-of-5-tumblers.jpg",
+          "caption": "<em>Series of 5 tumblers</em>. Glas. Größe 8–36 cl. 25–30 Euro pro Stück. Preis auf Anfrage. Photo Hans Hansen",
+          "parsedFilename": {
+            "original": "tora-urup-series-of-5-tumblers.jpg",
+            "cleaned": "tora-urup-series-of-5-tumblers",
+            "parts": [
+              "tora",
+              "urup",
+              "series",
+              "of",
+              "5",
+              "tumblers"
+            ],
+            "firstWord": "tora",
+            "lastWord": "tumblers"
+          },
+          "parsedCaption": {
+            "text": "Series of 5 tumblers. Glas. Größe 8–36 cl. 25–30 Euro pro Stück. Preis auf Anfrage. Photo Hans Hansen",
+            "title": "Series of 5 tumblers",
+            "year": null,
+            "dimensions": null,
+            "normalized": "series of 5 tumblers"
+          }
+        },
+        "sanityMedia": null,
+        "linkedArtwork": null,
+        "suggestedArtworks": [],
+        "status": "missing_in_sanity"
+      }
+    ]
+  }
+]

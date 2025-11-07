@@ -107,6 +107,13 @@ export default defineConfig({
                     S.listItem()
                       .title('Draft Articles')
                       .child(S.documentTypeList('article').title('Draft Articles').filter('_type == "article" && !defined(date)')),
+                    S.divider(),
+                    S.listItem()
+                      .title('✍️ Authors')
+                      .child(S.documentTypeList('author').title('Authors')),
+                    S.listItem()
+                      .title('📷 Photographers')
+                      .child(S.documentTypeList('photographer').title('Photographers')),
                   ])
               ),
             

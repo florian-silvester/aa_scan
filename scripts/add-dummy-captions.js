@@ -87,17 +87,12 @@ async function addDummyCaptions(dryRun = true) {
         continue;
       }
       
-      console.log(`   ${section.name}: ${imageCount} images, ${captionCountEn} EN captions, ${captionCountDe} DE captions`);
+      console.log(`   ${section.name}: ${imageCount} images`);
       
-      // Check if we need to add/update captions
-      if (captionCountEn !== imageCount) {
-        console.log(`      → Will add ${imageCount} EN dummy captions`);
+      // Force replace captions with new 20-word text
+      if (imageCount > 0) {
+        console.log(`      → Replacing with ${imageCount} new 20-word captions (EN + DE)`);
         updates[`${section.name}Captions.en`] = generateDummyCaptions(imageCount, 'en');
-        hasUpdates = true;
-      }
-      
-      if (captionCountDe !== imageCount) {
-        console.log(`      → Will add ${imageCount} DE dummy captions`);
         updates[`${section.name}Captions.de`] = generateDummyCaptions(imageCount, 'de');
         hasUpdates = true;
       }

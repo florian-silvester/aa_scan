@@ -8,6 +8,8 @@ Copy `.env.example` to `.env` and fill in your tokens:
 
 - `SANITY_API_TOKEN` - Sanity API token with read access
 - `WEBFLOW_API_TOKEN` - Webflow API token with collection access
+- `WEBFLOW_SITE_ID` - Webflow site ID
+- `AUTO_PUBLISH=true` - (Optional) Auto-publish items to Webflow after sync
 
 ## Endpoints
 

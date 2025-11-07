@@ -1,10 +1,17 @@
 {
+  "scripts": {
+    "dev": "node dev-server.js"
+  },
   "dependencies": {
     "@sanity/client": "^7.11.0",
     "cheerio": "^1.1.2",
     "dotenv": "^17.2.3",
     "dropbox": "^10.34.0",
+    "express": "^5.1.0",
+    "mammoth": "^1.11.0",
     "node-fetch": "^3.3.2",
-    "puppeteer": "^24.19.0"
+    "pdf-parse": "^2.4.5",
+    "puppeteer": "^24.19.0",
+    "textract": "^2.5.0"
   }
 }

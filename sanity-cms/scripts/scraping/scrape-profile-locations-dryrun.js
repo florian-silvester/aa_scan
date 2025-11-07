@@ -38,10 +38,10 @@ async function scrapeProfileLocationsDryRun() {
   })
 
   try {
-    // Get a sample of creators from Sanity
+    // Get OLDER profiles from Sanity (they're more likely to be live on the website)
     console.log('📦 Fetching creators from Sanity...')
     const creators = await sanity.fetch(`
-      *[_type == "creator" && defined(slug.current)] | order(_createdAt desc) [0...${LIMIT}] {
+      *[_type == "creator" && defined(slug.current)] | order(_createdAt asc) [0...${LIMIT}] {
         _id,
         name,
         "slug": slug.current,

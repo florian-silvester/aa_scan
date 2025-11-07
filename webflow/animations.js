@@ -177,6 +177,13 @@ function initNavColorChange() {
   }
 
   function checkNavState() {
+    // Disable nav color change for "stories-overview" page (check dynamically for Barba)
+    if (window.location.pathname.includes('/stories-overview')) {
+      console.log('⏭️ Nav color change disabled for stories-overview page');
+      setNav('normal');
+      return;
+    }
+    
     // Scope to the active Barba container if present, otherwise the whole document
     const activeContainer = document.querySelector('[data-barba="container"]:not([aria-hidden="true"])') || document;
     const overlays = activeContainer.querySelectorAll('.u-nav-theme-overlay[data-nav-theme="invert"]');
@@ -266,18 +273,19 @@ function initCreatorGridToggle() {
   console.log('🔍 Looking for .index_collection:', collection ? '✅ Found' : '❌ Not found');
   if (!collection) return;
 
-  const gridBtn = activeContainer.querySelector('[toggle="is-grid"]');
-  const listBtn = activeContainer.querySelector('[toggle="is-list"]');
-  console.log('🔍 Grid button:', gridBtn ? '✅ Found' : '❌ Not found');
-  console.log('🔍 List button:', listBtn ? '✅ Found' : '❌ Not found');
-  if (!gridBtn || !listBtn) return;
+  // Find ALL grid/list buttons (in case there are duplicates)
+  const gridBtns = activeContainer.querySelectorAll('[toggle="is-grid"]');
+  const listBtns = activeContainer.querySelectorAll('[toggle="is-list"]');
+  console.log('🔍 Grid buttons:', gridBtns.length, 'found');
+  console.log('🔍 List buttons:', listBtns.length, 'found');
+  if (gridBtns.length === 0 || listBtns.length === 0) return;
   
-  if (gridBtn.dataset.gridToggleBound === 'true') {
-    console.log('⏭️ Buttons already bound, skipping');
+  // Check if already initialized using a flag on the collection itself
+  if (collection.dataset.gridToggleBound === 'true') {
+    console.log('⏭️ Collection already has toggle bound, skipping');
     return;
   }
-  gridBtn.dataset.gridToggleBound = 'true';
-  listBtn.dataset.gridToggleBound = 'true';
+  collection.dataset.gridToggleBound = 'true';
 
   const layout = collection.querySelector('.index_layout');
   const items = () => Array.from(collection.querySelectorAll('.index_item'));
@@ -334,8 +342,8 @@ function initCreatorGridToggle() {
     },
     // Item name/heading
     '.index_name': {
-      grid: ['u-text-style-h2'], // Add u-text-style-h2 for consistent styling
-      list: ['u-flex-grow', 'u-text-style-h2', 'is-first', 'u-alignment-start']
+      grid: ['u-text-style-mai'], // Smaller text style for grid view
+      list: ['u-flex-grow', 'u-text-style-h4', 'is-first', 'u-alignment-start']
     },
     // Description wrapper (NOTE: it's "decription" not "description" - missing 's'!)
     '.index_decription_wrap': {
@@ -359,7 +367,7 @@ function initCreatorGridToggle() {
     // First u-content-wrapper (image wrapper)
     '.index_item > [data-wf--content-wrapper--alignment="inherit"]:nth-child(4) .u-content-wrapper': {
       grid: [],
-      list: ['u-max-width-16ch']
+      list: ['u-max-width-30ch']
     },
     // Second u-content-wrapper (text wrapper with heading)
     '.index_item > [data-wf--content-wrapper--alignment="inherit"]:nth-child(5) .u-content-wrapper': {
@@ -517,10 +525,18 @@ function initCreatorGridToggle() {
     showListView();
   };
   
-  gridBtn.addEventListener('click', handleGridClick, true);
-  listBtn.addEventListener('click', handleListClick, true);
+  // Attach listeners to ALL grid/list buttons
+  gridBtns.forEach((btn, index) => {
+    btn.addEventListener('click', handleGridClick, true);
+    console.log(`✅ Grid button ${index + 1} listener attached`);
+  });
   
-  console.log('✅ Click listeners attached');
+  listBtns.forEach((btn, index) => {
+    btn.addEventListener('click', handleListClick, true);
+    console.log(`✅ List button ${index + 1} listener attached`);
+  });
+  
+  console.log('✅ All click listeners attached');
 }
 
 // ================================================================================
@@ -529,15 +545,15 @@ function initCreatorGridToggle() {
 function initImageHoverEffects() {
   if (!window.gsap) return;
   
-  // Find all index items
-  const items = document.querySelectorAll('.index_item');
+  // Find all creator links (the hover trigger)
+  const links = document.querySelectorAll('.creator_link');
   
-  items.forEach(item => {
-    // Find the image inside .u-display-contents that has .clickable_wrap as sibling
-    const clickable = item.querySelector('.clickable_wrap');
-    if (!clickable) return;
+  links.forEach(link => {
+    // Find parent index_item
+    const item = link.closest('.index_item');
+    if (!item) return;
     
-    // Find image in the same item
+    // Find image in the item
     const image = item.querySelector('.u-display-contents img, .u-display-contents picture img');
     if (!image) return;
     
@@ -602,9 +618,9 @@ function initImageHoverEffects() {
       }
     };
     
-    // Bind to the item (entire row is hoverable)
-    item.addEventListener('mouseenter', onEnter);
-    item.addEventListener('mouseleave', onLeave);
+    // Bind to the link (the covering element)
+    link.addEventListener('mouseenter', onEnter);
+    link.addEventListener('mouseleave', onLeave);
   });
   
   console.log('✅ Image hover effects initialized');
@@ -1051,6 +1067,88 @@ function initPaginationReinit() {
 
 // (Removed hover JS; using pure CSS hover now)
 
+// ================================================================================
+// 🖼️ ARTICLE IMAGE CONTAINER WIDTH CLASSES + STICKY POSITIONING
+// ================================================================================
+function initArticleImageContainers() {
+  console.log('🖼️ initArticleImageContainers called');
+  
+  const map = {
+    'full': 'u-container-full',
+    'container-full': 'u-container-full',
+    'main': 'u-container',
+    'container': 'u-container',
+    'small': 'u-container-small',
+    'container-small': 'u-container-small'
+  };
+  const widthClasses = ['u-container', 'u-container-full', 'u-container-small'];
+  const stickyClasses = ['is-left', 'is-right'];
+
+  const elements = document.querySelectorAll('.article_img_contain');
+  console.log('🖼️ Found', elements.length, 'elements');
+  
+  elements.forEach(function(el, index) {
+    const raw = (el.getAttribute('data-container') || '').toLowerCase().trim();
+    
+    // Check if this is a sticky positioning value
+    const isSticky = raw === 'sticky left' || raw === 'sticky-left' || raw === 'sticky right' || raw === 'sticky-right';
+    
+    if (isSticky) {
+      // Handle sticky positioning + apply u-container-full to parent
+      widthClasses.forEach(function(c) { el.classList.remove(c); });
+      el.classList.add('u-container-full');
+      
+      const articleImgLayout = el.querySelector('.article_img_layout');
+      
+      if (articleImgLayout) {
+        const tracks = articleImgLayout.querySelectorAll('.article_img_track');
+        
+        // Clean up previous sticky classes from all tracks
+        tracks.forEach(function(track) {
+          stickyClasses.forEach(function(c) { track.classList.remove(c); });
+          const inner = track.querySelector('.article_img_inner');
+          if (inner) {
+            inner.classList.remove('u-max-width-30ch');
+          }
+        });
+        
+        if (raw === 'sticky left' || raw === 'sticky-left') {
+          // First child: add .is-right to track and .u-max-width-30ch to inner
+          if (tracks.length > 0) {
+            const firstTrack = tracks[0];
+            firstTrack.classList.add('is-right');
+            const firstInner = firstTrack.querySelector('.article_img_inner');
+            if (firstInner) {
+              firstInner.classList.add('u-max-width-30ch');
+            }
+            console.log('🖼️ Element', index + 1, ': Applied sticky left (is-right class) to first track');
+          }
+        } else if (raw === 'sticky right' || raw === 'sticky-right') {
+          // Last child: add .is-left to track and .u-max-width-30ch to inner
+          if (tracks.length > 0) {
+            const lastTrack = tracks[tracks.length - 1];
+            lastTrack.classList.add('is-left');
+            const lastInner = lastTrack.querySelector('.article_img_inner');
+            if (lastInner) {
+              lastInner.classList.add('u-max-width-30ch');
+            }
+            console.log('🖼️ Element', index + 1, ': Applied sticky right (is-left class) to last track');
+          }
+        }
+      }
+      
+      console.log('🖼️ Element', index + 1, ':', 'sticky=' + raw, '+ u-container-full');
+    } else {
+      // Handle normal container width
+      widthClasses.forEach(function(c) { el.classList.remove(c); });
+      const klass = map[raw] || map['main'];
+      el.classList.add(klass);
+      
+      console.log('🖼️ Element', index + 1, ':', 'container=' + raw, '→', klass);
+    }
+  });
+}
+
 // Initialize nav color change on initial page load
 console.log('📌 Adding DOMContentLoaded listener for nav color change...');
 
@@ -1070,6 +1168,25 @@ function initAll() {
     initNavBackgroundPerSection();
   } catch (e) {
     console.error('Nav background per section failed', e);
+  }
+  try {
+    initArticleImageContainers();
+  } catch (e) {
+    console.error('Article image containers failed', e);
+  }
+  
+  // Initialize articles scroll fades
+  try {
+    initArticlesScrollFades();
+  } catch (e) {
+    console.error('Articles scroll fades failed', e);
+  }
+  
+  // Initialize articles hover effects
+  try {
+    initArticlesHoverEffects();
+  } catch (e) {
+    console.error('Articles hover effects failed', e);
   }
   
   // DON'T call initAccordions or initScrollImageFades here - they're defined inside Barba IIFE
@@ -1402,6 +1519,132 @@ if (document.readyState === 'loading') {
 } else {
   // DOM already loaded (e.g., if script loads late)
   setTimeout(initAllOnce, 0);
+}
+
+// ================================================================================
+// 🎨 ARTICLES SCROLL FADES - ScrollTrigger fade for article images
+// ================================================================================
+function initArticlesScrollFades() {
+  if (!window.gsap || !window.ScrollTrigger) {
+    console.log('⏭️ GSAP or ScrollTrigger not available');
+    return;
+  }
+  
+  const activeContainer = document.querySelector('[data-barba="container"]:not([aria-hidden="true"])') || document;
+  const articleImages = activeContainer.querySelectorAll('.article_item_img');
+  
+  if (articleImages.length === 0) {
+    console.log('⏭️ No article images found for scroll fades');
+    return;
+  }
+  
+  console.log(`🎨 Initializing scroll fades for ${articleImages.length} article images`);
+  
+  let imageCount = 0;
+  
+  articleImages.forEach((img) => {
+    // Skip if already bound
+    if (img.dataset.scrollFadeBound) return;
+    
+    const rect = img.getBoundingClientRect();
+    const visibleNow = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+    
+    img.dataset.scrollFadeBound = 'true';
+    
+    // Skip if already visible
+    if (visibleNow) return;
+    
+    // Set initial state
+    gsap.set(img, { opacity: 0, scale: 1.05 });
+    
+    // Listen for image load to refresh ScrollTrigger
+    if (img.nodeName === 'IMG' && !img.complete) {
+      const refreshOnLoad = () => {
+        ScrollTrigger.refresh();
+      };
+      img.addEventListener('load', refreshOnLoad, { once: true });
+      img.addEventListener('error', refreshOnLoad, { once: true });
+    }
+    
+    // Create ScrollTrigger
+    ScrollTrigger.create({
+      trigger: img,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        gsap.to(img, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: 'sine.inOut',
+          clearProps: 'all',
+          onComplete: () => {
+            // Ensure opacity stays at 1 after GSAP releases control
+            img.style.opacity = '1';
+          }
+        });
+      }
+    });
+    
+    imageCount++;
+  });
+  
+  console.log(`✅ Articles scroll fades initialized: ${imageCount} triggers created`);
+}
+
+// ================================================================================
+// 🎨 ARTICLES HOVER EFFECTS - Fade overlay on hover
+// ================================================================================
+function initArticlesHoverEffects() {
+  const activeContainer = document.querySelector('[data-barba="container"]:not([aria-hidden="true"])') || document;
+  const hoverTriggers = activeContainer.querySelectorAll('.articles_link');
+  
+  if (hoverTriggers.length === 0) {
+    console.log('⏭️ No articles_link found for hover effects');
+    return;
+  }
+  
+  console.log(`🎨 Initializing hover effects for ${hoverTriggers.length} article links`);
+  
+  hoverTriggers.forEach(trigger => {
+    // Find the overlay_wrap within the parent article item
+    const articleItem = trigger.closest('.articles_item');
+    if (!articleItem) return;
+    
+    const overlayWrap = articleItem.querySelector('.overlay_wrap');
+    
+    if (!overlayWrap) return;
+    
+    // Hover in: fade overlay to 0.1 (10%) - lighter to reveal image
+    trigger.addEventListener('mouseenter', () => {
+      if (window.gsap) {
+        gsap.to(overlayWrap, {
+          opacity: 0.1,
+          duration: 0.5,
+          ease: 'power2.inOut'
+        });
+      } else {
+        overlayWrap.style.transition = 'opacity 0.5s ease-in-out';
+        overlayWrap.style.opacity = '0.1';
+      }
+    });
+    
+    // Hover out: fade overlay back to 0.5 (50%) - default state
+    trigger.addEventListener('mouseleave', () => {
+      if (window.gsap) {
+        gsap.to(overlayWrap, {
+          opacity: 0.5,
+          duration: 0.5,
+          ease: 'power2.inOut'
+        });
+      } else {
+        overlayWrap.style.transition = 'opacity 0.5s ease-in-out';
+        overlayWrap.style.opacity = '0.5';
+      }
+    });
+  });
+  
+  console.log(`✅ Articles hover effects initialized`);
 }
 
 // ================================================================================
@@ -1869,6 +2112,9 @@ if (document.readyState === 'loading') {
                 
                 try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed on enter', e); }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on enter', e); }
+                try { initArticleImageContainers(); } catch (e) { console.warn('Article image containers init failed on enter', e); }
+                try { initArticlesScrollFades(); } catch (e) { console.warn('Articles scroll fades init failed on enter', e); }
+                try { initArticlesHoverEffects(); } catch (e) { console.warn('Articles hover effects init failed on enter', e); }
                 
                 // Reinitialize nav background per section
                 try { initNavBackgroundPerSection(); } catch (e) { console.warn('Nav background per section init failed on enter', e); }
@@ -1897,10 +2143,16 @@ if (document.readyState === 'loading') {
                   await new Promise(resolve => setTimeout(resolve, tl.duration() * 1000 + 100));
                 }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on once', e); }
+                try { initArticleImageContainers(); } catch (e) { console.warn('Article image containers init failed on once', e); }
+                try { initArticlesScrollFades(); } catch (e) { console.warn('Articles scroll fades init failed on once', e); }
+                try { initArticlesHoverEffects(); } catch (e) { console.warn('Articles hover effects init failed on once', e); }
               } else {
                 console.warn('⚠️ Barba once hook: no GSAP or container');
                 try { initAccordions(); } catch (e) {}
                 try { initCreatorGridToggle(); } catch (e) {}
+                try { initArticleImageContainers(); } catch (e) {}
+                try { initArticlesScrollFades(); } catch (e) {}
+                try { initArticlesHoverEffects(); } catch (e) {}
               }
             }
           }
@@ -1916,6 +2168,9 @@ if (document.readyState === 'loading') {
           try { initFinsweetFilters(); } catch (e) {}
           try { initPaginationReinit(); } catch (e) {}
           try { initCreatorGridToggle(); } catch (e) {}
+          try { initArticleImageContainers(); } catch (e) {}
+          try { initArticlesScrollFades(); } catch (e) {}
+          try { initArticlesHoverEffects(); } catch (e) {}
         }
         barba.hooks.afterEnter(() => {
           scheduleRecalc();

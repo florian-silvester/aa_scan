@@ -17,6 +17,7 @@ function normalizeFilename(filename) {
   if (!filename) return ''
   return filename
     .toLowerCase()
+    .replace(/^\d+_/, '') // Remove WordPress media ID prefix like "4080_"
     .replace(/-\d+x\d+\.(jpg|jpeg|png|gif|webp)$/i, '.$1') // Remove size suffixes like -1024x672.jpg
     .replace(/\.jpeg$/i, '.jpg') // Normalize jpeg to jpg
 }

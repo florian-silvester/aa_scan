@@ -1,0 +1,66 @@
+{
+  "kept": [
+    {
+      "name": "Uta K. Becker",
+      "id": "6900d1894c952e8b9ade3106",
+      "slug": "uta-becker-6d3bd"
+    },
+    {
+      "name": "Otto Künzli",
+      "id": "6900d15fb5e338e065458f0a",
+      "slug": "otto-kuenzli"
+    },
+    {
+      "name": "Mark Redy",
+      "id": "6900d14d9e093f1e21847826",
+      "slug": "mark_redy"
+    },
+    {
+      "name": "Gerd Rothmann",
+      "id": "6900d122f128ba20b0cd0580",
+      "slug": "gerhard-rothmann-456a0"
+    },
+    {
+      "name": "Francesco Pavan",
+      "id": "6900d11c08ca0985be55ba19",
+      "slug": "francesco-pavan-f5464"
+    },
+    {
+      "name": "Anita Oettershagen",
+      "id": "6900d0f64891cf4231f9c09e",
+      "slug": "anita-oetterschagen"
+    }
+  ],
+  "deleted": [
+    {
+      "name": "Uta K. Becker",
+      "id": "6900d18ac07970c70de43866",
+      "slug": "uta-becker-3c121"
+    },
+    {
+      "name": "Otto Künzli",
+      "id": "6900d160bbf613e0f6a6b3db",
+      "slug": "otto-kuenzli-4beb4"
+    },
+    {
+      "name": "Mark Redy",
+      "id": "6900d14e411211247bda040d",
+      "slug": "mark_redy-8ab6b"
+    },
+    {
+      "name": "Gerd Rothmann",
+      "id": "6900d123807cd2e22d8cf6a8",
+      "slug": "gerhard-rothmann-ba3f9"
+    },
+    {
+      "name": "Francesco Pavan",
+      "id": "6900d11d8c349140d2208b88",
+      "slug": "francesco-pavan-8df97"
+    },
+    {
+      "name": "Anita Oettershagen",
+      "id": "6900d0f74891cf4231f9c134",
+      "slug": "anita-oetterschagen-4991f"
+    }
+  ]
+}

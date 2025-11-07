@@ -1,0 +1,369 @@
+import { createClient } from '@sanity/client'
+import dotenv from 'dotenv'
+import fetch from 'node-fetch'
+import { JSDOM } from 'jsdom'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import fs from 'fs'
+import csv from 'csv-parser'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+dotenv.config({ path: join(__dirname, '../../../.env') })
+
+const client = createClient({
+  projectId: 'b8bczekj',
+  dataset: 'production',
+  useCdn: false,
+  token: process.env.SANITY_WRITE_TOKEN || process.env.SANITY_API_TOKEN,
+  apiVersion: '2023-01-01'
+})
+
+const DRY_RUN = process.argv[2] !== '--execute'
+const DELAY_MS = 1000
+
+// Try multiple URL variations to find English profile
+async function findEnglishProfile(germanUrl) {
+  const baseUrl = germanUrl.replace('artaurea.de', 'artaurea.com')
+  const slug = germanUrl.split('/profiles/')[1]?.replace('/', '')
+  
+  if (!slug) return null
+  
+  // Try variations
+  const variations = [
+    baseUrl,  // Direct swap
+    `https://artaurea.com/profiles/${slug}-2/`,
+    `https://artaurea.com/profiles/${slug}-3/`,
+    `https://artaurea.com/profiles/${slug}-4/`
+  ]
+  
+  for (const url of variations) {
+    try {
+      const response = await fetch(url, { method: 'HEAD' })
+      if (response.ok) {
+        return url
+      }
+    } catch (error) {
+      continue
+    }
+  }
+  
+  return null
+}
+
+// Scrape English profile for captions
+async function scrapeEnglishCaptions(englishUrl) {
+  try {
+    const response = await fetch(englishUrl)
+    if (!response.ok) return null
+    
+    const html = await response.text()
+    const dom = new JSDOM(html)
+    const document = dom.window.document
+    
+    const artworks = []
+    const imageLinks = document.querySelectorAll('.carousel_slide a[data-fancybox="gallery"]')
+    
+    imageLinks.forEach((link) => {
+      const dataSrc = link.getAttribute('data-src')
+      const caption = link.getAttribute('data-caption') || ''
+      const img = link.querySelector('img')
+      const imgSrc = img?.getAttribute('src')
+      
+      const imageUrl = dataSrc || imgSrc
+      if (imageUrl) {
+        const filename = imageUrl.split('/').pop()
+        artworks.push({
+          filename,
+          captionEN: caption.replace(/<[^>]+>/g, '')
+        })
+      }
+    })
+    
+    return artworks
+  } catch (error) {
+    return null
+  }
+}
+
+// Parse structured data from caption (FIXED version)
+function parseCaption(caption, language = 'de') {
+  if (!caption) return {}
+  
+  const result = {
+    fullCaption: caption,
+    title: '',
+    size: null,
+    year: null,
+    materials: []
+  }
+  
+  // Extract year
+  const yearMatch = caption.match(/\b(19|20)\d{2}\b/)
+  if (yearMatch) {
+    result.year = yearMatch[0]
+  }
+  
+  // Extract dimensions - be more specific to avoid duplicates
+  const sizePatterns = [
+    /[HhØø]\s*\d+[^.,]*?cm/gi,
+    /\d+\s*[x×]\s*\d+(?:\s*[x×]\s*\d+)?\s*cm/gi,
+  ]
+  
+  const sizeMatches = new Set()
+  sizePatterns.forEach(pattern => {
+    const matches = caption.match(pattern)
+    if (matches) {
+      matches.forEach(m => sizeMatches.add(m.trim()))
+    }
+  })
+  
+  if (sizeMatches.size > 0) {
+    result.size = Array.from(sizeMatches).join(', ')
+  }
+  
+  // Extract materials
+  const materialKeywords = language === 'de' ? [
+    'Porzellan', 'Keramik', 'Steinzeug', 'Ton', 'Glas', 'Holz', 'Metall',
+    'Silber', 'Gold', 'Platin', 'Bronze', 'Kupfer', 'Messing',
+    'Textil', 'Wolle', 'Seide', 'Baumwolle', 'Leder'
+  ] : [
+    'Porcelain', 'Ceramic', 'Stoneware', 'Clay', 'Glass', 'Wood', 'Metal',
+    'Silver', 'Gold', 'Platinum', 'Bronze', 'Copper', 'Brass',
+    'Textile', 'Wool', 'Silk', 'Cotton', 'Leather'
+  ]
+  
+  materialKeywords.forEach(material => {
+    const regex = new RegExp(`\\b${material}\\b`, 'i')
+    if (regex.test(caption)) {
+      result.materials.push(material)
+    }
+  })
+  
+  // Extract clean title
+  let title = caption
+  
+  const splitPatterns = [
+    /\.\s+(?:Glas|Keramik|Holz|Metall|Schmuck|Textil|Silber|Gold|Porzellan|Steinzeug)/i,
+    /\.\s+(?:Glass|Ceramic|Wood|Metal|Jewelry|Textile|Silver|Gold|Porcelain|Stoneware)/i,
+    /\,\s+\d{4}/,
+    /\d+\s*[x×]\s*\d+/
+  ]
+  
+  for (const pattern of splitPatterns) {
+    const match = title.match(pattern)
+    if (match) {
+      title = title.substring(0, match.index)
+      break
+    }
+  }
+  
+  title = title
+    .replace(/[.,;:]$/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  
+  result.title = title
+  
+  return result
+}
+
+// Main fix function
+async function fixStructuredData() {
+  console.log('🔧 FIXING Structured Data Issues\n')
+  console.log('=' .repeat(80))
+  
+  if (DRY_RUN) {
+    console.log('🔍 DRY RUN MODE - No changes will be made')
+    console.log('   Run with --execute to apply fixes')
+  } else {
+    console.log('⚠️  EXECUTE MODE - Will update artworks!')
+  }
+  console.log('=' .repeat(80) + '\n')
+  
+  console.log('Fixes to apply:')
+  console.log('  1. ✅ Smart English URL fallback (try -2, -3 variations)')
+  console.log('  2. ✅ Fix duplicate sizes (use DE only)')
+  console.log('  3. ✅ Re-parse all captions\n')
+  
+  try {
+    // Load German captions
+    console.log('📥 Loading German captions...\n')
+    const germanData = await new Promise((resolve) => {
+      const data = []
+      fs.createReadStream('/Users/florian.ludwig/Documents/aa_scan/reports/ready-to-create-artworks-2025-10-29.csv')
+        .pipe(csv())
+        .on('data', (row) => data.push(row))
+        .on('end', () => resolve(data))
+    })
+    
+    // Get artworks created today
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    const artworks = await client.fetch(`
+      *[_type == "artwork" && _createdAt >= $today]{
+        _id,
+        name,
+        'creator': creator->{_id, name},
+        'imageFilename': images[0].asset->originalFilename
+      } | order(_createdAt asc)
+    `, { today: today.toISOString() })
+    
+    console.log(`📊 Found ${artworks.length} artworks to fix\n`)
+    
+    // Load audit data
+    const auditData = JSON.parse(
+      fs.readFileSync('/Users/florian.ludwig/Documents/aa_scan/reports/profile-audit-complete-2025-10-28.json', 'utf8')
+    )
+    
+    // Group by creator
+    const byCreator = new Map()
+    artworks.forEach(aw => {
+      const creatorName = aw.creator?.name
+      if (!creatorName) return
+      
+      if (!byCreator.has(creatorName)) {
+        byCreator.set(creatorName, [])
+      }
+      byCreator.get(creatorName).push(aw)
+    })
+    
+    console.log(`🌐 Re-scraping English with smart URL matching...\n`)
+    
+    const englishCaptions = new Map()
+    let foundUrls = 0
+    let notFound = 0
+    
+    for (const [creatorName, creatorArtworks] of byCreator) {
+      const profileMatch = auditData.creatorMatches.find(m =>
+        m.creatorName.toLowerCase() === creatorName.toLowerCase()
+      )
+      
+      if (!profileMatch?.profileUrl) {
+        notFound++
+        continue
+      }
+      
+      // Try to find English profile with URL variations
+      const englishUrl = await findEnglishProfile(profileMatch.profileUrl)
+      
+      if (!englishUrl) {
+        console.log(`   ⚠️  ${creatorName}: No English profile found`)
+        notFound++
+        await new Promise(resolve => setTimeout(resolve, DELAY_MS))
+        continue
+      }
+      
+      console.log(`   ✓ ${creatorName}: ${englishUrl}`)
+      foundUrls++
+      
+      const englishData = await scrapeEnglishCaptions(englishUrl)
+      
+      if (englishData) {
+        englishData.forEach(item => {
+          const key = item.filename.toLowerCase().replace(/^\d+_/, '')
+          englishCaptions.set(key, item.captionEN)
+        })
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, DELAY_MS))
+    }
+    
+    console.log(`\n   ✓ Found ${foundUrls} English profiles`)
+    console.log(`   ✗ Not found: ${notFound}`)
+    console.log(`   📝 Scraped ${englishCaptions.size} English captions\n`)
+    
+    // Process updates
+    console.log('🔧 Processing fixes...\n')
+    
+    const updates = []
+    
+    for (const artwork of artworks) {
+      const germanRow = germanData.find(row => {
+        const rowFilename = (row['Media Filename'] || '').toLowerCase()
+        const artworkFilename = (artwork.imageFilename || '').toLowerCase()
+        return rowFilename === artworkFilename
+      })
+      
+      if (!germanRow) continue
+      
+      const captionDE = germanRow.Caption
+      const captionEN = englishCaptions.get(
+        (artwork.imageFilename || '').toLowerCase().replace(/^\d+_/, '')
+      )
+      
+      // Parse - ONLY use DE for size to avoid duplicates
+      const parsedDE = parseCaption(captionDE, 'de')
+      const parsedEN = captionEN ? parseCaption(captionEN, 'en') : {}
+      
+      const update = {
+        _id: artwork._id,
+        changes: {
+          name: `${artwork.creator.name}_${parsedDE.title}`.slice(0, 100),
+          'workTitle.en': parsedEN.title || parsedDE.title,
+          'workTitle.de': parsedDE.title,
+          'description.en': parsedEN.fullCaption || null,
+          'description.de': parsedDE.fullCaption,
+          size: parsedDE.size || null,  // ONLY from DE
+          year: parsedDE.year || parsedEN.year || null
+        }
+      }
+      
+      updates.push(update)
+    }
+    
+    // Preview
+    console.log('📋 PREVIEW (first 5 fixes):\n')
+    updates.slice(0, 5).forEach((upd, i) => {
+      console.log(`${i + 1}. ${upd.changes.name}`)
+      console.log(`   Size: ${upd.changes.size || 'N/A'}`)
+      console.log(`   Has EN caption: ${upd.changes['description.en'] ? 'Yes ✓' : 'No'}`)
+      console.log('')
+    })
+    
+    if (DRY_RUN) {
+      console.log('=' .repeat(80))
+      console.log('✨ DRY RUN COMPLETE')
+      console.log('=' .repeat(80))
+      console.log(`\nWould update ${updates.length} artworks`)
+      console.log(`English captions found: ${updates.filter(u => u.changes['description.en']).length}`)
+      console.log('\n💡 Run with --execute to apply\n')
+      
+    } else {
+      console.log('=' .repeat(80))
+      console.log('🚀 APPLYING FIXES...')
+      console.log('=' .repeat(80) + '\n')
+      
+      let updated = 0
+      
+      for (const update of updates) {
+        try {
+          await client
+            .patch(update._id)
+            .set(update.changes)
+            .commit()
+          updated++
+          
+          if (updated % 50 === 0) {
+            console.log(`   Fixed ${updated}/${updates.length}...`)
+          }
+        } catch (error) {
+          console.error(`   ✗ Failed ${update._id}: ${error.message}`)
+        }
+      }
+      
+      console.log(`\n✅ Fixed ${updated} artworks\n`)
+    }
+    
+  } catch (error) {
+    console.error('❌ Fatal error:', error.message)
+    console.error(error.stack)
+  }
+}
+
+fixStructuredData()
+
+
+
+
