@@ -57,6 +57,12 @@ pids
 # MacOS
 .DS_Store
 
+# SSL Certificates (for local dev only)
+*.pem
+*.key
+*.crt
+*.cert
+
 # IDE
 .vscode/
 .idea/
