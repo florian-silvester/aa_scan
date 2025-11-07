@@ -1531,7 +1531,8 @@ function initArticlesScrollFades() {
   }
   
   const activeContainer = document.querySelector('[data-barba="container"]:not([aria-hidden="true"])') || document;
-  const articleImages = activeContainer.querySelectorAll('.article_item_img');
+  // Target all images on article pages (excluding nav/header images)
+  const articleImages = activeContainer.querySelectorAll('main img, .u-section img, [data-barba="container"] img');
   
   if (articleImages.length === 0) {
     console.log('⏭️ No article images found for scroll fades');
