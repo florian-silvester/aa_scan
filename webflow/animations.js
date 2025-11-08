@@ -152,13 +152,6 @@ function initNavBackgroundPerSection() {
 // 🎨 NAV COLOR CHANGE ON SCROLL
 // ================================================================================
 function initNavColorChange() {
-  // CRITICAL: Prevent multiple initializations
-  if (window._navColorChangeInitialized) {
-    console.log('⏭️ Nav color change already initialized, skipping');
-    return;
-  }
-  window._navColorChangeInitialized = true;
-  
   console.log('🎨 ===== INITIALIZING NAV COLOR CHANGE =====');
   
   if (!window.gsap || !window.ScrollTrigger) {
@@ -1529,7 +1522,7 @@ if (document.readyState === 'loading') {
 }
 
 // ================================================================================
-// 🎨 ARTICLES SCROLL FADES - ScrollTrigger fade for article images (simple fade, no zoom)
+// 🎨 ARTICLES SCROLL FADES - ScrollTrigger fade for article images
 // ================================================================================
 function initArticlesScrollFades() {
   if (!window.gsap || !window.ScrollTrigger) {
@@ -1538,38 +1531,31 @@ function initArticlesScrollFades() {
   }
   
   const activeContainer = document.querySelector('[data-barba="container"]:not([aria-hidden="true"])') || document;
-  // Target all images in article sections
-  const articleImages = activeContainer.querySelectorAll('img');
+  const articleImages = activeContainer.querySelectorAll('.article_item_img');
   
   if (articleImages.length === 0) {
     console.log('⏭️ No article images found for scroll fades');
     return;
   }
   
-  console.log(`🎨 Checking ${articleImages.length} images for scroll fades`);
+  console.log(`🎨 Initializing scroll fades for ${articleImages.length} article images`);
   
   let imageCount = 0;
-  let alreadyBound = 0;
   
   articleImages.forEach((img) => {
     // Skip if already bound
-    if (img.dataset.scrollFadeBound) {
-      alreadyBound++;
-      return;
-    }
+    if (img.dataset.scrollFadeBound) return;
     
     const rect = img.getBoundingClientRect();
-    const visibleNow = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
+    const visibleNow = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
     
     img.dataset.scrollFadeBound = 'true';
     
-    // Skip if already visible (above fold)
-    if (visibleNow) {
-      return;
-    }
+    // Skip if already visible
+    if (visibleNow) return;
     
-    // Set initial state (simple fade, NO SCALE)
-    gsap.set(img, { opacity: 0 });
+    // Set initial state
+    gsap.set(img, { opacity: 0, scale: 1.05 });
     
     // Listen for image load to refresh ScrollTrigger
     if (img.nodeName === 'IMG' && !img.complete) {
@@ -1588,8 +1574,14 @@ function initArticlesScrollFades() {
       onEnter: () => {
         gsap.to(img, {
           opacity: 1,
+          scale: 1,
           duration: 0.8,
-          ease: 'sine.inOut'
+          ease: 'sine.inOut',
+          clearProps: 'all',
+          onComplete: () => {
+            // Ensure opacity stays at 1 after GSAP releases control
+            img.style.opacity = '1';
+          }
         });
       }
     });
@@ -1597,9 +1589,6 @@ function initArticlesScrollFades() {
     imageCount++;
   });
   
-  if (alreadyBound > 0) {
-    console.log(`⏭️ Skipped ${alreadyBound} already bound images`);
-  }
   console.log(`✅ Articles scroll fades initialized: ${imageCount} triggers created`);
 }
 
@@ -1979,20 +1968,7 @@ function initArticlesHoverEffects() {
         const mediaElsFiltered = Array.from(mediaEls).filter(el => !el.closest('.creators_wrap'));
         const textElsFiltered = Array.from(textEls).filter(el => !el.closest('.creators_wrap'));
         
-        console.log('🔍 Animation elements:', {
-          media: mediaElsFiltered.length,
-          text: textElsFiltered.length,
-          scope: scope?.tagName || 'no scope'
-        });
-        
         const tl = gsap.timeline();
-        
-        // If no elements found, just show container and exit
-        if (mediaElsFiltered.length === 0 && textElsFiltered.length === 0) {
-          console.warn('⚠️ No elements found to animate, just showing container');
-          tl.set(root, { opacity: 1 }, 0);
-          return tl;
-        }
         // Prepare inner elements first so we don't see a second fade after container appears
         mediaElsFiltered.forEach(el => {
           const parent = el.parentElement;
@@ -2004,7 +1980,8 @@ function initArticlesHoverEffects() {
           }
         });
         tl.set(textElsFiltered, { opacity: 0, y: '1vh' }, 0);
-        // Container is already visible (Barba forces opacity: 1), just animate content
+        // Container enters (fade only)
+        tl.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'sine.inOut' }, 0);
         // Media first (fade only) only for visible items now, hidden ones will fade on scroll
         const visibleMedia = mediaElsFiltered.filter((el) => {
           const r = el.getBoundingClientRect();
@@ -2015,13 +1992,13 @@ function initArticlesHoverEffects() {
             const parent = el.parentElement;
             const hasOverlaySibling = parent && parent.querySelector('.overlay_wrap.u-nav-theme-overlay');
             if (hasOverlaySibling) {
-              tl.to(el, { opacity: 1, scale: 1, duration: 0.5, ease: 'sine.out' }, 0.05 + (index * 0.05));
+              tl.to(el, { opacity: 1, scale: 1, duration: 0.5, ease: 'sine.inOut' }, 0.05 + (index * 0.05));
             } else {
-              tl.to(el, { opacity: 1, duration: 0.5, ease: 'sine.out' }, 0.05 + (index * 0.05));
+              tl.to(el, { opacity: 1, duration: 0.5, ease: 'sine.inOut' }, 0.05 + (index * 0.05));
             }
           });
         }
-        tl.to(textElsFiltered, { opacity: 1, y: 0, duration: 0.6, ease: 'sine.out', stagger: 0.03 }, '-=0.2');
+        tl.to(textElsFiltered, { opacity: 1, y: 0, duration: 0.6, ease: 'sine.inOut', stagger: 0.03 }, '-=0.2');
         // Bind scroll fades for non-visible media after reveal
         tl.call(() => { try { initScrollImageFades(root); } catch (e) {} });
         return tl;
@@ -2117,36 +2094,6 @@ function initArticlesHoverEffects() {
                   window.scrollTo(0, 0);
                 }
                 
-                // Wait for CMS content to load (especially for CMS article pages)
-                const waitForContent = async () => {
-                  const scope = nextRoot.querySelector('main') || nextRoot;
-                  let attempts = 0;
-                  const maxAttempts = 8; // 200ms max (8 * 25ms) - reduced from 500ms
-                  
-                  console.log(`🔍 Waiting for content in scope:`, scope?.tagName, `(searching for img/h1/h2/h3/p)`);
-                  
-                  while (attempts < maxAttempts) {
-                    const mediaCount = scope.querySelectorAll('img, picture, video').length;
-                    const textCount = scope.querySelectorAll('h1, h2, h3, p').length;
-                    
-                    console.log(`⏳ Check ${attempts}: ${mediaCount} media, ${textCount} text`);
-                    
-                    if (mediaCount > 0 || textCount > 0) {
-                      console.log(`✅ Content ready after ${attempts * 25}ms`);
-                      break;
-                    }
-                    
-                    await new Promise(resolve => setTimeout(resolve, 25));
-                    attempts++;
-                  }
-                  
-                  if (attempts >= maxAttempts) {
-                    console.log(`ℹ️ No content found after 200ms - proceeding anyway`);
-                  }
-                };
-                
-                await waitForContent();
-                
                 const tl = revealContainerWithMediaThenText(nextRoot);
                 try { initScrollImageFades(nextRoot); } catch (e) {}
                 // Initialize accordions in new container
@@ -2186,37 +2133,6 @@ function initArticlesHoverEffects() {
               }
               
               if (window.gsap && data && data.next && data.next.container) {
-                // Wait for CMS content to load (especially for CMS article pages)
-                const nextRoot = data.next.container;
-                const waitForContent = async () => {
-                  const scope = nextRoot.querySelector('main') || nextRoot;
-                  let attempts = 0;
-                  const maxAttempts = 8; // 200ms max (8 * 25ms) - reduced from 500ms
-                  
-                  console.log(`🔍 Waiting for content in scope:`, scope?.tagName, `(searching for img/h1/h2/h3/p)`);
-                  
-                  while (attempts < maxAttempts) {
-                    const mediaCount = scope.querySelectorAll('img, picture, video').length;
-                    const textCount = scope.querySelectorAll('h1, h2, h3, p').length;
-                    
-                    console.log(`⏳ Check ${attempts}: ${mediaCount} media, ${textCount} text`);
-                    
-                    if (mediaCount > 0 || textCount > 0) {
-                      console.log(`✅ Content ready after ${attempts * 25}ms`);
-                      break;
-                    }
-                    
-                    await new Promise(resolve => setTimeout(resolve, 25));
-                    attempts++;
-                  }
-                  
-                  if (attempts >= maxAttempts) {
-                    console.log(`ℹ️ No content found after 200ms - proceeding anyway`);
-                  }
-                };
-                
-                await waitForContent();
-                
                 const tl = revealContainerWithMediaThenText(data.next.container);
                 try { initScrollImageFades(data.next.container); } catch (e) {}
                 try { initAccordions(); } catch (e) { console.warn('Accordion init failed on once', e); }
@@ -2246,13 +2162,22 @@ function initArticlesHoverEffects() {
       // Refresh ScrollTrigger and recalc nav theme on new content
       if (window.barba) {
         function scheduleRecalc() {
-          // Only refresh ScrollTrigger and nav theme - init functions already called in enter hook
+          try { initAccordions(); } catch (e) {}
           try { if (window.ScrollTrigger) ScrollTrigger.refresh(); } catch (e) {}
           try { if (window.__updateNavTheme) window.__updateNavTheme(); } catch (e) {}
+          try { initFinsweetFilters(); } catch (e) {}
+          try { initPaginationReinit(); } catch (e) {}
+          try { initCreatorGridToggle(); } catch (e) {}
+          try { initArticleImageContainers(); } catch (e) {}
+          try { initArticlesScrollFades(); } catch (e) {}
+          try { initArticlesHoverEffects(); } catch (e) {}
         }
         barba.hooks.afterEnter(() => {
           scheduleRecalc();
+          setTimeout(scheduleRecalc, 50);
           setTimeout(scheduleRecalc, 150);
+          setTimeout(scheduleRecalc, 350);
+          setTimeout(scheduleRecalc, 700);
         });
       }
 
