@@ -627,6 +627,177 @@ function initImageHoverEffects() {
 }
 
 // ================================================================================
+// 🔄 CREATOR IMAGE LIST TOGGLE - Grid ↔ Flex with GSAP animations
+// ================================================================================
+function initCreatorImgListToggle() {
+  if (!window.gsap) {
+    console.log('⏭️ GSAP not available, skipping creator img list toggle');
+    return;
+  }
+  
+  const container = document.querySelector('.creator_img_list');
+  if (!container) {
+    console.log('⏭️ .creator_img_list not found, skipping toggle');
+    return;
+  }
+  
+  // Check if already initialized
+  if (container.dataset.toggleBound === 'true') {
+    console.log('⏭️ Creator img list toggle already bound, skipping');
+    return;
+  }
+  container.dataset.toggleBound = 'true';
+  
+  // Wait for dynamic content to load (Webflow CMS)
+  // The structure is: .creator_img_list > .creator_img (CMS items)
+  let items = container.querySelectorAll('.creator_img');
+  
+  // Debug: log what we found
+  console.log('🔍 Searching for items in .creator_img_list');
+  console.log('   - Direct children:', container.children.length);
+  console.log('   - .creator_img items:', items.length);
+  
+  // Log the class names of direct children to see what they actually are
+  if (items.length === 0 && container.children.length > 0) {
+    console.log('   - Child class names:');
+    Array.from(container.children).forEach((child, i) => {
+      console.log(`     ${i + 1}. ${child.className || '(no class)'}, tag: ${child.tagName}`);
+    });
+  }
+  
+  if (items.length === 0) {
+    console.log('⏭️ No items found yet, waiting 1000ms and trying again...');
+    
+    // Try again after a delay (CMS might still be loading)
+    setTimeout(() => {
+      container.dataset.toggleBound = 'false'; // Reset flag
+      initCreatorImgListToggle(); // Retry
+    }, 1000);
+    
+    return;
+  }
+  
+  // Try multiple selectors for click targets
+  let clickTargets = [];
+  
+  // Try to find <p> elements inside .creator_img items
+  items.forEach(item => {
+    const p = item.querySelector('p');
+    if (p) clickTargets.push(p);
+  });
+  
+  // If no <p> found, use the items themselves
+  if (clickTargets.length === 0) {
+    clickTargets = Array.from(items);
+    console.log('⚠️ No <p> elements found, using .creator_img items as click targets');
+  }
+  
+  // Convert items to array for GSAP
+  const itemsArray = Array.from(items);
+  
+  let isGridView = true; // assuming starts in grid
+  
+  console.log('🔄 Initializing creator img list toggle:', itemsArray.length, 'items,', clickTargets.length, 'click targets');
+  
+  // Switch to Grid View
+  function switchToGrid() {
+    console.log('🎨 Switching to GRID view');
+    
+    // Kill any running animations
+    gsap.killTweensOf(itemsArray);
+    
+    // Fade out
+    gsap.to(itemsArray, {
+      scale: 0.9,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        // Swap classes
+        container.classList.remove('u-flex-vertical-nowrap');
+        container.classList.add('u-grid-custom');
+        
+        // Fade in with stagger
+        gsap.fromTo(itemsArray,
+          { opacity: 0, y: 30, scale: 0.9 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.1
+          }
+        );
+        
+        isGridView = true;
+      }
+    });
+  }
+  
+  // Switch to Flex View
+  function switchToFlex() {
+    console.log('🎨 Switching to FLEX view');
+    
+    // Kill any running animations
+    gsap.killTweensOf(itemsArray);
+    
+    // Fade out
+    gsap.to(itemsArray, {
+      scale: 0.9,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        // Swap classes
+        container.classList.remove('u-grid-custom');
+        container.classList.add('u-flex-vertical-nowrap');
+        
+        // Fade in with stagger
+        gsap.fromTo(itemsArray,
+          { opacity: 0, y: 30, scale: 0.9 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.1
+          }
+        );
+        
+        isGridView = false;
+      }
+    });
+  }
+  
+  // Add cursor pointer style to make paragraphs clickable
+  clickTargets.forEach(p => {
+    p.style.cursor = 'pointer';
+    p.style.userSelect = 'none'; // Prevent text selection on click
+  });
+  
+  // Click handler - toggle on click (click on <p> elements)
+  clickTargets.forEach((p, index) => {
+    p.addEventListener('click', (e) => {
+      console.log('🖱️ Click detected on paragraph', index + 1);
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isGridView) {
+        switchToFlex();
+      } else {
+        switchToGrid();
+      }
+    });
+    
+    console.log('✅ Click listener added to paragraph', index + 1, ':', p.textContent.trim());
+  });
+  
+  console.log('✅ Creator img list toggle initialized');
+}
+
+// ================================================================================
 // 🎯 FINSWEET CMS FILTERS - Simple check (no Barba reinit needed)
 // ================================================================================
 function initFinsweetFilters() {
@@ -1240,6 +1411,11 @@ function initFinsweetFeatures() {
   if (document.querySelector('.index_collection')) {
     try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed', e); }
     try { initImageHoverEffects(); } catch (e) { console.warn('Image hover effects init failed', e); }
+  }
+  
+  // Initialize creator img list toggle if elements exist
+  if (document.querySelector('.creator_img_list')) {
+    try { initCreatorImgListToggle(); } catch (e) { console.warn('Creator img list toggle init failed', e); }
   }
 }
 
@@ -2112,6 +2288,7 @@ function initArticlesHoverEffects() {
                 
                 try { initPaginationReinit(); } catch (e) { console.warn('Pagination reinit failed on enter', e); }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on enter', e); }
+                try { initCreatorImgListToggle(); } catch (e) { console.warn('Creator img list toggle init failed on enter', e); }
                 try { initArticleImageContainers(); } catch (e) { console.warn('Article image containers init failed on enter', e); }
                 try { initArticlesScrollFades(); } catch (e) { console.warn('Articles scroll fades init failed on enter', e); }
                 try { initArticlesHoverEffects(); } catch (e) { console.warn('Articles hover effects init failed on enter', e); }
@@ -2143,6 +2320,7 @@ function initArticlesHoverEffects() {
                   await new Promise(resolve => setTimeout(resolve, tl.duration() * 1000 + 100));
                 }
                 try { initCreatorGridToggle(); } catch (e) { console.warn('Creator grid toggle init failed on once', e); }
+                try { initCreatorImgListToggle(); } catch (e) { console.warn('Creator img list toggle init failed on once', e); }
                 try { initArticleImageContainers(); } catch (e) { console.warn('Article image containers init failed on once', e); }
                 try { initArticlesScrollFades(); } catch (e) { console.warn('Articles scroll fades init failed on once', e); }
                 try { initArticlesHoverEffects(); } catch (e) { console.warn('Articles hover effects init failed on once', e); }
@@ -2150,6 +2328,7 @@ function initArticlesHoverEffects() {
                 console.warn('⚠️ Barba once hook: no GSAP or container');
                 try { initAccordions(); } catch (e) {}
                 try { initCreatorGridToggle(); } catch (e) {}
+                try { initCreatorImgListToggle(); } catch (e) {}
                 try { initArticleImageContainers(); } catch (e) {}
                 try { initArticlesScrollFades(); } catch (e) {}
                 try { initArticlesHoverEffects(); } catch (e) {}
@@ -2168,6 +2347,7 @@ function initArticlesHoverEffects() {
           try { initFinsweetFilters(); } catch (e) {}
           try { initPaginationReinit(); } catch (e) {}
           try { initCreatorGridToggle(); } catch (e) {}
+          try { initCreatorImgListToggle(); } catch (e) {}
           try { initArticleImageContainers(); } catch (e) {}
           try { initArticlesScrollFades(); } catch (e) {}
           try { initArticlesHoverEffects(); } catch (e) {}
