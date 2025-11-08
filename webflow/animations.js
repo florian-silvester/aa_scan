@@ -152,6 +152,13 @@ function initNavBackgroundPerSection() {
 // 🎨 NAV COLOR CHANGE ON SCROLL
 // ================================================================================
 function initNavColorChange() {
+  // CRITICAL: Prevent multiple initializations
+  if (window._navColorChangeInitialized) {
+    console.log('⏭️ Nav color change already initialized, skipping');
+    return;
+  }
+  window._navColorChangeInitialized = true;
+  
   console.log('🎨 ===== INITIALIZING NAV COLOR CHANGE =====');
   
   if (!window.gsap || !window.ScrollTrigger) {
@@ -1542,10 +1549,14 @@ function initArticlesScrollFades() {
   console.log(`🎨 Checking ${articleImages.length} images for scroll fades`);
   
   let imageCount = 0;
+  let alreadyBound = 0;
   
   articleImages.forEach((img) => {
     // Skip if already bound
-    if (img.dataset.scrollFadeBound) return;
+    if (img.dataset.scrollFadeBound) {
+      alreadyBound++;
+      return;
+    }
     
     const rect = img.getBoundingClientRect();
     const visibleNow = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
@@ -1554,7 +1565,6 @@ function initArticlesScrollFades() {
     
     // Skip if already visible (above fold)
     if (visibleNow) {
-      console.log('⏭️ Image already visible, skipping fade');
       return;
     }
     
@@ -1587,6 +1597,9 @@ function initArticlesScrollFades() {
     imageCount++;
   });
   
+  if (alreadyBound > 0) {
+    console.log(`⏭️ Skipped ${alreadyBound} already bound images`);
+  }
   console.log(`✅ Articles scroll fades initialized: ${imageCount} triggers created`);
 }
 
@@ -2108,27 +2121,27 @@ function initArticlesHoverEffects() {
                 const waitForContent = async () => {
                   const scope = nextRoot.querySelector('main') || nextRoot;
                   let attempts = 0;
-                  const maxAttempts = 40; // 2 seconds max (40 * 50ms)
+                  const maxAttempts = 8; // 200ms max (8 * 25ms) - reduced from 500ms
+                  
+                  console.log(`🔍 Waiting for content in scope:`, scope?.tagName, `(searching for img/h1/h2/h3/p)`);
                   
                   while (attempts < maxAttempts) {
                     const mediaCount = scope.querySelectorAll('img, picture, video').length;
                     const textCount = scope.querySelectorAll('h1, h2, h3, p').length;
                     
-                    if (attempts === 0 || attempts % 10 === 0) {
-                      console.log(`⏳ Content check ${attempts}: ${mediaCount} media, ${textCount} text`);
-                    }
+                    console.log(`⏳ Check ${attempts}: ${mediaCount} media, ${textCount} text`);
                     
                     if (mediaCount > 0 || textCount > 0) {
-                      console.log(`✅ Content ready after ${attempts * 50}ms (${mediaCount} media, ${textCount} text)`);
+                      console.log(`✅ Content ready after ${attempts * 25}ms`);
                       break;
                     }
                     
-                    await new Promise(resolve => setTimeout(resolve, 50));
+                    await new Promise(resolve => setTimeout(resolve, 25));
                     attempts++;
                   }
                   
                   if (attempts >= maxAttempts) {
-                    console.warn('⚠️ Content wait timeout after 2s - proceeding anyway');
+                    console.log(`ℹ️ No content found after 200ms - proceeding anyway`);
                   }
                 };
                 
@@ -2178,27 +2191,27 @@ function initArticlesHoverEffects() {
                 const waitForContent = async () => {
                   const scope = nextRoot.querySelector('main') || nextRoot;
                   let attempts = 0;
-                  const maxAttempts = 40; // 2 seconds max (40 * 50ms)
+                  const maxAttempts = 8; // 200ms max (8 * 25ms) - reduced from 500ms
+                  
+                  console.log(`🔍 Waiting for content in scope:`, scope?.tagName, `(searching for img/h1/h2/h3/p)`);
                   
                   while (attempts < maxAttempts) {
                     const mediaCount = scope.querySelectorAll('img, picture, video').length;
                     const textCount = scope.querySelectorAll('h1, h2, h3, p').length;
                     
-                    if (attempts === 0 || attempts % 10 === 0) {
-                      console.log(`⏳ Content check ${attempts}: ${mediaCount} media, ${textCount} text`);
-                    }
+                    console.log(`⏳ Check ${attempts}: ${mediaCount} media, ${textCount} text`);
                     
                     if (mediaCount > 0 || textCount > 0) {
-                      console.log(`✅ Content ready after ${attempts * 50}ms (${mediaCount} media, ${textCount} text)`);
+                      console.log(`✅ Content ready after ${attempts * 25}ms`);
                       break;
                     }
                     
-                    await new Promise(resolve => setTimeout(resolve, 50));
+                    await new Promise(resolve => setTimeout(resolve, 25));
                     attempts++;
                   }
                   
                   if (attempts >= maxAttempts) {
-                    console.warn('⚠️ Content wait timeout after 2s - proceeding anyway');
+                    console.log(`ℹ️ No content found after 200ms - proceeding anyway`);
                   }
                 };
                 
@@ -2233,22 +2246,13 @@ function initArticlesHoverEffects() {
       // Refresh ScrollTrigger and recalc nav theme on new content
       if (window.barba) {
         function scheduleRecalc() {
-          try { initAccordions(); } catch (e) {}
+          // Only refresh ScrollTrigger and nav theme - init functions already called in enter hook
           try { if (window.ScrollTrigger) ScrollTrigger.refresh(); } catch (e) {}
           try { if (window.__updateNavTheme) window.__updateNavTheme(); } catch (e) {}
-          try { initFinsweetFilters(); } catch (e) {}
-          try { initPaginationReinit(); } catch (e) {}
-          try { initCreatorGridToggle(); } catch (e) {}
-          try { initArticleImageContainers(); } catch (e) {}
-          try { initArticlesScrollFades(); } catch (e) {}
-          try { initArticlesHoverEffects(); } catch (e) {}
         }
         barba.hooks.afterEnter(() => {
           scheduleRecalc();
-          setTimeout(scheduleRecalc, 50);
           setTimeout(scheduleRecalc, 150);
-          setTimeout(scheduleRecalc, 350);
-          setTimeout(scheduleRecalc, 700);
         });
       }
 
