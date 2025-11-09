@@ -634,13 +634,13 @@ function mapCreatorFields(sanityItem, locale = 'en') {
       .filter(Boolean),
     // Aggregated fields from artworks
     'creator-materials': (sanityItem.creatorMaterials || [])
-      .map(mat => mat._ref ? idMappings.material.get(mat._ref) : null)
+      .map(mat => mat._id ? idMappings.material.get(mat._id) : null)
       .filter(Boolean),
     'creator-finishes': (sanityItem.creatorFinishes || [])
-      .map(fin => fin._ref ? idMappings.finish.get(fin._ref) : null)
+      .map(fin => fin._id ? idMappings.finish.get(fin._id) : null)
       .filter(Boolean),
     'creator-medium-types': (sanityItem.creatorMediumTypes || [])
-      .map(med => med._ref ? idMappings.medium.get(med._ref) : null)
+      .map(med => med._id ? idMappings.medium.get(med._id) : null)
       .filter(Boolean)
   }
 
