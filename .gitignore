@@ -77,3 +77,6 @@ archive/
 sanity-migration/
 sanity-cms/scripts/data-files/*.json
 .vercel
+
+# Large media files
+Content/

@@ -2,15 +2,15 @@ export default {
   name: 'artwork',
   title: 'Artwork',
   type: 'document',
-  groups: [
-    {name: 'main', title: 'Main Info'},
-    {name: 'details', title: 'Details'},
-    {name: 'meta', title: 'Metadata'}
-  ],
   fieldsets: [
     {
-      name: 'physical',
-      title: 'Physical Properties',
+      name: 'basicInfo',
+      title: 'Basic Info',
+      options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'classification',
+      title: 'Classification',
       options: {collapsible: true, collapsed: false}
     }
   ],
@@ -19,15 +19,23 @@ export default {
       name: 'name',
       title: 'Main Title',
       type: 'string',
-      group: 'main',
       validation: Rule => Rule.required(),
       description: 'Main display title in format: Creator_work title'
+    },
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'workTitle.en',
+        maxLength: 96
+      },
+      validation: Rule => Rule.required()
     },
     {
       name: 'mainImage',
       title: 'Main Image',
       type: 'image',
-      group: 'main',
       options: {
         hotspot: true,
         storeOriginalFilename: true
@@ -48,7 +56,6 @@ export default {
       name: 'images',
       title: 'Artwork Images (Legacy)',
       type: 'array',
-      group: 'main',
       hidden: true,
       description: 'Legacy field - use mainImage instead',
       of: [
@@ -76,8 +83,9 @@ export default {
       name: 'workTitle',
       title: 'Work Title',
       type: 'object',
-      group: 'main',
+      fieldset: 'basicInfo',
       validation: Rule => Rule.required(),
+      description: 'Descriptive title of the artwork',
       fields: [
         {
           name: 'en',
@@ -94,29 +102,50 @@ export default {
       ]
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      group: 'main',
-      options: {
-        source: 'workTitle.en',
-        maxLength: 96
-      },
-      validation: Rule => Rule.required()
-    },
-    {
       name: 'creator',
       title: 'Creator',
       type: 'reference',
       to: [{type: 'creator'}],
-      group: 'main'
+      fieldset: 'basicInfo',
+      description: 'The artist/designer who created this work'
+    },
+    {
+      name: 'year',
+      title: 'Year',
+      type: 'string',
+      fieldset: 'basicInfo',
+      description: 'Year of creation'
+    },
+    {
+      name: 'size',
+      title: 'Size/Dimensions',
+      type: 'string',
+      fieldset: 'basicInfo',
+      description: 'Dimensions of the artwork'
+    },
+    {
+      name: 'price',
+      title: 'Price',
+      type: 'string',
+      fieldset: 'basicInfo',
+      description: 'Price information'
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'object',
+      fieldset: 'basicInfo',
+      fields: [
+        {name: 'en', title: 'English', type: 'text'},
+        {name: 'de', title: 'German', type: 'text'}
+      ]
     },
     {
       name: 'category',
-      title: 'Medium',
+      title: 'Category',
       type: 'reference',
       to: [{type: 'category'}],
-      group: 'main',
+      fieldset: 'classification',
       description: 'Primary craft medium (e.g., Ceramics, Glass, Jewelry, Metalwork, Textiles, Woodwork)'
     },
     {
@@ -124,82 +153,46 @@ export default {
       title: 'Type',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'medium'}]}],
-      group: 'main',
-      description: 'Object type(s) (e.g., Vase, Chair, Ring, Brooch, Necklace, Bracelet). Use the "+" button to create new types.'
+      fieldset: 'classification',
+      description: 'Object type(s) (e.g., Vase, Chair, Ring, Brooch, Necklace, Bracelet)'
     },
     {
       name: 'materials',
       title: 'Materials',
       type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{type: 'material'}]
-        }
-      ],
-      group: 'details',
-      fieldset: 'physical',
-      description: 'Select materials. Use the "+" button to create new materials if needed.'
+      of: [{type: 'reference', to: [{type: 'material'}]}],
+      fieldset: 'classification',
+      description: 'Specific materials used (e.g., Gold, Silver, Bronze, Wood, Ceramic)'
+    },
+    {
+      name: 'materialTypes',
+      title: 'Material Types',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'materialType'}]}],
+      fieldset: 'classification',
+      description: 'Broad material categories (e.g., Metals, Stones & Minerals, Glass & Crystal, Ceramics & Clay)'
     },
     {
       name: 'finishes',
       title: 'Finishes',
       type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{type: 'finish'}]
-        }
-      ],
-      group: 'details',
-      fieldset: 'physical',
-      description: 'Select finishes/surface treatments. Use the "+" button to create new finishes if needed.'
-    },
-    {
-      name: 'size',
-      title: 'Size/Dimensions',
-      type: 'string',
-      group: 'details',
-      fieldset: 'physical'
-    },
-    {
-      name: 'year',
-      title: 'Year',
-      type: 'string',
-      group: 'details',
-      fieldset: 'physical'
-    },
-    {
-      name: 'price',
-      title: 'Price',
-      type: 'string',
-      group: 'details',
-      fieldset: 'physical'
-    },
-    {
-      name: 'description',
-      title: 'Description',
-      type: 'object',
-      group: 'details',
-      fields: [
-        {name: 'en', title: 'English', type: 'text'},
-        {name: 'de', title: 'German', type: 'text'}
-      ]
+      of: [{type: 'reference', to: [{type: 'finish'}]}],
+      fieldset: 'classification',
+      description: 'Surface treatments (e.g., Polished, Matte, Glazed, Patinated, Brushed)'
     },
     // Source metadata for tracking scraped data
     {
       name: 'originalFilename',
       title: 'Original Filename',
       type: 'string',
-      group: 'meta',
-      description: 'Original image filename from scraped data'
+      description: 'Original image filename from scraped data',
+      hidden: true
     },
     // TEMPORARY FIELDS FOR CLEANUP - WILL BE REMOVED
     {
       name: 'isApprovedArtwork',
       title: 'Is Approved (Legacy)',
       type: 'boolean',
-      group: 'meta',
       description: 'Legacy approval field - will be removed',
       hidden: true
     },
@@ -208,7 +201,6 @@ export default {
       title: 'Maker (Legacy)',
       type: 'reference',
       to: [{type: 'creator'}],
-      group: 'meta',
       description: 'Legacy maker field - use Creator field instead',
       hidden: true
     },
@@ -216,7 +208,6 @@ export default {
       name: 'sourceInfo',
       title: 'Source Info (Legacy)',
       type: 'object',
-      group: 'meta',
       description: 'Migration metadata - will be removed',
       hidden: true,
       fields: [

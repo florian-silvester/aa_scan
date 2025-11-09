@@ -97,52 +97,24 @@ async function resolveWebflowLocales() {
 }
 
 async function resolveWebflowCollections() {
-  // Allow explicit override via env JSON
-  if (process.env.WEBFLOW_COLLECTIONS_JSON) {
-    try {
-      const parsed = JSON.parse(process.env.WEBFLOW_COLLECTIONS_JSON)
-      return parsed
-    } catch (e) {
-      console.warn('⚠️  Invalid WEBFLOW_COLLECTIONS_JSON, falling back to API resolution')
-    }
-  }
-
-  const siteCollections = await webflowRequest(`/sites/${WEBFLOW_SITE_ID}/collections`)
-  const bySlug = new Map()
-  for (const c of (siteCollections.collections || siteCollections || [])) {
-    // Support both possible response shapes
-    const slug = normalize(c.slug || c.displayName || c.singularName)
-    bySlug.set(slug, c)
-  }
-
-  // Helper to find a collection by possible names
-  const pick = (...candidates) => {
-    for (const name of candidates) {
-      const c = bySlug.get(normalize(name))
-      if (c) return c.id
-    }
-    return null
-  }
-
+  // FIXED: No more guessing! Using exact, hardcoded collection IDs
+  // These IDs are fetched once and hardcoded to prevent data corruption from wrong matches
+  
   const resolved = {
-    materialType: pick('material-types', 'material type', 'material types', 'materialtype'),
-    material: pick('materials', 'material'),
-    finish: pick('finishes', 'finish'),
-    medium: pick('type', 'types', 'media', 'medium'), // Sanity medium (Type) → Webflow Type
-    category: pick('medium', 'mediums', 'category', 'categories'), // Sanity category (Medium) → Webflow Medium
-    location: pick('locations', 'location'),
-    creator: pick('creators', 'creator', 'profiles', 'profile'),
-    artwork: pick('artworks', 'artwork', 'works', 'work'),
-    article: pick('articles', 'article'),
-    author: pick('authors', 'author'),
-    photographer: pick('photographers', 'photographer')
+    materialType: '68c6785963cdfa79c3a137fc',  // Material Type
+    material: '68c6785963cdfa79c3a1386c',      // Material
+    finish: '68c6785963cdfa79c3a1381d',        // Finish
+    medium: '68c6785963cdfa79c3a13840',        // Types (Sanity "medium" = object types like Bowl, Ring)
+    category: '68c6785963cdfa79c3a137d5',      // Media (Sanity "category" = craft categories like Ceramics, Glass)
+    location: '68c6785963cdfa79c3a1388a',      // Location
+    creator: '68c6785963cdfa79c3a138ab',       // Creator
+    artwork: '68c6785963cdfa79c3a138d1',       // Artwork
+    article: null,                              // Article - not found in current site
+    author: null,                               // Author - not found in current site
+    photographer: '68ebb84110b41f8ed2f43914'   // Photographers
   }
 
-  // Validate presence
-  const missing = Object.entries(resolved).filter(([, v]) => !v).map(([k]) => k)
-  if (missing.length > 0) {
-    console.warn(`⚠️  Missing collections on site: ${missing.join(', ')}`)
-  }
+  console.log('🔒 Using exact collection IDs (no guessing)')
   return resolved
 }
 
@@ -636,10 +608,13 @@ function mapCreatorFields(sanityItem, locale = 'en') {
     'creator-materials': (sanityItem.creatorMaterials || [])
       .map(mat => mat._id ? idMappings.material.get(mat._id) : null)
       .filter(Boolean),
+    'creator-material-types': (sanityItem.creatorMaterialTypes || [])
+      .map(mt => mt._id ? idMappings.materialType.get(mt._id) : null)
+      .filter(Boolean),
     'creator-finishes': (sanityItem.creatorFinishes || [])
       .map(fin => fin._id ? idMappings.finish.get(fin._id) : null)
       .filter(Boolean),
-    'creator-medium-types': (sanityItem.creatorMediumTypes || [])
+    'creator-media-types': (sanityItem.creatorMediumTypes || [])
       .map(med => med._id ? idMappings.medium.get(med._id) : null)
       .filter(Boolean)
   }
@@ -1919,6 +1894,7 @@ async function syncCreators(limit = null, progressCallback = null) {
         birthYear,
         category,
         creatorMaterials[]->{_id},
+        creatorMaterialTypes[]->{_id},
         creatorFinishes[]->{_id},
         creatorMediumTypes[]->{_id}
       }
@@ -1971,6 +1947,14 @@ async function syncArtworks(limit = null, progressCallback = null) {
       return mappedId
     }).filter(Boolean) || []
     
+    const materialTypeIds = item.materialTypes?.map(mt => {
+      const mappedId = idMappings.materialType.get(mt._id)
+      if (!mappedId) {
+        console.warn(`  ⚠️  MaterialType reference not found for artwork '${item.name}': ${mt._id}`)
+      }
+      return mappedId
+    }).filter(Boolean) || []
+    
     const mediumIds = item.medium?.map(med => {
       const mappedId = idMappings.medium.get(med._id)
       if (!mappedId) {
@@ -1993,6 +1977,12 @@ async function syncArtworks(limit = null, progressCallback = null) {
       alt: (item.mainImage?.alt?.en || item.mainImage?.alt?.de || item.name || item.workTitle?.en || item.workTitle?.de || 'Main image')
     } : undefined
 
+    // Map category reference
+    const categoryId = item.category?._id ? idMappings.category.get(item.category._id) : null
+    if (item.category?._id && !categoryId) {
+      console.warn(`  ⚠️  Category reference not found for artwork '${item.name}': ${item.category._id}`)
+    }
+    
     // Note: customImageSync doesn't support locale parameter yet, always returns English
     // German locale will be updated separately after creation
     return {
@@ -2002,7 +1992,9 @@ async function syncArtworks(limit = null, progressCallback = null) {
         'work-title': item.workTitle?.en || item.workTitle?.de || '',
         description: item.description?.en || '',
         creator: creatorId,
+        'media-reference': categoryId,  // Webflow field slug is 'media-reference' (renamed from Media to Category)
         materials: materialIds,
+        'material-type': materialTypeIds,
         medium: mediumIds,
         finishes: finishIds,
         'size-dimensions': cleanSizeField(item.size || ''),
@@ -2029,6 +2021,7 @@ async function syncArtworks(limit = null, progressCallback = null) {
         creator->{_id},
         category->{_id},
         materials[]->{_id},
+        materialTypes[]->{_id},
         medium[]->{_id},
         finishes[]->{_id},
         size,
@@ -2043,7 +2036,7 @@ async function syncArtworks(limit = null, progressCallback = null) {
           },
           alt
         },
-        images[]{ 
+        images[]{
           asset->{
             _id,
             url,
@@ -2098,7 +2091,13 @@ async function syncArtworksForCreators(creatorIds = []) {
       console.log(`  🔍 '${item.name.substring(0, 30)}': creator=${creatorId}`)
     }
 
+    const categoryId = item.category?._id ? idMappings.category.get(item.category._id) : null
+    if (item.category?._id && !categoryId) {
+      console.warn(`  ⚠️  Category reference not found for artwork '${item.name}': ${item.category._id}`)
+    }
+    
     const materialIds = item.materials?.map(mat => idMappings.material.get(mat._id)).filter(Boolean) || []
+    const materialTypeIds = item.materialTypes?.map(mt => idMappings.materialType.get(mt._id)).filter(Boolean) || []
     const mediumIds = item.medium?.map(med => idMappings.medium.get(med._id)).filter(Boolean) || []
     const finishIds = item.finishes?.map(fin => idMappings.finish.get(fin._id)).filter(Boolean) || []
 
@@ -2112,7 +2111,9 @@ async function syncArtworksForCreators(creatorIds = []) {
         'description-english': item.description?.en || '',
         'description-german': item.description?.de || '',
         ...(creatorId ? { creator: creatorId } : {}),
+        ...(categoryId ? { 'media-reference': categoryId } : {}),
         ...(materialIds.length > 0 ? { materials: materialIds } : {}),
+        ...(materialTypeIds.length > 0 ? { 'material-type': materialTypeIds } : {}),
         ...(mediumIds.length > 0 ? { medium: mediumIds } : {}),
         ...(finishIds.length > 0 ? { finishes: finishIds } : {}),
         'size-dimensions': item.size || '',
@@ -2134,6 +2135,7 @@ async function syncArtworksForCreators(creatorIds = []) {
         creator->{_id,name},
         category->{_id},
         materials[]->{_id},
+        materialTypes[]->{_id},
         medium[]->{_id},
         finishes[]->{_id},
         size,

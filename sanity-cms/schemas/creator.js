@@ -219,6 +219,15 @@ export default {
       readOnly: true,
     },
     {
+      name: 'creatorMaterialTypes',
+      title: 'All Material Types',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'materialType'}]}],
+      fieldset: 'craftProperties',
+      description: 'Auto-aggregated: All unique material types from this creator\'s artworks',
+      readOnly: true,
+    },
+    {
       name: 'creatorFinishes',
       title: 'All Finishes Used',
       type: 'array',

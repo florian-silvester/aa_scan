@@ -677,10 +677,12 @@ function initCreatorImgListToggle() {
     return;
   }
   
-  // Try multiple selectors for click targets
-  let clickTargets = [];
+  // Find toggle buttons by toggle attribute
+  const gridBtn = document.querySelector('.button_main_wrap[toggle="is-grid-creator"]');
+  const listBtn = document.querySelector('.button_main_wrap[toggle="is-list-creator"]');
   
-  // Try to find <p> elements inside .creator_img items
+  // Try to find click targets in images (optional - works even if buttons not present)
+  let clickTargets = [];
   items.forEach(item => {
     const p = item.querySelector('p');
     if (p) clickTargets.push(p);
@@ -703,6 +705,13 @@ function initCreatorImgListToggle() {
   function switchToGrid() {
     console.log('🎨 Switching to GRID view');
     
+    // Find first visible item in viewport before layout changes
+    const viewportTop = window.scrollY;
+    const firstVisibleItem = itemsArray.find(item => {
+      const rect = item.getBoundingClientRect();
+      return rect.top + window.scrollY >= viewportTop;
+    });
+    
     // Kill any running animations
     gsap.killTweensOf(itemsArray);
     
@@ -713,9 +722,25 @@ function initCreatorImgListToggle() {
       duration: 0.5,
       ease: "power2.inOut",
       onComplete: () => {
-        // Swap classes
+        // Swap classes on container
         container.classList.remove('u-flex-vertical-nowrap');
         container.classList.add('u-grid-custom');
+        
+        // Remove max-width from image wrappers (grid view)
+        itemsArray.forEach(item => {
+          const imgWrap = item.querySelector('.creator_img_wrap');
+          if (imgWrap) {
+            imgWrap.classList.remove('u-max-width-30ch');
+          }
+        });
+        
+        // Scroll to keep first visible item in view after layout settles
+        if (firstVisibleItem) {
+          requestAnimationFrame(() => {
+            const newTop = firstVisibleItem.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo(0, newTop - 100);
+          });
+        }
         
         // Fade in with stagger
         gsap.fromTo(itemsArray,
@@ -735,9 +760,16 @@ function initCreatorImgListToggle() {
     });
   }
   
-  // Switch to Flex View
-  function switchToFlex() {
-    console.log('🎨 Switching to FLEX view');
+  // Switch to List View
+  function switchToList() {
+    console.log('🎨 Switching to LIST view');
+    
+    // Find first visible item in viewport before layout changes
+    const viewportTop = window.scrollY;
+    const firstVisibleItem = itemsArray.find(item => {
+      const rect = item.getBoundingClientRect();
+      return rect.top + window.scrollY >= viewportTop;
+    });
     
     // Kill any running animations
     gsap.killTweensOf(itemsArray);
@@ -749,9 +781,25 @@ function initCreatorImgListToggle() {
       duration: 0.5,
       ease: "power2.inOut",
       onComplete: () => {
-        // Swap classes
+        // Swap classes on container
         container.classList.remove('u-grid-custom');
         container.classList.add('u-flex-vertical-nowrap');
+        
+        // Add max-width to image wrappers (list view)
+        itemsArray.forEach(item => {
+          const imgWrap = item.querySelector('.creator_img_wrap');
+          if (imgWrap) {
+            imgWrap.classList.add('u-max-width-30ch');
+          }
+        });
+        
+        // Scroll to keep first visible item in view after layout settles
+        if (firstVisibleItem) {
+          requestAnimationFrame(() => {
+            const newTop = firstVisibleItem.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo(0, newTop - 100);
+          });
+        }
         
         // Fade in with stagger
         gsap.fromTo(itemsArray,
@@ -771,30 +819,38 @@ function initCreatorImgListToggle() {
     });
   }
   
-  // Add cursor pointer style to make paragraphs clickable
-  clickTargets.forEach(p => {
-    p.style.cursor = 'pointer';
-    p.style.userSelect = 'none'; // Prevent text selection on click
-  });
+  // Click handlers for buttons (if they exist)
+  if (gridBtn) {
+    gridBtn.addEventListener('click', () => {
+      console.log('🖱️ Grid button clicked');
+      if (!isGridView) switchToGrid();
+    });
+  }
   
-  // Click handler - toggle on click (click on <p> elements)
-  clickTargets.forEach((p, index) => {
-    p.addEventListener('click', (e) => {
-      console.log('🖱️ Click detected on paragraph', index + 1);
-      e.preventDefault();
-      e.stopPropagation();
+  if (listBtn) {
+    listBtn.addEventListener('click', () => {
+      console.log('🖱️ List button clicked');
+      if (isGridView) switchToList();
+    });
+  }
+  
+  // Click handlers for images - toggle on click
+  clickTargets.forEach(target => {
+    target.style.cursor = 'pointer';
+    target.style.userSelect = 'none'; // Prevent text selection
+    
+    target.addEventListener('click', () => {
+      console.log('🖱️ Image click detected, toggling view');
       
       if (isGridView) {
-        switchToFlex();
+        switchToList();
       } else {
         switchToGrid();
       }
     });
-    
-    console.log('✅ Click listener added to paragraph', index + 1, ':', p.textContent.trim());
   });
   
-  console.log('✅ Creator img list toggle initialized');
+  console.log('✅ Creator img list toggle initialized (buttons:', !!gridBtn && !!listBtn, ', image clicks:', clickTargets.length, ')');
 }
 
 // ================================================================================

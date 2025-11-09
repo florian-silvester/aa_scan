@@ -19,6 +19,7 @@ async function aggregateCreatorData(creatorId) {
   const artworks = await client.fetch(`
     *[_type == "artwork" && creator._ref == $creatorId] {
       "materials": materials[]._ref,
+      "materialTypes": materialTypes[]._ref,
       "finishes": finishes[]._ref,
       "medium": medium[]._ref
     }
@@ -26,11 +27,13 @@ async function aggregateCreatorData(creatorId) {
 
   // Collect unique IDs
   const materialIds = new Set()
+  const materialTypeIds = new Set()
   const finishIds = new Set()
   const mediumIds = new Set()
 
   artworks.forEach(artwork => {
     artwork.materials?.forEach(id => id && materialIds.add(id))
+    artwork.materialTypes?.forEach(id => id && materialTypeIds.add(id))
     artwork.finishes?.forEach(id => id && finishIds.add(id))
     artwork.medium?.forEach(id => id && mediumIds.add(id))
   })
@@ -40,6 +43,11 @@ async function aggregateCreatorData(creatorId) {
       _type: 'reference', 
       _ref: id,
       _key: id  // Use the ref ID as the key
+    })),
+    materialTypes: Array.from(materialTypeIds).map(id => ({ 
+      _type: 'reference', 
+      _ref: id,
+      _key: id
     })),
     finishes: Array.from(finishIds).map(id => ({ 
       _type: 'reference', 
@@ -55,16 +63,17 @@ async function aggregateCreatorData(creatorId) {
 }
 
 async function updateCreator(creatorId, creatorName, aggregates) {
-  const { materials, finishes, mediumTypes } = aggregates
+  const { materials, materialTypes, finishes, mediumTypes } = aggregates
 
   console.log(`  📊 ${creatorName}:`)
-  console.log(`     Materials: ${materials.length}, Finishes: ${finishes.length}, Medium Types: ${mediumTypes.length}`)
+  console.log(`     Materials: ${materials.length}, Material Types: ${materialTypes.length}, Finishes: ${finishes.length}, Medium Types: ${mediumTypes.length}`)
 
   // Update the creator document
   await client
     .patch(creatorId)
     .set({
       creatorMaterials: materials,
+      creatorMaterialTypes: materialTypes,
       creatorFinishes: finishes,
       creatorMediumTypes: mediumTypes
     })
