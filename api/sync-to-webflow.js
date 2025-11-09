@@ -613,10 +613,6 @@ function mapCreatorFields(sanityItem, locale = 'en') {
     'name': sanityItem.name || 'Untitled',
     'last-name': sanityItem.lastName || '',
     'slug': sanityItem.slug?.current || generateSlug(sanityItem.name),
-    'hero-image': (sanityItem.cover?.asset?.url ? {
-      url: sanityItem.cover.asset.url,
-      alt: (sanityItem.cover?.alt?.en || sanityItem.cover?.alt?.de || sanityItem.name || '')
-    } : undefined),
     'profile-image': (sanityItem.image?.asset?.url ? {
       url: sanityItem.image.asset.url,
       alt: (sanityItem.image?.alt?.en || sanityItem.image?.alt?.de || sanityItem.name || '')
@@ -635,6 +631,16 @@ function mapCreatorFields(sanityItem, locale = 'en') {
     'category': sanityItem.category?._ref ? idMappings.category.get(sanityItem.category._ref) || null : null,
     'locations': (sanityItem.associatedLocations || [])
       .map(loc => loc._ref ? idMappings.location.get(loc._ref) : null)
+      .filter(Boolean),
+    // Aggregated fields from artworks
+    'creator-materials': (sanityItem.creatorMaterials || [])
+      .map(mat => mat._ref ? idMappings.material.get(mat._ref) : null)
+      .filter(Boolean),
+    'creator-finishes': (sanityItem.creatorFinishes || [])
+      .map(fin => fin._ref ? idMappings.finish.get(fin._ref) : null)
+      .filter(Boolean),
+    'creator-medium-types': (sanityItem.creatorMediumTypes || [])
+      .map(med => med._ref ? idMappings.medium.get(med._ref) : null)
       .filter(Boolean)
   }
 
@@ -643,8 +649,7 @@ function mapCreatorFields(sanityItem, locale = 'en') {
   const localeFields = {
     'biography': extractTextFromBlocks(isGerman ? sanityItem.biography?.de : sanityItem.biography?.en),
     'portrait-english': extractTextFromBlocks(isGerman ? sanityItem.portrait?.de : sanityItem.portrait?.en), // TODO: rename to 'portrait' once slug is fixed in Webflow
-    'nationality': isGerman ? (sanityItem.nationality?.de || '') : (sanityItem.nationality?.en || ''),
-    'specialties': isGerman ? (sanityItem.specialties?.de?.join(', ') || '') : (sanityItem.specialties?.en?.join(', ') || '')
+    'nationality': isGerman ? (sanityItem.nationality?.de || '') : (sanityItem.nationality?.en || '')
   }
 
   return { ...baseFields, ...localeFields }
@@ -1878,15 +1883,6 @@ async function syncCreators(limit = null, progressCallback = null) {
         _id,
         name,
         lastName,
-        cover{
-          asset->{
-            _id,
-            url,
-            originalFilename,
-            _updatedAt
-          },
-          alt
-        },
         image{
           asset->{
             _id,
@@ -1899,7 +1895,6 @@ async function syncCreators(limit = null, progressCallback = null) {
         biography,
         portrait,
         nationality,
-        specialties,
         studioImage{
           asset->{
             _id,
@@ -1922,7 +1917,10 @@ async function syncCreators(limit = null, progressCallback = null) {
         website,
         email,
         birthYear,
-        category
+        category,
+        creatorMaterials[]->{_id},
+        creatorFinishes[]->{_id},
+        creatorMediumTypes[]->{_id}
       }
     `,
     fieldMapper: mapCreatorFields,
