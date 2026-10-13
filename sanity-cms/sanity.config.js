@@ -2,6 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
+import {MAGAZINE_SECTIONS, MAGAZINE_STATUSES} from './schemas/magazineArticle.js'
 import {media} from 'sanity-plugin-media'
 import {webflowSyncPlugin} from './plugins/webflowSyncPlugin'
 
@@ -116,7 +117,120 @@ export default defineConfig({
                       .child(S.documentTypeList('photographer').title('Photographers')),
                   ])
               ),
-            
+
+            S.divider(),
+
+            // 📰 MAGAZINE ARCHIVE SECTION
+            S.listItem()
+              .title('📰 Magazine Archive')
+              .child(
+                S.list()
+                  .title('Magazine Archive')
+                  .items([
+                    S.listItem()
+                      .title('Issues')
+                      .child(
+                        S.documentTypeList('magazineIssue')
+                          .title('Issues')
+                          .defaultOrdering([{field: 'number', direction: 'desc'}])
+                      ),
+                    S.listItem()
+                      .title('All Magazine Articles')
+                      .child(S.documentTypeList('magazineArticle').title('All Magazine Articles')),
+                    S.listItem()
+                      .title('Captions to Check')
+                      .child(
+                        S.documentList()
+                          .title('Captions to Check')
+                          .filter('_type == "magazineArticle" && count(images[captionCheck == true]) > 0')
+                          .defaultOrdering([{field: 'pageStart', direction: 'asc'}])
+                      ),
+                    S.listItem()
+                      .title('People')
+                      .child(
+                        S.documentTypeList('magazinePerson')
+                          .title('People')
+                          .defaultOrdering([{field: 'mentionCount', direction: 'desc'}])
+                      ),
+                    S.divider(),
+
+                    // By Issue
+                    S.listItem()
+                      .title('By Issue')
+                      .child(async () => {
+                        const client = S.context.getClient({ apiVersion: '2023-01-01' })
+
+                        const issues = await client.fetch(`
+                          *[_type == "magazineIssue"] {
+                            _id,
+                            number,
+                            year,
+                            issueOfYear
+                          } | order(number desc)
+                        `)
+
+                        return S.list()
+                          .title('By Issue')
+                          .items(
+                            issues.map(issue =>
+                              S.listItem()
+                                .id(issue._id)
+                                .title(`AA ${issue.number} (${issue.issueOfYear}/${issue.year})`)
+                                .child(
+                                  S.documentList()
+                                    .title(`AA ${issue.number}`)
+                                    .filter('_type == "magazineArticle" && issue._ref == $issueId')
+                                    .params({ issueId: issue._id })
+                                    .defaultOrdering([{field: 'pageStart', direction: 'asc'}])
+                                )
+                            )
+                          )
+                      }),
+
+                    // By Section
+                    S.listItem()
+                      .title('By Section')
+                      .child(
+                        S.list()
+                          .title('By Section')
+                          .items(
+                            MAGAZINE_SECTIONS.map(section =>
+                              S.listItem()
+                                .id(`section-${section.value}`)
+                                .title(section.title)
+                                .child(
+                                  S.documentList()
+                                    .title(section.title)
+                                    .filter('_type == "magazineArticle" && section == $section')
+                                    .params({ section: section.value })
+                                )
+                            )
+                          )
+                      ),
+
+                    // By Status
+                    S.listItem()
+                      .title('By Status')
+                      .child(
+                        S.list()
+                          .title('By Status')
+                          .items(
+                            MAGAZINE_STATUSES.map(status =>
+                              S.listItem()
+                                .id(`status-${status.value}`)
+                                .title(status.title)
+                                .child(
+                                  S.documentList()
+                                    .title(status.title)
+                                    .filter('_type == "magazineArticle" && status == $status')
+                                    .params({ status: status.value })
+                                )
+                            )
+                          )
+                      ),
+                  ])
+              ),
+
             S.divider(),
             
             // 🎨 ARTWORKS & MATERIALS SECTION
