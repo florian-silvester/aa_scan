@@ -34,6 +34,9 @@ export default defineConfig({
                     S.listItem()
                       .title('All Profiles')
                       .child(S.documentTypeList('creator').title('All Profiles')),
+                    S.listItem()
+                      .title('🙈 Hidden on website')
+                      .child(S.documentTypeList('creator').title('Hidden on website').filter('_type == "creator" && hidden == true')),
                     S.divider(),
                     
                     // Tier filters
@@ -90,6 +93,15 @@ export default defineConfig({
               ),
             
             S.divider(),
+
+            // 🗞️ NEWS: short dated reports for the front page, newest first
+            S.listItem()
+              .title('🗞️ News')
+              .child(
+                S.documentTypeList('news')
+                  .title('News')
+                  .defaultOrdering([{field: 'date', direction: 'desc'}])
+              ),
             
             // 📝 ARTICLES SECTION
             S.listItem()
@@ -358,7 +370,7 @@ export default defineConfig({
                                 const finishes = await client.fetch(`
                                   *[_type == "finish"] {
                                     _id,
-                                    "name": title.en,
+                                    "name": coalesce(name.en, title.en),
                                     "slug": slug.current
                                   } | order(name asc)
                                 `)

@@ -39,6 +39,13 @@ export default {
       type: 'string',
       description: 'Last name for sorting purposes',
     },
+    {
+      name: 'hidden',
+      title: 'Hidden on website',
+      type: 'boolean',
+      initialValue: false,
+      description: 'On: the profile stays off the website (lists, search, links) while it is being reviewed. It can still be seen through the preview link (/preview?key=…). Switch off and publish to show it.',
+    },
     // Info Group
     {
       name: 'biography',
@@ -102,6 +109,14 @@ export default {
         {name: 'en', title: 'English', type: 'string'},
         {name: 'de', title: 'German', type: 'string'}
       ]
+    },
+    {
+      name: 'basedIn',
+      title: 'Based In',
+      type: 'reference',
+      to: [{type: 'city'}, {type: 'country'}],
+      fieldset: 'info',
+      description: 'Where the creator lives and works: a city (which carries its country), or only a country when the city is unknown',
     },
     {
       name: 'birthYear',

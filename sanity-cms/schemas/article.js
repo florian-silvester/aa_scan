@@ -618,6 +618,22 @@ export default {
       fieldset: 'publicationDetails',
       of: [{type: 'reference', to: [{type: 'photographer'}]}],
       description: 'Photographers'
+    },
+    {
+      name: 'author',
+      title: 'Text by',
+      type: 'string',
+      group: 'publication',
+      fieldset: 'publicationDetails',
+      description: 'Credit line on the story page, as written (e.g. "Birgit Sonna")'
+    },
+    {
+      name: 'photoCredit',
+      title: 'Photos by',
+      type: 'string',
+      group: 'publication',
+      fieldset: 'publicationDetails',
+      description: 'Credit line on the story page, as written (e.g. "Robbie Lawrence, Mathias Rümmler")'
     }
   ],
   preview: {

@@ -1,3 +1,29 @@
+const localeString = (name, title) => ({
+  name,
+  title,
+  type: 'object',
+  fields: [
+    {name: 'en', title: 'English', type: 'string'},
+    {name: 'de', title: 'German', type: 'string'}
+  ]
+})
+
+const captionText = {
+  name: 'captionText',
+  title: 'Text',
+  type: 'object',
+  fields: [
+    {name: 'en', title: 'English', type: 'string'},
+    {name: 'de', title: 'German', type: 'string'}
+  ],
+  preview: {select: {title: 'en', subtitle: 'de'}}
+}
+
+const measure = (name, title) => [
+  {name, title, type: 'number'},
+  {name: `${name}To`, title: `${title} (to, for a range)`, type: 'number'}
+]
+
 export default {
   name: 'artwork',
   title: 'Artwork',
@@ -12,6 +38,11 @@ export default {
       name: 'classification',
       title: 'Classification',
       options: {collapsible: true, collapsed: false}
+    },
+    {
+      name: 'structuredCaption',
+      title: 'Structured caption',
+      options: {collapsible: true, collapsed: true}
     }
   ],
   fields: [
@@ -51,6 +82,15 @@ export default {
           ]
         }
       ]
+    },
+    {
+      name: 'originalImage',
+      title: 'Original Image',
+      type: 'image',
+      readOnly: true,
+      hidden: ({value}) => !value,
+      description: 'The photo as delivered, before its ground was evened to white. Main Image now shows the whitened version; the site can switch back to this one. The original also carries the "originals" tag in Media.',
+      options: {storeOriginalFilename: true}
     },
     {
       name: 'images',
@@ -187,6 +227,77 @@ export default {
       type: 'string',
       description: 'Original image filename from scraped data',
       hidden: true
+    },
+    {
+      name: 'caption',
+      title: 'Structured caption',
+      type: 'object',
+      fieldset: 'structuredCaption',
+      description: 'Read from the caption by the caption scan (12 Oct 2026). The site renders every caption from these fields; Description stays as the source. Types, materials and finishes above link to the vocabulary.',
+      fields: [
+        localeString('title', 'Title'),
+        {name: 'untitled', title: 'Untitled', type: 'boolean'},
+        localeString('series', 'Series'),
+        localeString('variant', 'Variant (colourway, version)'),
+        localeString('typeTerm', 'Object type, as the caption words it'),
+        {name: 'materialTerms', title: 'Materials, as the caption words them', type: 'array', of: [captionText]},
+        {name: 'techniqueTerms', title: 'Techniques, as the caption words them', type: 'array', of: [captionText]},
+        {
+          name: 'dimensions',
+          title: 'Dimensions',
+          type: 'array',
+          of: [
+            {
+              name: 'captionDimension',
+              title: 'Dimension',
+              type: 'object',
+              fields: [
+                {name: 'label', title: 'Piece', type: 'string', description: 'Which piece of a set, if the caption names it'},
+                {name: 'unlabelled', title: 'Unlabelled', type: 'boolean', description: 'The caption gives the numbers without H, W or D; shown as written'},
+                ...measure('h', 'Height'),
+                ...measure('w', 'Width'),
+                ...measure('d', 'Depth'),
+                ...measure('diameter', 'Diameter'),
+                ...measure('length', 'Length'),
+                ...measure('thickness', 'Thickness'),
+                {name: 'unit', title: 'Unit', type: 'string', options: {list: ['mm', 'cm', 'm']}}
+              ],
+              preview: {
+                select: {h: 'h', w: 'w', d: 'd', diameter: 'diameter', unit: 'unit', label: 'label'},
+                prepare: ({h, w, d, diameter, unit, label}) => ({
+                  title: [[h, w, d].filter((v) => v != null).join(' × '), diameter != null ? `Ø ${diameter}` : null].filter(Boolean).join(', ') + ` ${unit || ''}`,
+                  subtitle: label
+                })
+              }
+            }
+          ]
+        },
+        {name: 'notes', title: 'Notes', type: 'array', of: [captionText]},
+        {name: 'photoCredit', title: 'Photo credit', type: 'string'},
+        {
+          name: 'imageRole',
+          title: 'Image shows',
+          type: 'string',
+          options: {list: [
+            {title: 'The work', value: 'work'},
+            {title: 'A detail', value: 'detail'},
+            {title: 'Making of', value: 'process'},
+            {title: 'Exhibition view', value: 'installation'},
+            {title: 'Several works', value: 'group'}
+          ]}
+        },
+        {
+          name: 'scan',
+          title: 'Scan',
+          type: 'object',
+          readOnly: true,
+          fields: [
+            {name: 'confidence', title: 'Confidence', type: 'string'},
+            {name: 'flags', title: 'Flags', type: 'array', of: [{type: 'string'}]},
+            {name: 'scannedAt', title: 'Scanned', type: 'string'}
+          ]
+        }
+      ]
     },
     // TEMPORARY FIELDS FOR CLEANUP - WILL BE REMOVED
     {

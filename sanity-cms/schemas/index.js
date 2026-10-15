@@ -14,7 +14,8 @@ import magazinePerson from './magazinePerson.js'
 import material from './material.js'
 import materialType from './materialType.js'
 import medium from './medium.js'
+import news from './news.js'
 import photographer from './photographer.js'
 import webflowSyncSettings from './webflowSyncSettings.js'
 
-export const schemaTypes = [artwork, article, author, category, city, country, creator, finish, imageMarker, location, magazineArticle, magazineIssue, magazinePerson, material, materialType, medium, photographer, webflowSyncSettings] 
+export const schemaTypes = [artwork, article, author, category, city, country, creator, finish, imageMarker, location, magazineArticle, magazineIssue, magazinePerson, material, materialType, medium, news, photographer, webflowSyncSettings] 
