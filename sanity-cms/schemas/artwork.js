@@ -53,6 +53,15 @@ export default {
       ]
     },
     {
+      name: 'originalImage',
+      title: 'Original Image',
+      type: 'image',
+      readOnly: true,
+      hidden: ({value}) => !value,
+      description: 'The photo as delivered, before its ground was evened to white. Main Image now shows the whitened version; the site can switch back to this one. The original also carries the "originals" tag in Media.',
+      options: {storeOriginalFilename: true}
+    },
+    {
       name: 'images',
       title: 'Artwork Images (Legacy)',
       type: 'array',
